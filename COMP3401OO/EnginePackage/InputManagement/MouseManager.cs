@@ -2,21 +2,24 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using COMP3401OO.EnginePackage.CoreInterfaces;
-using COMP3401OO.EnginePackage.EntityManagement;
+using COMP3401OO.EnginePackage.EntityManagement.Interfaces;
+using COMP3401OO.EnginePackage.InputManagement.Interfaces;
 
 namespace COMP3401OO.EnginePackage.InputManagement
 {
     /// <summary>
     /// Class which manages all entities listening for Mouse input
+    /// Author: William Smith
+    /// Date: 13/02/22
     /// </summary>
     public class MouseManager : IUpdatable, IMousePublisher
     {
         #region FIELD VARIABLES
 
-        // DECLARE an IDictionary<string, IMouseListener>, call it '_mouseListeners':
+        // DECLARE an IDictionary<string, IMouseListener>, name it '_mouseListeners':
         private IDictionary<string, IMouseListener> _mouseListeners;
 
-        // DECLARE a MouseState, call it '_mouseState':
+        // DECLARE a MouseState, name it '_mouseState':
         private MouseState _mouseState;
 
         #endregion

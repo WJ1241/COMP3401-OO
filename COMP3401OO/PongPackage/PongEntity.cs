@@ -7,18 +7,20 @@ namespace COMP3401OO.PongPackage
 {
     /// <summary>
     /// Abstract class for Pong Entities to inherit from
+    /// Author: William Smith
+    /// Date: 13/02/22
     /// </summary>
     public abstract class PongEntity : Entity, IDraw, IUpdatable, ITexture, IVelocity
     {
         #region FIELD VARIABLES
 
-        // DECLARE a Texture2D, call it '_texture':
+        // DECLARE a Texture2D, name it '_texture':
         protected Texture2D _texture;
 
-        // DECLARE a Vector2, call it '_velocity':
+        // DECLARE a Vector2, name it '_velocity':
         protected Vector2 _velocity;
 
-        // DECLARE a float, call it 'speed':
+        // DECLARE a float, name it 'speed':
         protected float _speed;
 
         #endregion

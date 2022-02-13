@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
-using COMP3401OO.EnginePackage.InputManagement;
-using COMP3401OO.EnginePackage.SceneManagement;
+using COMP3401OO.EnginePackage.InputManagement.Interfaces;
+using COMP3401OO.EnginePackage.SceneManagement.Interfaces;
 
-namespace COMP3401OO.EnginePackage.EntityManagement
+namespace COMP3401OO.EnginePackage.EntityManagement.Interfaces
 {
     /// <summary>
     /// Interface that allows implementations to store Entities
+    /// Author: William Smith
+    /// Date: 13/02/22
     /// </summary>
     public interface IEntityManager
     {

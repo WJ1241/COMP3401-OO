@@ -4,6 +4,8 @@ namespace COMP3401OO.EnginePackage.CoreInterfaces
 {
     /// <summary>
     /// Interface that allows implementations to be updated with a GameTime object
+    /// Author: William Smith
+    /// Date: 13/02/22
     /// </summary>
     public interface IUpdatable
     {
@@ -12,8 +14,8 @@ namespace COMP3401OO.EnginePackage.CoreInterfaces
         /// <summary>
         /// Updates object when a frame has been rendered on screen
         /// </summary>
-        /// <param name="gameTime">holds reference to GameTime object</param>
-        void Update(GameTime gameTime);
+        /// <param name="pGameTime">holds reference to GameTime object</param>
+        void Update(GameTime pGameTime);
 
         #endregion
     }

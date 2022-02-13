@@ -1,28 +1,35 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
-using COMP3401OO.EnginePackage.CollisionManagement;
+using COMP3401OO.EnginePackage.CollisionManagement.Interfaces;
 using COMP3401OO.EnginePackage.CoreInterfaces;
-using COMP3401OO.EnginePackage.EntityManagement;
+using COMP3401OO.EnginePackage.Delegates;
+using COMP3401OO.PongPackage.Delegates;
+using COMP3401OO.PongPackage.Delegates.Interfaces;
 
 namespace COMP3401OO.PongPackage
 {
     /// <summary>
     /// Class which adds a Ball entity on screen
+    /// Author: William Smith
+    /// Date: 13/02/22
     /// </summary>
-    public class Ball : PongEntity, IInitialiseRand, IReset, ICollidable, ICollisionListener
+    public class Ball : PongEntity, IInitialiseCheckPosDel, IInitialiseRand, IReset, ICollidable, ICollisionListener
     {
         #region FIELD VARIABLES
 
-        // DECLARE a Random, call it '_rand':
+        // DECLARE a CheckPositionDelegate, name it '_checkPos':
+        private CheckPositionDelegate _checkPos;
+
+        // DECLARE a Random, name it '_rand':
         private Random _rand;
 
-        // DECLARE an int, call it '_randNum':
-        private int _randNum;
-
-        // DECLARE a Vector2 and call it 'direction':
+        // DECLARE a Vector2 and name it 'direction':
         private Vector2 _direction;
 
-        // DECLARE an float, call it '_rotation':
+        // DECLARE an int, name it '_randNum':
+        private int _randNum;
+
+        // DECLARE an float, name it '_rotation':
         private float _rotation;
 
         #endregion
@@ -47,9 +54,6 @@ namespace COMP3401OO.PongPackage
         /// </summary>
         public override void Initialise()
         {
-            // SET _selfDestruct to false:
-            _selfDestruct = false;
-
             // INSTANTIATE new Vector, value of 1 for both X and Y:
             _direction = new Vector2(1);
             
@@ -58,6 +62,21 @@ namespace COMP3401OO.PongPackage
             
             // ASSIGNMENT, set value of _velocity to _speed mutlipled by _direction:
             _velocity = _speed * _direction;
+        }
+
+        #endregion
+
+
+        #region IMPLEMENTATION OF IINITIALISECHECKPOSDEL
+
+        /// <summary>
+        /// Initialises an object with a CheckPositionDelegate
+        /// </summary>
+        /// <param name="pCheckPosDel"> Method which meets the signature of CheckPositionDelegate </param>
+        public void Initialise(CheckPositionDelegate pCheckPosDel)
+        {
+            // INITIALISE _checkPos with reference to pCheckPosDel:
+            _checkPos = pCheckPosDel;
         }
 
         #endregion
@@ -191,15 +210,31 @@ namespace COMP3401OO.PongPackage
         /// </summary>
         protected override void Boundary()
         {
-            if (_position.Y <= 0 || _position.Y >= (_windowBorder.Y - _texture.Height)) // IF at top screen edge or bottom screen edge
+            // IF at top screen edge or bottom screen edge:
+            if (_position.Y <= 0 || _position.Y >= (_windowBorder.Y - _texture.Height))
             {
                 // REVERSE _velocity.Y:
                 _velocity.Y *= -1;
             }
-            else if (_position.X <= 0 || _position.X >= (_windowBorder.X - _texture.Width)) // IF at left screen edge or right screen edge
+            // IF at left screen edge or right screen edge:
+            else if (_position.X <= 0 || _position.X >= (_windowBorder.X - _texture.Width))
             {
-                // SET _selfDestruct to true:
-                _selfDestruct = true;
+                // IF at left screen edge:
+                if (_position.X <= 0)
+                {
+                    // CALL _checkPos, passing _position as a parameter:
+                    _checkPos(_position);
+                }
+                // IF at right screen edge:
+                else if (_position.X >= (_windowBorder.X - _texture.Width))
+                {
+                    // CALL _checkPos, passing a new Vector2 with a modified _position.X as a parameter:
+                    _checkPos(new Vector2(_position.X + _texture.Width, _position.Y));
+                }
+                    
+
+                // CALL _terminate, passing _uName as a parameter:
+                _terminate(_uName);
             }
         }
 

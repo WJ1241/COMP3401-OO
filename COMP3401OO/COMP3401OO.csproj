@@ -7,10 +7,10 @@
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{64FB38AE-F8D9-4513-8FD8-1028BF541D31}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>COMP2451Project</RootNamespace>
-    <AssemblyName>COMP2451Project</AssemblyName>
+    <RootNamespace>COMP3401OO</RootNamespace>
+    <AssemblyName>COMP3401OO</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MonoGamePlatform>Windows</MonoGamePlatform>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
@@ -40,35 +40,42 @@
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="EnginePackage\CollisionManagement\CollisionManager.cs" />
-    <Compile Include="EnginePackage\CollisionManagement\ICollisionListener.cs" />
+    <Compile Include="EnginePackage\CollisionManagement\Interfaces\ICollisionListener.cs" />
     <Compile Include="EnginePackage\CoreInterfaces\IInitialiseRand.cs" />
-    <Compile Include="EnginePackage\EntityManagement\ISetBoundary.cs" />
-    <Compile Include="EnginePackage\EntityManagement\ITexture.cs" />
-    <Compile Include="EnginePackage\EntityManagement\ITerminate.cs" />
-    <Compile Include="EnginePackage\EntityManagement\IVelocity.cs" />
-    <Compile Include="EnginePackage\InputManagement\IKeyboardListener.cs" />
-    <Compile Include="EnginePackage\InputManagement\IKeyboardPublisher.cs" />
-    <Compile Include="EnginePackage\InputManagement\IMouseListener.cs" />
-    <Compile Include="EnginePackage\InputManagement\IMousePublisher.cs" />
+    <Compile Include="EnginePackage\Delegates\Delegates.cs" />
+    <Compile Include="EnginePackage\Delegates\Interfaces\IInitialiseDeleteDel.cs" />
+    <Compile Include="EnginePackage\EntityManagement\Interfaces\ISetBoundary.cs" />
+    <Compile Include="EnginePackage\CoreInterfaces\ITexture.cs" />
+    <Compile Include="EnginePackage\EntityManagement\Interfaces\ITerminate.cs" />
+    <Compile Include="EnginePackage\CoreInterfaces\IVelocity.cs" />
+    <Compile Include="EnginePackage\InputManagement\Interfaces\IKeyboardListener.cs" />
+    <Compile Include="EnginePackage\InputManagement\Interfaces\IKeyboardPublisher.cs" />
+    <Compile Include="EnginePackage\InputManagement\Interfaces\IMouseListener.cs" />
+    <Compile Include="EnginePackage\InputManagement\Interfaces\IMousePublisher.cs" />
     <Compile Include="EnginePackage\InputManagement\MouseManager.cs" />
     <Compile Include="EnginePackage\InputManagement\KeyboardManager.cs" />
-    <Compile Include="EnginePackage\SceneManagement\ISpawn.cs" />
+    <Compile Include="EnginePackage\SceneManagement\Interfaces\ISpawn.cs" />
     <Compile Include="EnginePackage\SceneManagement\SceneGraph.cs" />
-    <Compile Include="EnginePackage\CollisionManagement\ICollidable.cs" />
-    <Compile Include="EnginePackage\CollisionManagement\ICollisionManager.cs" />
+    <Compile Include="EnginePackage\CollisionManagement\Interfaces\ICollidable.cs" />
+    <Compile Include="EnginePackage\CollisionManagement\Interfaces\ICollisionManager.cs" />
     <Compile Include="EnginePackage\CoreInterfaces\IDraw.cs" />
     <Compile Include="EnginePackage\CoreInterfaces\IPlayer.cs" />
     <Compile Include="EnginePackage\CoreInterfaces\IReset.cs" />
-    <Compile Include="EnginePackage\SceneManagement\ISceneGraph.cs" />
+    <Compile Include="EnginePackage\SceneManagement\Interfaces\ISceneGraph.cs" />
     <Compile Include="EnginePackage\CoreInterfaces\IUpdatable.cs" />
     <Compile Include="PongPackage\Ball.cs" />
     <Compile Include="EnginePackage\EntityManagement\Entity.cs" />
     <Compile Include="EnginePackage\EntityManagement\EntityManager.cs" />
-    <Compile Include="EnginePackage\EntityManagement\IEntity.cs" />
-    <Compile Include="EnginePackage\EntityManagement\IEntityManager.cs" />
-    <Compile Include="EnginePackage\SceneManagement\ISceneManager.cs" />
+    <Compile Include="EnginePackage\EntityManagement\Interfaces\IEntity.cs" />
+    <Compile Include="EnginePackage\EntityManagement\Interfaces\IEntityManager.cs" />
+    <Compile Include="EnginePackage\SceneManagement\Interfaces\ISceneManager.cs" />
+    <Compile Include="PongPackage\Delegates\Delegates.cs" />
+    <Compile Include="PongPackage\Delegates\Interfaces\IInitialiseCheckPosDel.cs" />
     <Compile Include="PongPackage\Paddle.cs" />
     <Compile Include="PongPackage\PongEntity.cs" />
     <Compile Include="Kernel.cs" />

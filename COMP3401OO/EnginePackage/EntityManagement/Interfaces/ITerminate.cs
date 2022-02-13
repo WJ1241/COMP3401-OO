@@ -1,9 +1,11 @@
 ﻿
 
-namespace COMP3401OO.EnginePackage.EntityManagement
+namespace COMP3401OO.EnginePackage.EntityManagement.Interfaces
 {
     /// <summary>
     /// Interface that allows implementations to be terminated
+    /// Author: William Smith
+    /// Date: 13/02/22
     /// </summary>
     public interface ITerminate
     {
@@ -13,16 +15,6 @@ namespace COMP3401OO.EnginePackage.EntityManagement
         /// Disposes resources to the garbage collector
         /// </summary>
         void Terminate();
-
-        #endregion
-
-
-        #region PROPERTIES
-
-        /// <summary>
-        /// Property which allows access to get boolean value to test if object should be terminated
-        /// </summary>
-        bool SelfDestruct {get;}
 
         #endregion
     }

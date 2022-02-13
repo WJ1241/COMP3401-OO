@@ -2,23 +2,26 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using COMP3401OO.EnginePackage.CollisionManagement;
 using COMP3401OO.EnginePackage.CoreInterfaces;
-using COMP3401OO.EnginePackage.EntityManagement;
+using COMP3401OO.EnginePackage.CollisionManagement.Interfaces;
+using COMP3401OO.EnginePackage.EntityManagement.Interfaces;
+using COMP3401OO.EnginePackage.SceneManagement.Interfaces;
 
 namespace COMP3401OO.EnginePackage.SceneManagement
 {
     /// <summary>
     /// Class which manages all entities in the scene
+    /// Author: William Smith
+    /// Date: 13/02/22
     /// </summary>
     public class SceneManager : ISceneManager, IUpdatable, IDraw, ISpawn
     {
         #region FIELD VARIABLES
 
-        // DECLARE a ISceneGraph, call it 'sceneGraph':
+        // DECLARE an ISceneGraph, name it 'sceneGraph':
         private ISceneGraph _sceneGraph;
 
-        // DECLARE a IDictionary<string, IEntity>, call it '_sceneDictionary':
+        // DECLARE an IDictionary<string, IEntity>, name it '_sceneDictionary':
         private IDictionary<string, IEntity> _sceneDictionary;
 
         #endregion

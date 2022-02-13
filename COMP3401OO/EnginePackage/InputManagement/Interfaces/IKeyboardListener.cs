@@ -1,9 +1,11 @@
 ﻿using Microsoft.Xna.Framework.Input;
 
-namespace COMP3401OO.EnginePackage.InputManagement
+namespace COMP3401OO.EnginePackage.InputManagement.Interfaces
 {
     /// <summary>
     /// Interface which allows implementations to listen for Keyboard input
+    /// Author: William Smith
+    /// Date: 13/02/22
     /// </summary>
     public interface IKeyboardListener
     {

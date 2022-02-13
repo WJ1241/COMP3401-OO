@@ -1,9 +1,11 @@
-﻿using COMP3401OO.EnginePackage.CollisionManagement;
+﻿using COMP3401OO.EnginePackage.CollisionManagement.Interfaces;
 
-namespace COMP3401OO.EnginePackage.SceneManagement
+namespace COMP3401OO.EnginePackage.SceneManagement.Interfaces
 {
     /// <summary>
     /// Interface that allows implementations to manage entities in the scene
+    /// Author: William Smith
+    /// Date: 13/02/22
     /// </summary>
     public interface ISceneManager
     {

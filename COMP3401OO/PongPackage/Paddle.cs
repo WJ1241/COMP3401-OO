@@ -1,22 +1,24 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using COMP3401OO.EnginePackage.CollisionManagement;
+using COMP3401OO.EnginePackage.CollisionManagement.Interfaces;
 using COMP3401OO.EnginePackage.CoreInterfaces;
-using COMP3401OO.EnginePackage.InputManagement;
+using COMP3401OO.EnginePackage.InputManagement.Interfaces;
 
 namespace COMP3401OO.PongPackage
 {
     /// <summary>
     /// Class which adds a Paddle entity on screen
+    /// Author: William Smith
+    /// Date: 13/02/22
     /// </summary>
     public class Paddle : PongEntity, IPlayer, ICollidable, IKeyboardListener
     {
         #region FIELD VARIABLES
 
-        // DECLARE a Vector2 and call it '_direction':
+        // DECLARE a Vector2 and name it '_direction':
         private Vector2 _direction;
 
-        // DECLARE a PlayerIndex and call it '_playerNum':
+        // DECLARE a PlayerIndex and name it '_playerNum':
         private PlayerIndex _playerNum;
 
         #endregion
@@ -42,9 +44,6 @@ namespace COMP3401OO.PongPackage
         /// </summary>
         public override void Initialise()
         {
-            // SET _selfDestruct to false:
-            _selfDestruct = false;
-
             // ASSIGNMENT, set _speed to 10:
             _speed = 10;
         }

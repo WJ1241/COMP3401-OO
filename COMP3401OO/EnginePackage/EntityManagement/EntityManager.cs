@@ -1,23 +1,30 @@
 ﻿using System.Collections.Generic;
-using COMP3401OO.EnginePackage.InputManagement;
-using COMP3401OO.EnginePackage.SceneManagement;
+using COMP3401OO.EnginePackage.Delegates.Interfaces;
+using COMP3401OO.EnginePackage.EntityManagement.Interfaces;
+using COMP3401OO.EnginePackage.InputManagement.Interfaces;
+using COMP3401OO.EnginePackage.SceneManagement.Interfaces;
 
 namespace COMP3401OO.EnginePackage.EntityManagement
 {
+    /// <summary>
+    /// Class which contains the master list of entities in the game level 
+    /// Author: William Smith
+    /// Date: 13/02/22
+    /// </summary>
     public class EntityManager : IEntityManager
     {
         #region FIELD VARIABLES
 
-        // DECLARE an int, call it 'uIDCount', used to set unique IDs:
+        // DECLARE an int, name it 'uIDCount', used to set unique IDs:
         private int _uIDCount;
 
-        // DECLARE an IDictionary, call it '_entityDictionary':
-        private IDictionary<string, IEntity> _entityDictionary;
+        // DECLARE an IDictionary<string, IEntity>, name it '_entityDict':
+        private IDictionary<string, IEntity> _entityDict;
 
-        // DECLARE an ISceneManager, call it '_sceneManager':
+        // DECLARE an ISceneManager, name it '_sceneManager':
         private ISceneManager _sceneManager;
 
-        // DECLARE an IKeyboardPublisher, call it '_kbManager':
+        // DECLARE an IKeyboardPublisher, name it '_kbManager':
         private IKeyboardPublisher _kBManager;
 
         #endregion
@@ -33,8 +40,8 @@ namespace COMP3401OO.EnginePackage.EntityManagement
             // ASSIGNMENT, set value of _uIDCount to 0:
             _uIDCount = 0;
 
-            // INSTANTIATE _entityDictionary as new Dictionary<string, IEntity>:
-            _entityDictionary = new Dictionary<string, IEntity>();
+            // INSTANTIATE _entityDict as new Dictionary<string, IEntity>:
+            _entityDict = new Dictionary<string, IEntity>();
         }
 
         #endregion
@@ -71,17 +78,20 @@ namespace COMP3401OO.EnginePackage.EntityManagement
             // INCREMENT iDCount by 1:
             _uIDCount++;
 
-            // DECLARE & INSTANTIATE _object as new T:
-            T _object = new T();
+            // DECLARE & INSTANTIATE an IEntity as a new T(), name it _object:
+            IEntity _object = new T();
+
+            // INITIALISE _object with reference to Terminate():
+            (_object as IInitialiseDeleteDel).Initialise(Terminate);
             
             // CALL generate() to initialise uID and uName:
             Generate(_object, _uIDCount, uName);
 
-            // ADD _object to Dictionary<string, IEntity>:
-            _entityDictionary.Add(uName, _object);
+            // ADD _object to _entityDict:
+            _entityDict.Add(uName, _object);
 
             // RETURN newly created object:
-            return _entityDictionary[uName];
+            return _entityDict[uName];
         }
 
         /// <summary>
@@ -91,19 +101,20 @@ namespace COMP3401OO.EnginePackage.EntityManagement
         public void Terminate(string uName)
         {
             // CALL Terminate(), on ITerminate to dispose of resources:
-            (_entityDictionary[uName] as ITerminate).Terminate();
+            (_entityDict[uName] as ITerminate).Terminate();
 
             // CALL RemoveInstance(), on SceneManager to remove 'value' of key 'uName':
             _sceneManager.RemoveInstance(uName);
 
-            if (_entityDictionary[uName] is IKeyboardListener)
+            // IF "uName" implements IKeyboardListener:
+            if (_entityDict[uName] is IKeyboardListener)
             {
-                // CALL Unsubscribe on KeyboardManager, passing uName as a parameter
+                // CALL Unsubscribe() on KeyboardManager, passing uName as a parameter
                 _kBManager.Unsubscribe(uName);
             }
 
-            // CALL Remove(), on Dictionary to remove 'value' of key 'uName':
-            _entityDictionary.Remove(uName);
+            // CALL Remove() on _entityDict to remove 'value' of key 'uName':
+            _entityDict.Remove(uName);
         }
 
         /// <summary>
@@ -113,8 +124,8 @@ namespace COMP3401OO.EnginePackage.EntityManagement
         {
             get 
             {
-                // RETURN value of current _entityDictionary:
-                return _entityDictionary;
+                // RETURN value of current _entityDict:
+                return _entityDict;
             }
         }
 
@@ -140,6 +151,5 @@ namespace COMP3401OO.EnginePackage.EntityManagement
         }
 
         #endregion
-
     }
 }

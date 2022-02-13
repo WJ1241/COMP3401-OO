@@ -1,9 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace COMP3401OO.EnginePackage.EntityManagement
+namespace COMP3401OO.EnginePackage.EntityManagement.Interfaces
 {
     /// <summary>
     /// Interface that allows implementations to be an on-screen Entity
+    /// Author: William Smith
+    /// Date: 13/02/22
     /// </summary>
     public interface IEntity
     {

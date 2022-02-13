@@ -2,21 +2,24 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using COMP3401OO.EnginePackage.CoreInterfaces;
-using COMP3401OO.EnginePackage.EntityManagement;
+using COMP3401OO.EnginePackage.EntityManagement.Interfaces;
+using COMP3401OO.EnginePackage.InputManagement.Interfaces;
 
 namespace COMP3401OO.EnginePackage.InputManagement
 {
     /// <summary>
     /// Class which manages all entities listening for Keyboard input
+    /// Author: William Smith
+    /// Date: 13/02/22
     /// </summary>
     public class KeyboardManager : IUpdatable, IKeyboardPublisher
     {
         #region FIELD VARIABLES
 
-        // DECLARE an IDictionary<string, IKeyboardListener>, call it '_kBListeners':
+        // DECLARE an IDictionary<string, IKeyboardListener>, name it '_kBListeners':
         private IDictionary<string, IKeyboardListener> _kBListeners;
 
-        // DECLARE a KeyboardState, call it '_keyboardState':
+        // DECLARE a KeyboardState, name it '_keyboardState':
         private KeyboardState _keyboardState;
 
         #endregion

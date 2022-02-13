@@ -2,18 +2,22 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using COMP3401OO.EnginePackage.CoreInterfaces;
-using COMP3401OO.EnginePackage.EntityManagement;
+using COMP3401OO.EnginePackage.EntityManagement.Interfaces;
+using COMP3401OO.EnginePackage.SceneManagement.Interfaces;
+using System.Linq;
 
 namespace COMP3401OO.EnginePackage.SceneManagement
 {
     /// <summary>
     /// Class which holds reference to list in Scene Manager, Draws and Updates entities
+    /// Author: William Smith
+    /// Date: 13/02/22
     /// </summary>
     public class SceneGraph : ISceneGraph, IUpdatable, IDraw, ISpawn
     {
         #region FIELD VARIABLES
 
-        // DECLARE an IDictionary, call it '_entityDictionary':
+        // DECLARE an IDictionary<string, IEntity>, name it '_entityDictionary':
         private IDictionary<string, IEntity> _sceneDictionary;
 
         #endregion
@@ -90,7 +94,8 @@ namespace COMP3401OO.EnginePackage.SceneManagement
         public void Update(GameTime gameTime)
         {
             // FOREACH any entity implementing IUpdatable:
-            foreach (IUpdatable entity in _sceneDictionary.Values)
+            // NEED TO USE TOLIST() AS COLLECTION IS MODIFIED WHEN THIS METHOD IS STILL BEING CALLED
+            foreach (IUpdatable entity in _sceneDictionary.Values.ToList())
             {
                 // CALL Update method on all entities in _entityDictionary:
                 entity.Update(gameTime);

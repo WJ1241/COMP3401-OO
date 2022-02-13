@@ -4,68 +4,81 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using COMP3401OO.EnginePackage.CollisionManagement;
+using COMP3401OO.EnginePackage.CollisionManagement.Interfaces;
 using COMP3401OO.EnginePackage.CoreInterfaces;
 using COMP3401OO.EnginePackage.EntityManagement;
+using COMP3401OO.EnginePackage.EntityManagement.Interfaces;
 using COMP3401OO.EnginePackage.InputManagement;
+using COMP3401OO.EnginePackage.InputManagement.Interfaces;
 using COMP3401OO.EnginePackage.SceneManagement;
+using COMP3401OO.EnginePackage.SceneManagement.Interfaces;
 using COMP3401OO.PongPackage;
+using COMP3401OO.PongPackage.Delegates.Interfaces;
 
 namespace COMP3401OO
 {
     /// <summary>
-    /// This is the main type for your game.
+    /// Main Class of OO System
+    /// Author: William Smith
+    /// Date: 13/02/22
     /// </summary>
     public class Kernel : Game
     {
         #region FIELD VARIABLES
 
-        // DECLARE a GraphicsDeviceManager, call it '_graphics':
+        // DECLARE a GraphicsDeviceManager, name it '_graphics':
         private GraphicsDeviceManager _graphics;
 
-        // DECLARE a SpriteBatch, call it '_spriteBatch':
+        // DECLARE a SpriteBatch, name it '_spriteBatch':
         private SpriteBatch _spriteBatch;
 
-        // DECLARE a Random, call it '_rand':
+        // DECLARE a Random, name it '_rand':
         private Random _rand;
 
-        // DECLARE an IEntityManager, call it '_entityManager':
+        // DECLARE an IEntityManager, name it '_entityManager':
         private IEntityManager _entityManager;
 
-        // DECLARE an ISceneManager, call it '_sceneManager':
+        // DECLARE an ISceneManager, name it '_sceneManager':
         private ISceneManager _sceneManager;
 
-        // DECLARE an ISceneGraph, call it '_sceneGraph':
+        // DECLARE an ISceneGraph, name it '_sceneGraph':
         private ISceneGraph _sceneGraph;
 
-        // DECLARE an ICollisionManager, call it '_CollisionManager':
+        // DECLARE an ICollisionManager, name it '_CollisionManager':
         private ICollisionManager _collisionManager;
 
-        // DECLARE an IKeyboardPublisher, call it '_kBManager':
+        // DECLARE an IKeyboardPublisher, name it '_kBManager':
         private IKeyboardPublisher _kBManager;
 
-        // DECLARE an IDictionary, call it '_entityDictionary':
+        // DECLARE an IDictionary, name it '_entityDictionary':
         private IDictionary<string, IEntity> _entityDictionary;
 
-        // DECLARE a Vector2, used to store Screen size, call it 'screenSize':
+        // DECLARE a Vector2, used to store Screen size, name it 'screenSize':
         private Vector2 _screenSize;
 
-        // DECLARE an int, call it '_p1Score':
+        // DECLARE an int, name it '_p1Score':
         private int _p1Score;
 
-        // DECLARE an int, call it '_p2Score':
+        // DECLARE an int, name it '_p2Score':
         private int _p2Score;
+
+        // DECLARE an int, name it '_ballCount':
+        private int _ballCount;
 
         #endregion
 
 
-        #region PUBLIC METHODS
+        #region CONSTRUCTOR
 
+        /// <summary>
+        /// Constructor for objects of Kernel
+        /// </summary>
         public Kernel()
         {
             // INSTANTIATE _graphics as new GraphicsDeviceManager, passing Kernel as a parameter:
             _graphics = new GraphicsDeviceManager(this);
 
-            // SET RootDirectory of Content as "Content":
+            // SET RootDirectory of Content to "Content":
             Content.RootDirectory = "Content";
 
             // SET IsMouseVisible to true:
@@ -77,12 +90,20 @@ namespace COMP3401OO
             // SET screen height to 900:
             _graphics.PreferredBackBufferHeight = 900;
 
-            // INITIALISE _p1Score with a value of 0:
+            // INITIALISE _p1Score with a value of '0':
             _p1Score = 0;
 
-            // INITIALISE _p2Score with a value of 0:
+            // INITIALISE _p2Score with a value of '0':
             _p2Score = 0;
+
+            // INITIALISE _ballCount with a value of '0':
+            _ballCount = 0;
         }
+
+        #endregion
+
+
+        #region PROTECTED METHODS
 
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
@@ -94,10 +115,10 @@ namespace COMP3401OO
         {
             #region OBJECT INSTANTIATIONS
 
-            // Get Screen Width:
+            // INITIALISE _screenSize.X with value of Viewport.Width:
             _screenSize.X = GraphicsDevice.Viewport.Width;
 
-            // GET Screen Height:
+            // INITIALISE _screenSize.Y with value of Viewport.Height:
             _screenSize.Y = GraphicsDevice.Viewport.Height;
 
             // INSTANTIATE _rand as new Random():
@@ -115,7 +136,7 @@ namespace COMP3401OO
             // INSTANTIATE _collisionManager as new SceneManager():
             _collisionManager = new CollisionManager();
 
-            // INSTANTIATE _kBManager, call it '_kBManager':
+            // INSTANTIATE _kBManager, name it '_kBManager':
             _kBManager = new KeyboardManager();
 
             // ASSIGNMENT, set value of '_entityDictionary' the same as _entityManager Dictionary:
@@ -145,7 +166,6 @@ namespace COMP3401OO
 
             //// PADDLE 1
 
-
             // INSTANTIATE new Paddle():
             _entityManager.Create<Paddle>("paddle1");
 
@@ -161,10 +181,7 @@ namespace COMP3401OO
             // INITIALISE "paddle1":
             _entityDictionary["paddle1"].Initialise();
 
-
-
             //// PADDLE 2
-
 
             // INSTANTIATE new Paddle():
             _entityManager.Create<Paddle>("paddle2");
@@ -181,22 +198,6 @@ namespace COMP3401OO
             // INITIALISE "paddle2":
             _entityDictionary["paddle2"].Initialise();
 
-
-            //// BALL
-
-
-            // INSTANTIATE new Ball():
-            _entityManager.Create<Ball>("ball");
-
-            // SET boundary size for Ball:
-            (_entityDictionary["ball"] as ISetBoundary).WindowBorder = _screenSize;
-
-            // INITIALISE "ball":
-            _entityDictionary["ball"].Initialise();
-
-            // INITIALISE "ball", passing _rand as a parameter:
-            (_entityDictionary["ball"] as IInitialiseRand).Initialise(_rand);
-
             #endregion
 
             // INITIALISE base class:
@@ -212,16 +213,11 @@ namespace COMP3401OO
             // INSTANTIATE _spriteBatch as new SpriteBatch:
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-
             // LOAD "paddle" texture to "paddle1":
             (_entityDictionary["paddle1"] as ITexture).Texture = Content.Load<Texture2D>("paddle");
 
             // LOAD "paddle" texture to "paddle2":
             (_entityDictionary["paddle2"] as ITexture).Texture = Content.Load<Texture2D>("paddle");
-
-            // LOAD "square" texture to "ball":
-            (_entityDictionary["ball"] as ITexture).Texture = Content.Load<Texture2D>("square");
-
 
             // SPAWN Paddle1 on screen by adding to SceneManager Dictionary:
             (_sceneManager as ISpawn).Spawn(_entityDictionary["paddle1"], new Vector2 (0, (_screenSize.Y / 2) - (_entityDictionary["paddle2"] as ITexture).Texture.Height / 2));
@@ -229,11 +225,8 @@ namespace COMP3401OO
             // SPAWN Paddle2 on screen by adding to SceneManager Dictionary:
             (_sceneManager as ISpawn).Spawn(_entityDictionary["paddle2"], new Vector2(_screenSize.X - (_entityDictionary["paddle2"] as ITexture).Texture.Width, (_screenSize.Y / 2) - (_entityDictionary["paddle2"] as ITexture).Texture.Height / 2));
 
-            // SPAWN Ball on screen by adding to SceneManager Dictionary:
-            (_sceneManager as ISpawn).Spawn(_entityDictionary["ball"], new Vector2((_screenSize.X / 2) - (_entityDictionary["ball"] as ITexture).Texture.Width / 2, (_screenSize.Y / 2) - (_entityDictionary["ball"] as ITexture).Texture.Height / 2));
-
-            // CALL Reset() on Ball object:
-            (_entityDictionary["ball"] as IReset).Reset();
+            // CALL SpawnBall(), handles creation and initialisation:
+            SpawnBall();
         }
 
         /// <summary>
@@ -249,8 +242,8 @@ namespace COMP3401OO
         /// Allows the game to run logic such as updating the world,
         /// checking for collisions, gathering input, and playing audio.
         /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        protected override void Update(GameTime gameTime)
+        /// <param name="pGameTime">Provides a snapshot of timing values.</param>
+        protected override void Update(GameTime pGameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed
                 || Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -259,27 +252,23 @@ namespace COMP3401OO
             }
 
             // CALL Update() on SceneManager:
-            (_sceneManager as IUpdatable).Update(gameTime);
+            (_sceneManager as IUpdatable).Update(pGameTime);
 
             // CALL Update() on CollisionManager:
-            (_collisionManager as IUpdatable).Update(gameTime);
+            (_collisionManager as IUpdatable).Update(pGameTime);
 
             // CALL Update() on KeyboardManager:
-            (_kBManager as IUpdatable).Update(gameTime);
-
-
-            // CALL method which tests contact with side boundaries
-            checkGoal();
+            (_kBManager as IUpdatable).Update(pGameTime);
 
             // CALL method from base Game class, uses gameTime as parameter:
-            base.Update(gameTime);
+            base.Update(pGameTime);
         }
 
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        protected override void Draw(GameTime gameTime)
+        protected override void Draw(GameTime pGameTime)
         {
             // SET colour of screen background as CornflowerBlue:
             GraphicsDevice.Clear(Color.CornflowerBlue);
@@ -294,7 +283,7 @@ namespace COMP3401OO
             _spriteBatch.End();
 
             // CALL Draw() method from base class:
-            base.Draw(gameTime);
+            base.Draw(pGameTime);
         }
 
         #endregion
@@ -302,92 +291,86 @@ namespace COMP3401OO
 
         #region PRIVATE METHODS
 
-
         /// <summary>
         /// Spawns a Ball object on screen.
         /// </summary>
-        private void RespawnBall()
+        private void SpawnBall()
         {
+            // INCREMENT _ballCount by '1':
+            _ballCount++;
+
             // INSTANTIATE Ball():
-            _entityManager.Create<Ball>("ball");
+            _entityManager.Create<Ball>("Ball" + _ballCount);
 
             // SET boundary size for Ball:
-            (_entityDictionary["ball"] as ISetBoundary).WindowBorder = _screenSize;
+            (_entityDictionary["Ball" + _ballCount] as ISetBoundary).WindowBorder = _screenSize;
 
-            // INITIALISE "ball":
-            _entityDictionary["ball"].Initialise();
+            // INITIALISE "Ball":
+            _entityDictionary["Ball" + _ballCount].Initialise();
 
-            // INITIALISE "ball", passing _rand as a parameter:
-            (_entityDictionary["ball"] as IInitialiseRand).Initialise(_rand);
+            // INITIALISE "Ball", passing _rand as a parameter:
+            (_entityDictionary["Ball" + _ballCount] as IInitialiseRand).Initialise(_rand);
 
-            // LOAD "square" texture to "ball":
-            (_entityDictionary["ball"] as ITexture).Texture = Content.Load<Texture2D>("square");
+            // INITIALISE "Ball" with reference to CheckGoal(): 
+            (_entityDictionary["Ball" + _ballCount] as IInitialiseCheckPosDel).Initialise(CheckGoal);
 
-            // SPAWN Ball on screen by adding to SceneManager Dictionary:
-            (_sceneManager as ISpawn).Spawn(_entityDictionary["ball"], new Vector2((_screenSize.X / 2) - (_entityDictionary["ball"] as ITexture).Texture.Width / 2, (_screenSize.Y / 2) - (_entityDictionary["ball"] as ITexture).Texture.Height / 2));
+            // LOAD "square" texture to "Ball":
+            (_entityDictionary["Ball" + _ballCount] as ITexture).Texture = Content.Load<Texture2D>("square");
 
-            // CALL Reset() on Ball object:
-            (_entityDictionary["ball"] as IReset).Reset(); // CALL method in Ball, serves ball in random direction
+            // SPAWN "Ball" on screen by adding to SceneManager Dictionary:
+            (_sceneManager as ISpawn).Spawn(_entityDictionary["Ball" + _ballCount], new Vector2((_screenSize.X / 2) - (_entityDictionary["Ball" + _ballCount] as ITexture).Texture.Width / 2, (_screenSize.Y / 2) - (_entityDictionary["Ball" + _ballCount] as ITexture).Texture.Height / 2));
+
+            // CALL Reset() on "Ball":
+            (_entityDictionary["Ball" + _ballCount] as IReset).Reset();
         }
 
-
         /// <summary>
-        /// Checks if ball has reached either the left or right side of the screen.
+        /// Checks to see if a positional value has reached either the left or right side of the screen.
         /// </summary>
-        private void checkGoal()
+        /// <param name="pPosition"> Current Position of caller </param>
+        private void CheckGoal(Vector2 pPosition)
         {
-            // DECLARE & ASSIGN a bool, call it '_tempTerminate', set it to false:
-            bool _tempTerminate = false;
-
-            // DECLARE & ASSIGN a Vector2, call it '_tempPosition', used to stop Score count going up, temporarily:
-            Vector2 _tempPosition = new Vector2(_screenSize.X / 2, _screenSize.Y / 2);
-
-            if ((_entityDictionary["ball"] as ITerminate).SelfDestruct == true) // IF "ball" _selfDestruct value is true:
+            // IF pPosition.X has gone off the left side of the screen:
+            if (pPosition.X <= 0)
             {
-                // ASSIGNMENT, set value of '_tempTerminate' to true:
-                _tempTerminate = true;
-
-                // ASSIGNMENT, set value of '_tempPosition' to true:
-                _tempPosition = _entityDictionary["ball"].Position;
-
-                // CALL Terminate, passing "ball" uName as a parameter:
-                _entityManager.Terminate(_entityDictionary["ball"].UName);
-            }
-
-            if (_tempPosition.X <= 0) // IF ball location exceeds left of screen
-            {
-                // INCREMENT Player 2 score
+                // INCREMENT Player 2 score by '1':
                 _p2Score++;
 
+                // IF Player 2 has a score of '1':
                 if (_p2Score == 1)
                 {
+                    // PRINT Player 2 score to console:
                     Console.WriteLine("PLAYER 2 has Scored! PLAYER 2 has: " + _p2Score + " point!");
                 }
+                // IF Player 2 hashas a score of '2' or higher:
                 else if (_p2Score >= 2)
                 {
+                    // PRINT Player 2 score to console:
                     Console.WriteLine("PLAYER 2 has Scored! PLAYER 2 has: " + _p2Score + " points!");
                 }
             }
-            else if (_tempPosition.X >= _screenSize.X) // IF ball location exceeds right of screen
+            // IF pPosition.X has gone off the right side of the screen:
+            else if (pPosition.X >= _screenSize.X)
             {
-                // INCREMENT Player 1 score
+                // INCREMENT Player 1 score by '1':
                 _p1Score++;
 
+                // IF Player 1 has a score of '1':
                 if (_p1Score == 1)
                 {
+                    // PRINT Player 1 score to console:
                     Console.WriteLine("PLAYER 1 has Scored! PLAYER 1 has: " + _p1Score + " point!");
                 }
+                // IF Player 1 has a score of '2' or higher:
                 else if (_p1Score >= 2)
                 {
+                    // PRINT Player 1 score to console:
                     Console.WriteLine("PLAYER 1 has Scored! PLAYER 1 has: " + _p1Score + " points!");
                 }
             }
 
-            if (_tempTerminate == true) 
-            {
-                // CALL spawns another Ball object
-                RespawnBall();
-            }
+            // CALL SpawnBall() to make another Ball object:
+            SpawnBall();
         }
 
         #endregion

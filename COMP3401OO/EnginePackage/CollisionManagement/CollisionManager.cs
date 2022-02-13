@@ -1,22 +1,26 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using COMP3401OO.EnginePackage.CollisionManagement.Interfaces;
 using COMP3401OO.EnginePackage.CoreInterfaces;
-using COMP3401OO.EnginePackage.EntityManagement;
+using COMP3401OO.EnginePackage.EntityManagement.Interfaces;
+
 
 namespace COMP3401OO.EnginePackage.CollisionManagement
 {
     /// <summary>
     /// Class which stores references to entities that can collide with other entities
+    /// Author: William Smith
+    /// Date: 13/02/22
     /// </summary>
     /// <REFERENCE> Price, M. (2021) ‘Session 16 - Collision Management’, Games Design & Engineering: Sessions. Available at: https://worcesterbb.blackboard.com. (Accessed: 17 February 2021).</REFERENCE>
     public class CollisionManager : ICollisionManager, IUpdatable
     {
         #region FIELD VARIABLES
 
-        // DECLARE an IReadOnlyDictionary, call it '_entityDictionary', used as CollisionManager should not modify entity Dictionary:
+        // DECLARE an IReadOnlyDictionary, name it '_entityDictionary', used as CollisionManager should not modify entity Dictionary:
         private IReadOnlyDictionary<string, IEntity> _entityDictionary;
 
-        // DECLARE an IList<ICollidable>, call it '_collidableList', used to store objects implementing ICollidable:
+        // DECLARE an IList<ICollidable>, name it '_collidableList', used to store objects implementing ICollidable:
         private IList<ICollidable> _collidableList;
 
         #endregion

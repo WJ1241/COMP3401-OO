@@ -1,9 +1,11 @@
 ﻿
 
-namespace COMP3401OO.EnginePackage.InputManagement
+namespace COMP3401OO.EnginePackage.InputManagement.Interfaces
 {
     /// <summary>
     /// Interface which allows implementations to publish Mouse input to listeners
+    /// Author: William Smith
+    /// Date: 13/02/22
     /// </summary>
     public interface IMousePublisher
     {
