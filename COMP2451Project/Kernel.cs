@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using COMP2451Project.EnginePackage.CollisionManagement;
-using COMP2451Project.EnginePackage.CoreInterfaces;
-using COMP2451Project.EnginePackage.EntityManagement;
-using COMP2451Project.EnginePackage.InputManagement;
-using COMP2451Project.EnginePackage.SceneManagement;
-using COMP2451Project.PongPackage;
+using COMP3401OO.EnginePackage.CollisionManagement;
+using COMP3401OO.EnginePackage.CoreInterfaces;
+using COMP3401OO.EnginePackage.EntityManagement;
+using COMP3401OO.EnginePackage.InputManagement;
+using COMP3401OO.EnginePackage.SceneManagement;
+using COMP3401OO.PongPackage;
 
-namespace COMP2451Project
+namespace COMP3401OO
 {
     /// <summary>
     /// This is the main type for your game.

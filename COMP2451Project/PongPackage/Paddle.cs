@@ -1,10 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using COMP2451Project.EnginePackage.CollisionManagement;
-using COMP2451Project.EnginePackage.CoreInterfaces;
-using COMP2451Project.EnginePackage.InputManagement;
+using COMP3401OO.EnginePackage.CollisionManagement;
+using COMP3401OO.EnginePackage.CoreInterfaces;
+using COMP3401OO.EnginePackage.InputManagement;
 
-namespace COMP2451Project.PongPackage
+namespace COMP3401OO.PongPackage
 {
     /// <summary>
     /// Class which adds a Paddle entity on screen

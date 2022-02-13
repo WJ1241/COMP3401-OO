@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace COMP2451Project.EnginePackage.CollisionManagement
+namespace COMP3401OO.EnginePackage.CollisionManagement
 {
     /// <summary>
     /// Interface that allows implementations to have a HitBox

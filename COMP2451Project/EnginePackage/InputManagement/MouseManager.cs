@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using COMP2451Project.EnginePackage.CoreInterfaces;
-using COMP2451Project.EnginePackage.EntityManagement;
+using COMP3401OO.EnginePackage.CoreInterfaces;
+using COMP3401OO.EnginePackage.EntityManagement;
 
-namespace COMP2451Project.EnginePackage.InputManagement
+namespace COMP3401OO.EnginePackage.InputManagement
 {
     /// <summary>
     /// Class which manages all entities listening for Mouse input

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace COMP2451Project.EnginePackage.CoreInterfaces
+namespace COMP3401OO.EnginePackage.CoreInterfaces
 {
     /// <summary>
     /// Interface that allows implementations to store a Random object

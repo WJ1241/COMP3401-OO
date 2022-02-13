@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 
-namespace COMP2451Project.EnginePackage.EntityManagement
+namespace COMP3401OO.EnginePackage.EntityManagement
 {
     /// <summary>
     /// Interface that allows implementations to have a texture

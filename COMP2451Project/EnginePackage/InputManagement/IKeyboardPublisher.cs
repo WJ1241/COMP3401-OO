@@ -1,6 +1,6 @@
 ﻿
 
-namespace COMP2451Project.EnginePackage.InputManagement
+namespace COMP3401OO.EnginePackage.InputManagement
 {
     /// <summary>
     /// Interface which allows implementations to publish Keyboard input to listeners

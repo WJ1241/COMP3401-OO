@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace COMP2451Project
+namespace COMP3401OO
 {
 #if WINDOWS || LINUX
     /// <summary>

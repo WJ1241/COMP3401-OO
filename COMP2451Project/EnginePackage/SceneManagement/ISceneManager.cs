@@ -1,6 +1,6 @@
-﻿using COMP2451Project.EnginePackage.CollisionManagement;
+﻿using COMP3401OO.EnginePackage.CollisionManagement;
 
-namespace COMP2451Project.EnginePackage.SceneManagement
+namespace COMP3401OO.EnginePackage.SceneManagement
 {
     /// <summary>
     /// Interface that allows implementations to manage entities in the scene

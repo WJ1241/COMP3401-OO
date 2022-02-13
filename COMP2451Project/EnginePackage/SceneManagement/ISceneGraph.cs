@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using COMP2451Project.EnginePackage.EntityManagement;
+using COMP3401OO.EnginePackage.EntityManagement;
 
-namespace COMP2451Project.EnginePackage.SceneManagement
+namespace COMP3401OO.EnginePackage.SceneManagement
 {
     /// <summary>
     /// Interface that allows implementations to store a reference to the Dictionary in Scene Manager

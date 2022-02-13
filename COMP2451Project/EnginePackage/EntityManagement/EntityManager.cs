@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using COMP2451Project.EnginePackage.InputManagement;
-using COMP2451Project.EnginePackage.SceneManagement;
+using COMP3401OO.EnginePackage.InputManagement;
+using COMP3401OO.EnginePackage.SceneManagement;
 
-namespace COMP2451Project.EnginePackage.EntityManagement
+namespace COMP3401OO.EnginePackage.EntityManagement
 {
     public class EntityManager : IEntityManager
     {

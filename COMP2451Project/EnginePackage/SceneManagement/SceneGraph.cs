@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using COMP2451Project.EnginePackage.CoreInterfaces;
-using COMP2451Project.EnginePackage.EntityManagement;
+using COMP3401OO.EnginePackage.CoreInterfaces;
+using COMP3401OO.EnginePackage.EntityManagement;
 
-namespace COMP2451Project.EnginePackage.SceneManagement
+namespace COMP3401OO.EnginePackage.SceneManagement
 {
     /// <summary>
     /// Class which holds reference to list in Scene Manager, Draws and Updates entities

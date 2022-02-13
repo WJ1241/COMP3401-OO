@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using COMP2451Project.EnginePackage.CoreInterfaces;
-using COMP2451Project.EnginePackage.EntityManagement;
+using COMP3401OO.EnginePackage.CoreInterfaces;
+using COMP3401OO.EnginePackage.EntityManagement;
 
-namespace COMP2451Project.PongPackage
+namespace COMP3401OO.PongPackage
 {
     /// <summary>
     /// Abstract class for Pong Entities to inherit from

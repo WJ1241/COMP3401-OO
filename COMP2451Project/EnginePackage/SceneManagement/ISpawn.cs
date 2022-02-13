@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
-using COMP2451Project.EnginePackage.EntityManagement;
+using COMP3401OO.EnginePackage.EntityManagement;
 
-namespace COMP2451Project.EnginePackage.SceneManagement
+namespace COMP3401OO.EnginePackage.SceneManagement
 {
     /// <summary>
     /// Interface that allows implementations to be spawned on screen

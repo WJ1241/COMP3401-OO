@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using COMP2451Project.EnginePackage.CoreInterfaces;
-using COMP2451Project.EnginePackage.EntityManagement;
+using COMP3401OO.EnginePackage.CoreInterfaces;
+using COMP3401OO.EnginePackage.EntityManagement;
 
-namespace COMP2451Project.EnginePackage.CollisionManagement
+namespace COMP3401OO.EnginePackage.CollisionManagement
 {
     /// <summary>
     /// Class which stores references to entities that can collide with other entities
@@ -11,7 +11,6 @@ namespace COMP2451Project.EnginePackage.CollisionManagement
     /// <REFERENCE> Price, M. (2021) ‘Session 16 - Collision Management’, Games Design & Engineering: Sessions. Available at: https://worcesterbb.blackboard.com. (Accessed: 17 February 2021).</REFERENCE>
     public class CollisionManager : ICollisionManager, IUpdatable
     {
-
         #region FIELD VARIABLES
 
         // DECLARE an IReadOnlyDictionary, call it '_entityDictionary', used as CollisionManager should not modify entity Dictionary:

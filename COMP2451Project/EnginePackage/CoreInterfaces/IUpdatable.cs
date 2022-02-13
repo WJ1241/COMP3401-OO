@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace COMP2451Project.EnginePackage.CoreInterfaces
+namespace COMP3401OO.EnginePackage.CoreInterfaces
 {
     /// <summary>
     /// Interface that allows implementations to be updated with a GameTime object
