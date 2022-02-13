@@ -6,6 +6,7 @@ using COMP3401OO.EnginePackage.CoreInterfaces;
 using COMP3401OO.EnginePackage.CollisionManagement.Interfaces;
 using COMP3401OO.EnginePackage.EntityManagement.Interfaces;
 using COMP3401OO.EnginePackage.SceneManagement.Interfaces;
+using COMP3401OO.EnginePackage.Services.Interfaces;
 
 namespace COMP3401OO.EnginePackage.SceneManagement
 {
@@ -14,7 +15,7 @@ namespace COMP3401OO.EnginePackage.SceneManagement
     /// Author: William Smith
     /// Date: 13/02/22
     /// </summary>
-    public class SceneManager : ISceneManager, IUpdatable, IDraw, ISpawn
+    public class SceneManager : ISceneManager, IUpdatable, IDraw, IService, ISpawn
     {
         #region FIELD VARIABLES
 

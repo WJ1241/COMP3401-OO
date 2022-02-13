@@ -8,10 +8,13 @@ using COMP3401OO.EnginePackage.CollisionManagement.Interfaces;
 using COMP3401OO.EnginePackage.CoreInterfaces;
 using COMP3401OO.EnginePackage.EntityManagement;
 using COMP3401OO.EnginePackage.EntityManagement.Interfaces;
+using COMP3401OO.EnginePackage.Factories;
+using COMP3401OO.EnginePackage.Factories.Interfaces;
 using COMP3401OO.EnginePackage.InputManagement;
 using COMP3401OO.EnginePackage.InputManagement.Interfaces;
 using COMP3401OO.EnginePackage.SceneManagement;
 using COMP3401OO.EnginePackage.SceneManagement.Interfaces;
+using COMP3401OO.EnginePackage.Services.Interfaces;
 using COMP3401OO.PongPackage;
 using COMP3401OO.PongPackage.Delegates.Interfaces;
 
@@ -26,6 +29,9 @@ namespace COMP3401OO
     {
         #region FIELD VARIABLES
 
+        // DECLARE an IDictionary<string, IService>, name it '_serviceDict':
+        private IDictionary<string, IService> _serviceDict;
+
         // DECLARE a GraphicsDeviceManager, name it '_graphics':
         private GraphicsDeviceManager _graphics;
 
@@ -34,24 +40,6 @@ namespace COMP3401OO
 
         // DECLARE a Random, name it '_rand':
         private Random _rand;
-
-        // DECLARE an IEntityManager, name it '_entityManager':
-        private IEntityManager _entityManager;
-
-        // DECLARE an ISceneManager, name it '_sceneManager':
-        private ISceneManager _sceneManager;
-
-        // DECLARE an ISceneGraph, name it '_sceneGraph':
-        private ISceneGraph _sceneGraph;
-
-        // DECLARE an ICollisionManager, name it '_CollisionManager':
-        private ICollisionManager _collisionManager;
-
-        // DECLARE an IKeyboardPublisher, name it '_kBManager':
-        private IKeyboardPublisher _kBManager;
-
-        // DECLARE an IDictionary, name it '_entityDictionary':
-        private IDictionary<string, IEntity> _entityDictionary;
 
         // DECLARE a Vector2, used to store Screen size, name it 'screenSize':
         private Vector2 _screenSize;
@@ -75,6 +63,9 @@ namespace COMP3401OO
         /// </summary>
         public Kernel()
         {
+            // INSTANTIATE _serviceDict as a new Dictionary<string, IService>():
+            _serviceDict = new Dictionary<string, IService>();
+
             // INSTANTIATE _graphics as new GraphicsDeviceManager, passing Kernel as a parameter:
             _graphics = new GraphicsDeviceManager(this);
 
@@ -113,7 +104,7 @@ namespace COMP3401OO
         /// </summary>
         protected override void Initialize()
         {
-            #region OBJECT INSTANTIATIONS
+            #region MONOGAME SETTINGS
 
             // INITIALISE _screenSize.X with value of Viewport.Width:
             _screenSize.X = GraphicsDevice.Viewport.Width;
@@ -124,40 +115,60 @@ namespace COMP3401OO
             // INSTANTIATE _rand as new Random():
             _rand = new Random();
 
-            // INSTANTIATE _entityManager as new EntityManager():
-            _entityManager = new EntityManager();
+            #endregion
 
-            // INSTANTIATE _sceneManager as new SceneManager():
-            _sceneManager = new SceneManager();
 
-            // INSTANTIATE _sceneGraph as new SceneGraph():
-            _sceneGraph = new SceneGraph();
+            #region FACTORY INSTANTIATIONS
+            
+            // ADD a new Factory<IService>() to _serviceDict:
+            _serviceDict.Add("ServiceFactory", new Factory<IService>());
 
-            // INSTANTIATE _collisionManager as new SceneManager():
-            _collisionManager = new CollisionManager();
+            // ADD a new Factory<IEntity>() to _serviceDict:
+            _serviceDict.Add("EntityFactory", (_serviceDict["ServiceFactory"] as IFactory<IService>).Create<Factory<IEntity>>());
 
-            // INSTANTIATE _kBManager, name it '_kBManager':
-            _kBManager = new KeyboardManager();
-
-            // ASSIGNMENT, set value of '_entityDictionary' the same as _entityManager Dictionary:
-            _entityDictionary = _entityManager.GetDictionary;
+            // ADD a new Factory<ISceneGraph>() to _serviceDict:
+            _serviceDict.Add("SceneGraphFactory", (_serviceDict["ServiceFactory"] as IFactory<IService>).Create<Factory<ISceneGraph>>());
 
             #endregion
 
 
-            #region OBJECT INITIALISATION
+            #region MANAGER INSTANTIATIONS & INITIALISATIONS
 
-            // INITIALISE _entityManager, passing _sceneManager as a parameter:
-            _entityManager.Initialise(_sceneManager);
+            #region INSTANTIATIONS
 
-            // INITIALISE _entityManager, passing _sceneManager as a parameter:
-            _entityManager.Initialise(_kBManager);
+            // ADD a new EntityManager() to _serviceDict:
+            _serviceDict.Add("EntityManager", (_serviceDict["ServiceFactory"] as IFactory<IService>).Create<EntityManager>());
 
-            // INITIALISE _sceneManager, passing _collisionManager as a parameter:
-            _sceneManager.Initialise(_collisionManager);
+            // ADD a new SceneManager() to _serviceDict:
+            _serviceDict.Add("SceneManager", (_serviceDict["ServiceFactory"] as IFactory<IService>).Create<SceneManager>());
 
-            // INITIALISE _sceneManager, passing _sceneGraph as a parameter:
-            _sceneManager.Initialise(_sceneGraph);
+            // ADD a new CollisionManager() to _serviceDict:
+            _serviceDict.Add("CollisionManager", (_serviceDict["ServiceFactory"] as IFactory<IService>).Create<CollisionManager>());
+
+            // ADD a new KeyboardManager() to _serviceDict:
+            _serviceDict.Add("KeyboardManager", (_serviceDict["ServiceFactory"] as IFactory<IService>).Create<KeyboardManager>());
+
+            #endregion
+
+
+            #region INITIALISATIONS
+
+            // INITIALISE _serviceDict["EntityManager"] with reference to _serviceDict["SceneManager"]:
+            (_serviceDict["EntityManager"] as IEntityManager).Initialise(_serviceDict["SceneManager"] as ISceneManager);
+
+            // INITIALISE _serviceDict["EntityManager"] with reference to _serviceDict["KeyboardManager"]:
+            (_serviceDict["EntityManager"] as IEntityManager).Initialise(_serviceDict["KeyboardManager"] as IKeyboardPublisher);
+
+            // INITIALISE _serviceDict["SceneManager"] with reference to _serviceDict["CollisionManager"]:
+            (_serviceDict["SceneManager"] as ISceneManager).Initialise(_serviceDict["CollisionManager"] as ICollisionManager);
+
+            // INITIALISE _serviceDict["SceneManager"], passing a new SceneGraph as a parameter:
+            (_serviceDict["SceneManager"] as ISceneManager).Initialise((_serviceDict["ServiceFactory"] as IFactory<IService>).Create<SceneGraph>() as ISceneGraph);
+
+            #endregion
+
+
+            
 
             #endregion
 
@@ -172,7 +183,7 @@ namespace COMP3401OO
             // ASSIGNMENT, set PlayerNum value as PlayerIndex.One:
             (_entityDictionary["paddle1"] as IPlayer).PlayerNum = PlayerIndex.One;
 
-            // SUBSCRIBE Paddle1 to Mouse Manager:
+            // SUBSCRIBE Paddle1 to KeyboardManager:
             _kBManager.Subscribe(_entityDictionary["paddle1"] as IKeyboardListener);
 
             // SET boundary size for Paddle1:
@@ -189,7 +200,7 @@ namespace COMP3401OO
             // ASSIGNMENT, set PlayerNum value as PlayerIndex.Two:
             (_entityDictionary["paddle2"] as IPlayer).PlayerNum = PlayerIndex.Two;
 
-            // SUBSCRIBE Paddle2 to Mouse Manager:
+            // SUBSCRIBE Paddle2 to KeyboardManager:
             _kBManager.Subscribe(_entityDictionary["paddle2"] as IKeyboardListener);
 
             // SET boundary size for Paddle2:

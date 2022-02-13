@@ -32,20 +32,15 @@ namespace COMP3401OO.EnginePackage.EntityManagement.Interfaces
         IEntity Create<T>(string uName) where T : IEntity, new();
 
         /// <summary>
+        /// Returns an IDictionary<string, IEntity> which is the master Dictionary in the program
+        /// </summary>
+        IDictionary<string, IEntity> GetDictionary();
+
+        /// <summary>
         /// Terminates an object from entity manager and other managers
         /// </summary>
         /// <param name="uName">Reference to object using unique name</param>
         void Terminate(string uName);
-
-        #endregion
-
-
-        #region PROPERTIES
-
-        /// <summary>
-        /// Property which can get a reference to an IDictionary<string, IEntity>
-        /// </summary>
-        IDictionary<string, IEntity> GetDictionary {get;}
 
         #endregion
     }

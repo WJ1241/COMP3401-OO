@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using COMP3401OO.EnginePackage.CoreInterfaces;
 using COMP3401OO.EnginePackage.EntityManagement.Interfaces;
 using COMP3401OO.EnginePackage.SceneManagement.Interfaces;
-using System.Linq;
+using COMP3401OO.EnginePackage.Services.Interfaces;
 
 namespace COMP3401OO.EnginePackage.SceneManagement
 {
@@ -13,7 +14,7 @@ namespace COMP3401OO.EnginePackage.SceneManagement
     /// Author: William Smith
     /// Date: 13/02/22
     /// </summary>
-    public class SceneGraph : ISceneGraph, IUpdatable, IDraw, ISpawn
+    public class SceneGraph : ISceneGraph, IUpdatable, IDraw, IService, ISpawn
     {
         #region FIELD VARIABLES
 

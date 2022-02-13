@@ -53,6 +53,9 @@
     <Compile Include="EnginePackage\CoreInterfaces\ITexture.cs" />
     <Compile Include="EnginePackage\EntityManagement\Interfaces\ITerminate.cs" />
     <Compile Include="EnginePackage\CoreInterfaces\IVelocity.cs" />
+    <Compile Include="EnginePackage\Exceptions\ClassDoesNotExistException.cs" />
+    <Compile Include="EnginePackage\Factories\Factory.cs" />
+    <Compile Include="EnginePackage\Factories\Interfaces\IFactory.cs" />
     <Compile Include="EnginePackage\InputManagement\Interfaces\IKeyboardListener.cs" />
     <Compile Include="EnginePackage\InputManagement\Interfaces\IKeyboardPublisher.cs" />
     <Compile Include="EnginePackage\InputManagement\Interfaces\IMouseListener.cs" />
@@ -68,6 +71,7 @@
     <Compile Include="EnginePackage\CoreInterfaces\IReset.cs" />
     <Compile Include="EnginePackage\SceneManagement\Interfaces\ISceneGraph.cs" />
     <Compile Include="EnginePackage\CoreInterfaces\IUpdatable.cs" />
+    <Compile Include="EnginePackage\Services\Interfaces\IService.cs" />
     <Compile Include="PongPackage\Ball.cs" />
     <Compile Include="EnginePackage\EntityManagement\Entity.cs" />
     <Compile Include="EnginePackage\EntityManagement\EntityManager.cs" />

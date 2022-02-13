@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using COMP3401OO.EnginePackage.CoreInterfaces;
 using COMP3401OO.EnginePackage.EntityManagement.Interfaces;
 using COMP3401OO.EnginePackage.InputManagement.Interfaces;
+using COMP3401OO.EnginePackage.Services.Interfaces;
 
 namespace COMP3401OO.EnginePackage.InputManagement
 {
@@ -12,7 +13,7 @@ namespace COMP3401OO.EnginePackage.InputManagement
     /// Author: William Smith
     /// Date: 13/02/22
     /// </summary>
-    public class KeyboardManager : IUpdatable, IKeyboardPublisher
+    public class KeyboardManager : IUpdatable, IKeyboardPublisher, IService
     {
         #region FIELD VARIABLES
 

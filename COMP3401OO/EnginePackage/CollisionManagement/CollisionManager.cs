@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using COMP3401OO.EnginePackage.CollisionManagement.Interfaces;
 using COMP3401OO.EnginePackage.CoreInterfaces;
 using COMP3401OO.EnginePackage.EntityManagement.Interfaces;
-
+using COMP3401OO.EnginePackage.Services.Interfaces;
 
 namespace COMP3401OO.EnginePackage.CollisionManagement
 {
@@ -13,7 +13,7 @@ namespace COMP3401OO.EnginePackage.CollisionManagement
     /// Date: 13/02/22
     /// </summary>
     /// <REFERENCE> Price, M. (2021) ‘Session 16 - Collision Management’, Games Design & Engineering: Sessions. Available at: https://worcesterbb.blackboard.com. (Accessed: 17 February 2021).</REFERENCE>
-    public class CollisionManager : ICollisionManager, IUpdatable
+    public class CollisionManager : ICollisionManager, IUpdatable, IService
     {
         #region FIELD VARIABLES
 

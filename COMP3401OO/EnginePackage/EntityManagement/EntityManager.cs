@@ -3,6 +3,7 @@ using COMP3401OO.EnginePackage.Delegates.Interfaces;
 using COMP3401OO.EnginePackage.EntityManagement.Interfaces;
 using COMP3401OO.EnginePackage.InputManagement.Interfaces;
 using COMP3401OO.EnginePackage.SceneManagement.Interfaces;
+using COMP3401OO.EnginePackage.Services.Interfaces;
 
 namespace COMP3401OO.EnginePackage.EntityManagement
 {
@@ -11,7 +12,7 @@ namespace COMP3401OO.EnginePackage.EntityManagement
     /// Author: William Smith
     /// Date: 13/02/22
     /// </summary>
-    public class EntityManager : IEntityManager
+    public class EntityManager : IEntityManager, IService
     {
         #region FIELD VARIABLES
 
@@ -118,15 +119,12 @@ namespace COMP3401OO.EnginePackage.EntityManagement
         }
 
         /// <summary>
-        /// Property which can get a reference to an IDictionary<string, IEntity>
+        /// Returns an IDictionary<string, IEntity> which is the master Dictionary in the program
         /// </summary>
-        public IDictionary<string, IEntity> GetDictionary
+        public IDictionary<string, IEntity> GetDictionary()
         {
-            get 
-            {
-                // RETURN value of current _entityDict:
-                return _entityDict;
-            }
+            // RETURN instance of _entityDict:
+            return _entityDict;
         }
 
         #endregion
