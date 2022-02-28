@@ -1,4 +1,4 @@
-﻿
+﻿using COMP3401OO.EnginePackage.Delegates;
 
 namespace COMP3401OO.EnginePackage.EntityManagement.Interfaces
 {
@@ -14,7 +14,17 @@ namespace COMP3401OO.EnginePackage.EntityManagement.Interfaces
         /// <summary>
         /// Disposes resources to the garbage collector
         /// </summary>
-        void Terminate();
+        void Termination();
+
+        #endregion
+
+
+        #region PROPERTIES
+
+        /// <summary>
+        /// Property which allows only read access to a DeleteDelegate
+        /// </summary>
+        DeleteDelegate Terminate { get; } 
 
         #endregion
     }

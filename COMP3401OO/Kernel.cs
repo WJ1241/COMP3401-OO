@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using COMP3401OO.EnginePackage.Behaviours.Interfaces;
 using COMP3401OO.EnginePackage.CollisionManagement;
 using COMP3401OO.EnginePackage.CollisionManagement.Interfaces;
 using COMP3401OO.EnginePackage.CoreInterfaces;
 using COMP3401OO.EnginePackage.EntityManagement;
 using COMP3401OO.EnginePackage.EntityManagement.Interfaces;
+using COMP3401OO.EnginePackage.Exceptions;
 using COMP3401OO.EnginePackage.Factories;
 using COMP3401OO.EnginePackage.Factories.Interfaces;
 using COMP3401OO.EnginePackage.InputManagement;
@@ -15,15 +17,16 @@ using COMP3401OO.EnginePackage.InputManagement.Interfaces;
 using COMP3401OO.EnginePackage.SceneManagement;
 using COMP3401OO.EnginePackage.SceneManagement.Interfaces;
 using COMP3401OO.EnginePackage.Services.Interfaces;
-using COMP3401OO.PongPackage;
+using COMP3401OO.PongPackage.Behaviours;
 using COMP3401OO.PongPackage.Delegates.Interfaces;
+using COMP3401OO.PongPackage.Entities;
 
 namespace COMP3401OO
 {
     /// <summary>
     /// Main Class of OO System
     /// Author: William Smith
-    /// Date: 13/02/22
+    /// Date: 24/02/22
     /// </summary>
     public class Kernel : Game
     {
@@ -41,8 +44,8 @@ namespace COMP3401OO
         // DECLARE a Random, name it '_rand':
         private Random _rand;
 
-        // DECLARE a Vector2, used to store Screen size, name it 'screenSize':
-        private Vector2 _screenSize;
+        // DECLARE a Point, used to store Screen size, name it 'screenSize':
+        private Point _screenSize;
 
         // DECLARE an int, name it '_p1Score':
         private int _p1Score;
@@ -117,99 +120,183 @@ namespace COMP3401OO
 
             #endregion
 
+            // TRY checking if any creation or initialisation throws an exception:
+            try
+            {
+                #region FACTORY INSTANTIATIONS
 
-            #region FACTORY INSTANTIATIONS
-            
-            // ADD a new Factory<IService>() to _serviceDict:
-            _serviceDict.Add("ServiceFactory", new Factory<IService>());
+                // ADD a new Factory<IService>() to _serviceDict:
+                _serviceDict.Add("ServiceFactory", new Factory<IService>());
 
-            // ADD a new Factory<IEntity>() to _serviceDict:
-            _serviceDict.Add("EntityFactory", (_serviceDict["ServiceFactory"] as IFactory<IService>).Create<Factory<IEntity>>());
+                // ADD a new Factory<ISceneGraph>() to _serviceDict:
+                _serviceDict.Add("SceneGraphFactory", (_serviceDict["ServiceFactory"] as IFactory<IService>).Create<Factory<ISceneGraph>>());
 
-            // ADD a new Factory<ISceneGraph>() to _serviceDict:
-            _serviceDict.Add("SceneGraphFactory", (_serviceDict["ServiceFactory"] as IFactory<IService>).Create<Factory<ISceneGraph>>());
+                // ADD a new Factory<IEntity>() to _serviceDict:
+                _serviceDict.Add("EntityFactory", (_serviceDict["ServiceFactory"] as IFactory<IService>).Create<Factory<IEntity>>());
 
-            #endregion
+                // ADD a new Factory<IUpdateEventListener>() to _serviceDict:
+                _serviceDict.Add("BehaviourFactory", (_serviceDict["ServiceFactory"] as IFactory<IService>).Create<Factory<IUpdateEventListener>>());
 
-
-            #region MANAGER INSTANTIATIONS & INITIALISATIONS
-
-            #region INSTANTIATIONS
-
-            // ADD a new EntityManager() to _serviceDict:
-            _serviceDict.Add("EntityManager", (_serviceDict["ServiceFactory"] as IFactory<IService>).Create<EntityManager>());
-
-            // ADD a new SceneManager() to _serviceDict:
-            _serviceDict.Add("SceneManager", (_serviceDict["ServiceFactory"] as IFactory<IService>).Create<SceneManager>());
-
-            // ADD a new CollisionManager() to _serviceDict:
-            _serviceDict.Add("CollisionManager", (_serviceDict["ServiceFactory"] as IFactory<IService>).Create<CollisionManager>());
-
-            // ADD a new KeyboardManager() to _serviceDict:
-            _serviceDict.Add("KeyboardManager", (_serviceDict["ServiceFactory"] as IFactory<IService>).Create<KeyboardManager>());
-
-            #endregion
+                #endregion
 
 
-            #region INITIALISATIONS
+                #region MANAGER INSTANTIATIONS & INITIALISATIONS
 
-            // INITIALISE _serviceDict["EntityManager"] with reference to _serviceDict["SceneManager"]:
-            (_serviceDict["EntityManager"] as IEntityManager).Initialise(_serviceDict["SceneManager"] as ISceneManager);
+                #region INSTANTIATIONS
 
-            // INITIALISE _serviceDict["EntityManager"] with reference to _serviceDict["KeyboardManager"]:
-            (_serviceDict["EntityManager"] as IEntityManager).Initialise(_serviceDict["KeyboardManager"] as IKeyboardPublisher);
+                // ADD a new EntityManager() to _serviceDict:
+                _serviceDict.Add("EntityManager", (_serviceDict["ServiceFactory"] as IFactory<IService>).Create<EntityManager>());
 
-            // INITIALISE _serviceDict["SceneManager"] with reference to _serviceDict["CollisionManager"]:
-            (_serviceDict["SceneManager"] as ISceneManager).Initialise(_serviceDict["CollisionManager"] as ICollisionManager);
+                // ADD a new SceneManager() to _serviceDict:
+                _serviceDict.Add("SceneManager", (_serviceDict["ServiceFactory"] as IFactory<IService>).Create<SceneManager>());
 
-            // INITIALISE _serviceDict["SceneManager"], passing a new SceneGraph as a parameter:
-            (_serviceDict["SceneManager"] as ISceneManager).Initialise((_serviceDict["ServiceFactory"] as IFactory<IService>).Create<SceneGraph>() as ISceneGraph);
+                // ADD a new CollisionManager() to _serviceDict:
+                _serviceDict.Add("CollisionManager", (_serviceDict["ServiceFactory"] as IFactory<IService>).Create<CollisionManager>());
 
-            #endregion
+                // ADD a new KeyboardManager() to _serviceDict:
+                _serviceDict.Add("KeyboardManager", (_serviceDict["ServiceFactory"] as IFactory<IService>).Create<KeyboardManager>());
 
-
-            
-
-            #endregion
+                #endregion
 
 
-            #region DISPLAYABLE CREATION
+                #region INITIALISATIONS
 
-            //// PADDLE 1
+                // INITIALISE _serviceDict["EntityManager"] with reference to _serviceDict["EntityFactory"]:
+                (_serviceDict["EntityManager"] as IInitialiseIEntityFactory).Initialise(_serviceDict["EntityFactory"] as IFactory<IEntity>);
 
-            // INSTANTIATE new Paddle():
-            _entityManager.Create<Paddle>("paddle1");
+                // INITIALISE _serviceDict["EntityManager"] with reference to _serviceDict["SceneManager"]:
+                (_serviceDict["EntityManager"] as IEntityManager).Initialise(_serviceDict["SceneManager"] as ISceneManager);
 
-            // ASSIGNMENT, set PlayerNum value as PlayerIndex.One:
-            (_entityDictionary["paddle1"] as IPlayer).PlayerNum = PlayerIndex.One;
+                // INITIALISE _serviceDict["EntityManager"] with reference to _serviceDict["KeyboardManager"]:
+                (_serviceDict["EntityManager"] as IEntityManager).Initialise(_serviceDict["KeyboardManager"] as IKeyboardPublisher);
 
-            // SUBSCRIBE Paddle1 to KeyboardManager:
-            _kBManager.Subscribe(_entityDictionary["paddle1"] as IKeyboardListener);
+                // INITIALISE _serviceDict["SceneManager"] with reference to _serviceDict["CollisionManager"]:
+                (_serviceDict["SceneManager"] as ISceneManager).Initialise(_serviceDict["CollisionManager"] as ICollisionManager);
 
-            // SET boundary size for Paddle1:
-            (_entityDictionary["paddle1"] as ISetBoundary).WindowBorder = new Vector2(_screenSize.X, _screenSize.Y);
+                // INITIALISE _serviceDict["SceneManager"], passing a new SceneGraph as a parameter:
+                (_serviceDict["SceneManager"] as ISceneManager).Initialise((_serviceDict["ServiceFactory"] as IFactory<IService>).Create<SceneGraph>() as ISceneGraph);
 
-            // INITIALISE "paddle1":
-            _entityDictionary["paddle1"].Initialise();
+                #endregion
 
-            //// PADDLE 2
 
-            // INSTANTIATE new Paddle():
-            _entityManager.Create<Paddle>("paddle2");
+                #endregion
 
-            // ASSIGNMENT, set PlayerNum value as PlayerIndex.Two:
-            (_entityDictionary["paddle2"] as IPlayer).PlayerNum = PlayerIndex.Two;
 
-            // SUBSCRIBE Paddle2 to KeyboardManager:
-            _kBManager.Subscribe(_entityDictionary["paddle2"] as IKeyboardListener);
+                #region DISPLAYABLE CREATION
 
-            // SET boundary size for Paddle2:
-            (_entityDictionary["paddle2"] as ISetBoundary).WindowBorder = _screenSize;
 
-            // INITIALISE "paddle2":
-            _entityDictionary["paddle2"].Initialise();
+                #region BACKGROUND
 
-            #endregion
+                // DECLARE & INSTANTIATE an IEntity as a new DrawableEntity(), name it '_tempEntity':
+                IEntity _tempEntity = (_serviceDict["EntityManager"] as IEntityManager).Create<DrawableEntity>("Background");
+
+                #endregion
+
+
+                #region PADDLE 1
+
+                #region BEHAVIOURS
+
+                /// INSTANTIATION
+
+                // DECLARE & INSTANTIATE an IUpdateEventListener as a new BallBehaviour(), name it '_tempBehaviour':
+                IUpdateEventListener _tempBehaviour = (_serviceDict["BehaviourFactory"] as IFactory<IUpdateEventListener>).Create<PaddleBehaviour>();
+
+                /// INITIALISATION
+
+                // INITIALISE _tempBehaviour with a new Paddle():
+                (_tempBehaviour as IInitialiseIEntity).Initialise((_serviceDict["EntityManager"] as IEntityManager).Create<Paddle>("Paddle1"));
+
+                #endregion
+
+
+                #region ENTITY
+
+                /// INSTANTATION
+
+                // INITIALISE _tempEntity with "Paddle1" from EntityManager.GetDictionary():
+                _tempEntity = (_serviceDict["EntityManager"] as IEntityManager).GetDictionary()["Paddle1"];
+
+                /// INITIALISATION
+
+                // INITIALISE "Paddle1" with reference to _tempBehaviour:
+                (_tempEntity as IInitialiseIUpdateEventListener).Initialise(_tempBehaviour);
+
+                // SUBSCRIBE "Paddle1" to KeyboardManager:
+                (_serviceDict["KeyboardManager"] as IKeyboardPublisher).Subscribe(_tempEntity as IKeyboardListener);
+
+                // ASSIGNMENT, set PlayerNum value as PlayerIndex.One:
+                (_tempEntity as IPlayer).PlayerNum = PlayerIndex.One;
+
+                // SET boundary size for "Paddle1":
+                (_tempEntity as IContainBoundary).WindowBorder = _screenSize;
+
+                #endregion
+
+                #endregion
+
+                #region PADDLE 2
+
+                #region BEHAVIOURS
+
+                /// INSTANTIATION
+
+                // INSTANTIATE _tempBehaviour as a new PaddleBehaviour():
+                _tempBehaviour = (_serviceDict["BehaviourFactory"] as IFactory<IUpdateEventListener>).Create<PaddleBehaviour>();
+
+                /// INITIALISATION
+
+                // INITIALISE _tempBehaviour with a new Paddle():
+                (_tempBehaviour as IInitialiseIEntity).Initialise((_serviceDict["EntityManager"] as IEntityManager).Create<Paddle>("Paddle2"));
+
+                #endregion
+
+
+                #region ENTITY
+
+                /// INSTANTATION
+
+                // INITIALISE _tempEntity with "Paddle2" from EntityManager.GetDictionary():
+                _tempEntity = (_serviceDict["EntityManager"] as IEntityManager).GetDictionary()["Paddle2"];
+
+                /// INITIALISATION
+
+                // INITIALISE "Paddle2" with reference to _tempBehaviour:
+                (_tempEntity as IInitialiseIUpdateEventListener).Initialise(_tempBehaviour);
+
+                // SUBSCRIBE "Paddle2" to KeyboardManager:
+                (_serviceDict["KeyboardManager"] as IKeyboardPublisher).Subscribe(_tempEntity as IKeyboardListener);
+
+                // ASSIGNMENT, set PlayerNum value as PlayerIndex.Two:
+                (_tempEntity as IPlayer).PlayerNum = PlayerIndex.Two;
+
+                // SET boundary size for "Paddle2":
+                (_tempEntity as IContainBoundary).WindowBorder = _screenSize;
+
+                #endregion
+
+                #endregion
+
+                #endregion
+            }
+            // CATCH ClassDoesNotExistException from object creation:
+            catch (ClassDoesNotExistException e)
+            {
+                // PRINT exception message to console:
+                Console.WriteLine(e.Message);
+            }
+            // CATCH NullInstanceException from object initialisation:
+            catch (NullInstanceException e)
+            {
+                // PRINT exception message to console:
+                Console.WriteLine(e.Message);
+            }
+            // CATCH NullReferenceException from delegate initialisation:
+            catch (NullReferenceException e)
+            {
+                // PRINT exception message to console:
+                Console.WriteLine(e.Message);
+            }
 
             // INITIALISE base class:
             base.Initialize();
@@ -224,20 +311,76 @@ namespace COMP3401OO
             // INSTANTIATE _spriteBatch as new SpriteBatch:
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // LOAD "paddle" texture to "paddle1":
-            (_entityDictionary["paddle1"] as ITexture).Texture = Content.Load<Texture2D>("paddle");
+            #region BACKGROUND
 
-            // LOAD "paddle" texture to "paddle2":
-            (_entityDictionary["paddle2"] as ITexture).Texture = Content.Load<Texture2D>("paddle");
+            // DECLARE & INITIALISE an IEntity, name it '_tempEntity', give instance of "Background":
+            IEntity _tempEntity = (_serviceDict["EntityManager"] as IEntityManager).GetDictionary()["Background"];
 
-            // SPAWN Paddle1 on screen by adding to SceneManager Dictionary:
-            (_sceneManager as ISpawn).Spawn(_entityDictionary["paddle1"], new Vector2 (0, (_screenSize.Y / 2) - (_entityDictionary["paddle2"] as ITexture).Texture.Height / 2));
+            // LOAD "Background" texture to "Background":
+            (_tempEntity as ITexture).Texture = Content.Load<Texture2D>("Background");
 
-            // SPAWN Paddle2 on screen by adding to SceneManager Dictionary:
-            (_sceneManager as ISpawn).Spawn(_entityDictionary["paddle2"], new Vector2(_screenSize.X - (_entityDictionary["paddle2"] as ITexture).Texture.Width, (_screenSize.Y / 2) - (_entityDictionary["paddle2"] as ITexture).Texture.Height / 2));
+            // SPAWN "Background" on screen at top left corner:
+            (_serviceDict["SceneManager"] as ISpawn).Spawn(_tempEntity, Vector2.Zero);
+
+            #endregion
+
+
+            #region PADDLES
+
+            #region PADDLE 1
+
+            // INITIALISE _tempEntity with instance of "Paddle1":
+            _tempEntity = (_serviceDict["EntityManager"] as IEntityManager).GetDictionary()["Paddle1"];
+
+            // ADD "Paddle1_DFLT" as a key and "Paddle1_DFLT" as a Texture2D to _tempEntity.ReturnTextureDict():
+            (_tempEntity as IRtnTextureDict).ReturnTextureDict().Add("Paddle1_DFLT", Content.Load<Texture2D>("Paddle1_DFLT"));
+
+            // ADD "Paddle1_INPT" as a key and "Paddle1_INPT" as a Texture2D to _tempEntity.ReturnTextureDict():
+            (_tempEntity as IRtnTextureDict).ReturnTextureDict().Add("Paddle1_INPT", Content.Load<Texture2D>("Paddle1_INPT"));
+
+            // SET Texture Property value of "Paddle1" to "Paddle1_DFLT" stored in _tempEntity.ReturnTextureDict():
+            (_tempEntity as ITexture).Texture = (_tempEntity as IRtnTextureDict).ReturnTextureDict()["Paddle1_DFLT"];
+
+            // SET Origin Property value of "Paddle1" to centre of Texture:
+            (_tempEntity as IRotation).Origin = new Vector2((_tempEntity as ITexture).TexSize.X / 2, (_tempEntity as ITexture).TexSize.Y / 2);
+
+            // SPAWN "Paddle1" on screen at the far left middle of the screen:
+            (_serviceDict["SceneManager"] as ISpawn).Spawn(_tempEntity, new Vector2((_tempEntity as ITexture).TexSize.X, _screenSize.Y / 2));
+
+            #endregion
+
+
+            #region PADDLE 2
+
+            // INITIALISE _tempEntity with instance of "Paddle2":
+            _tempEntity = (_serviceDict["EntityManager"] as IEntityManager).GetDictionary()["Paddle2"];
+
+            // ADD "Paddle2_DFLT" as a key and "Paddle2_DFLT" as a Texture2D to _tempEntity.ReturnTextureDict():
+            (_tempEntity as IRtnTextureDict).ReturnTextureDict().Add("Paddle2_DFLT", Content.Load<Texture2D>("Paddle2_DFLT"));
+
+            // ADD "Paddle2_INPT" as a key and "Paddle2_INPT" as a Texture2D to _tempEntity.ReturnTextureDict():
+            (_tempEntity as IRtnTextureDict).ReturnTextureDict().Add("Paddle2_INPT", Content.Load<Texture2D>("Paddle2_INPT"));
+
+            // SET Texture Property value of "Paddle2" to "Paddle2_DFLT" stored in _tempEntity.ReturnTextureDict():
+            (_tempEntity as ITexture).Texture = (_tempEntity as IRtnTextureDict).ReturnTextureDict()["Paddle2_DFLT"];
+
+            // SET Origin Property value of "Paddle2" to centre of Texture:
+            (_tempEntity as IRotation).Origin = new Vector2((_tempEntity as ITexture).TexSize.X / 2, (_tempEntity as ITexture).TexSize.Y / 2);
+
+            // SPAWN "Paddle2" on screen at the far right middle of the screen:
+            (_serviceDict["SceneManager"] as ISpawn).Spawn(_tempEntity, new Vector2(_screenSize.X - (_tempEntity as ITexture).TexSize.X, _screenSize.Y / 2));
+
+            #endregion
+
+            #endregion
+
+
+            #region BALL
 
             // CALL SpawnBall(), handles creation and initialisation:
             SpawnBall();
+
+            #endregion
         }
 
         /// <summary>
@@ -262,14 +405,14 @@ namespace COMP3401OO
                 Exit();
             }
 
-            // CALL Update() on SceneManager:
-            (_sceneManager as IUpdatable).Update(pGameTime);
+            // CALL Update() on "SceneManager":
+            (_serviceDict["SceneManager"] as IUpdatable).Update(pGameTime);
 
-            // CALL Update() on CollisionManager:
-            (_collisionManager as IUpdatable).Update(pGameTime);
+            // CALL Update() on "CollisionManager":
+            (_serviceDict["CollisionManager"] as IUpdatable).Update(pGameTime);
 
-            // CALL Update() on KeyboardManager:
-            (_kBManager as IUpdatable).Update(pGameTime);
+            // CALL Update() on "KeyboardManager":
+            (_serviceDict["KeyboardManager"] as IUpdatable).Update(pGameTime);
 
             // CALL method from base Game class, uses gameTime as parameter:
             base.Update(pGameTime);
@@ -278,7 +421,7 @@ namespace COMP3401OO
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        /// <param name="pGameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime pGameTime)
         {
             // SET colour of screen background as CornflowerBlue:
@@ -287,8 +430,8 @@ namespace COMP3401OO
             // BEGIN creation of displayable objects:
             _spriteBatch.Begin();
 
-            // CALL Draw() method in _sceneManager:
-            (_sceneManager as IDraw).Draw(_spriteBatch);
+            // CALL Draw() method on "SceneManager":
+            (_serviceDict["SceneManager"] as IDraw).Draw(_spriteBatch);
 
             // END creation of displayable objects:
             _spriteBatch.End();
@@ -310,29 +453,52 @@ namespace COMP3401OO
             // INCREMENT _ballCount by '1':
             _ballCount++;
 
-            // INSTANTIATE Ball():
-            _entityManager.Create<Ball>("Ball" + _ballCount);
+            #region BEHAVIOURS
 
-            // SET boundary size for Ball:
-            (_entityDictionary["Ball" + _ballCount] as ISetBoundary).WindowBorder = _screenSize;
+            /// INSTANTIATION
 
-            // INITIALISE "Ball":
-            _entityDictionary["Ball" + _ballCount].Initialise();
+            // DECLARE & INSTANTIATE an IUpdateEventListener as a new BallBehaviour(), name it '_tempBehaviour':
+            IUpdateEventListener _tempBehaviour = (_serviceDict["BehaviourFactory"] as IFactory<IUpdateEventListener>).Create<BallBehaviour>();
 
-            // INITIALISE "Ball", passing _rand as a parameter:
-            (_entityDictionary["Ball" + _ballCount] as IInitialiseRand).Initialise(_rand);
+            /// INITIALISATION
+            
+            // INITIALISE _tempBehaviour with reference to CheckGoal():
+            (_tempBehaviour as IInitialiseCheckPosDel).Initialise(CheckGoal);
 
-            // INITIALISE "Ball" with reference to CheckGoal(): 
-            (_entityDictionary["Ball" + _ballCount] as IInitialiseCheckPosDel).Initialise(CheckGoal);
+            // INITIALISE _tempBehaviour with a new Ball():
+            (_tempBehaviour as IInitialiseIEntity).Initialise((_serviceDict["EntityManager"] as IEntityManager).Create<Ball>("Ball" + _ballCount));
 
-            // LOAD "square" texture to "Ball":
-            (_entityDictionary["Ball" + _ballCount] as ITexture).Texture = Content.Load<Texture2D>("square");
+            #endregion
 
-            // SPAWN "Ball" on screen by adding to SceneManager Dictionary:
-            (_sceneManager as ISpawn).Spawn(_entityDictionary["Ball" + _ballCount], new Vector2((_screenSize.X / 2) - (_entityDictionary["Ball" + _ballCount] as ITexture).Texture.Width / 2, (_screenSize.Y / 2) - (_entityDictionary["Ball" + _ballCount] as ITexture).Texture.Height / 2));
 
-            // CALL Reset() on "Ball":
-            (_entityDictionary["Ball" + _ballCount] as IReset).Reset();
+            #region ENTITY
+
+            /// INSTANTIATION
+
+            // DECLARE & INITIALISE an IEntity with reference of '"Ball" + _ballCount' from EntityManager.GetDictionary(), name it _tempEntity:
+            IEntity _tempEntity = (_serviceDict["EntityManager"] as IEntityManager).GetDictionary()["Ball" + _ballCount];
+
+            /// INTIIALISATION
+
+            // INITIALISE '"Ball" + _ballCount' with reference to _tempBehaviour:
+            (_tempEntity as IInitialiseIUpdateEventListener).Initialise(_tempBehaviour);
+
+            // INITIALISE '"Ball" + _ballCount' with reference to _rand:
+            (_tempEntity as IInitialiseRand).Initialise(_rand);
+
+            // SET boundary size for '"Ball" + _ballCount':
+            (_tempEntity as IContainBoundary).WindowBorder = _screenSize;
+
+            // LOAD "square" texture to '"Ball" + _ballCount':
+            (_tempEntity as ITexture).Texture = Content.Load<Texture2D>("Football");
+
+            // CALL Reset() on '"Ball" + _ballCount':
+            (_tempEntity as IReset).Reset();
+
+            // SPAWN '"Ball" + _ballCount' at centre of screen:
+            (_serviceDict["SceneManager"] as ISpawn).Spawn(_tempEntity, new Vector2((_screenSize.X / 2) - (_tempEntity as ITexture).TexSize.X / 2, (_screenSize.Y / 2) - (_tempEntity as ITexture).TexSize.Y / 2));
+
+            #endregion
         }
 
         /// <summary>
@@ -346,6 +512,9 @@ namespace COMP3401OO
             {
                 // INCREMENT Player 2 score by '1':
                 _p2Score++;
+
+                // SET Console Text Colour to Red:
+                Console.ForegroundColor = ConsoleColor.Red;
 
                 // IF Player 2 has a score of '1':
                 if (_p2Score == 1)
@@ -366,6 +535,9 @@ namespace COMP3401OO
                 // INCREMENT Player 1 score by '1':
                 _p1Score++;
 
+                // SET Console Text Colour to Blue:
+                Console.ForegroundColor = ConsoleColor.Blue;
+
                 // IF Player 1 has a score of '1':
                 if (_p1Score == 1)
                 {
@@ -379,6 +551,9 @@ namespace COMP3401OO
                     Console.WriteLine("PLAYER 1 has Scored! PLAYER 1 has: " + _p1Score + " points!");
                 }
             }
+
+            // SET Console Text Colour to White:
+            Console.ForegroundColor = ConsoleColor.White;
 
             // CALL SpawnBall() to make another Ball object:
             SpawnBall();

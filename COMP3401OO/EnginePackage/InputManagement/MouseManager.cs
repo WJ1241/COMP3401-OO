@@ -45,21 +45,21 @@ namespace COMP3401OO.EnginePackage.InputManagement
         /// <summary>
         /// Subscribes a Mouse listening object to be stored in a list/dictionary
         /// </summary>
-        /// <param name="mouseListener">Reference to an object implementing IMouseListener</param>
-        public void Subscribe(IMouseListener mouseListener)
+        /// <param name="pMouseListener">Reference to an object implementing IMouseListener</param>
+        public void Subscribe(IMouseListener pMouseListener)
         {
-            // ADD KeyboardListener to Dictionary<string, IMouseListener>:
-            _mouseListeners.Add((mouseListener as IEntity).UName, mouseListener);
+            // ADD pMouseListener to Dictionary<string, IMouseListener>:
+            _mouseListeners.Add((pMouseListener as IEntity).UName, pMouseListener);
         }
 
         /// <summary>
         /// Unsubscribes a Mouse listening object from list/dictionary using its unique name
         /// </summary>
-        /// <param name="uName">Used for passing unique name</param>
-        public void Unsubscribe(string uName)
+        /// <param name="pUName">Used for passing unique name</param>
+        public void Unsubscribe(string pUName)
         {
-            // CALL Remove(), on Dictionary to remove 'value' of key 'uName':
-            _mouseListeners.Remove(uName);
+            // CALL Remove(), on Dictionary to remove 'value' of key 'pUName':
+            _mouseListeners.Remove(pUName);
         }
 
         #endregion
@@ -70,16 +70,17 @@ namespace COMP3401OO.EnginePackage.InputManagement
         /// <summary>
         /// Updates object when a frame has been rendered on screen
         /// </summary>
-        /// <param name="gameTime">holds reference to GameTime object</param>
-        public void Update(GameTime gameTime)
+        /// <param name="pGameTime">holds reference to GameTime object</param>
+        public void Update(GameTime pGameTime)
         {
             // ASSIGNMENT, use GetState() to get what keys have been activated:
             _mouseState = Mouse.GetState();
 
-            foreach (IMouseListener mouseListener in _mouseListeners.Values) // FOREACH IMouseListener objects in _mouseListeners
+            // FOREACH IMouseListener object in _mouseListeners:
+            foreach (IMouseListener pMouseListener in _mouseListeners.Values) 
             {
-                // CALL 'OnMouseInput()' passing an MouseState as a parameter, used to get Mouse input:
-                mouseListener.OnMouseInput(_mouseState);
+                // CALL 'OnMouseInput()' passing pMouseState as a parameter, used to get Mouse input:
+                pMouseListener.OnMouseInput(_mouseState);
             }
         }
 

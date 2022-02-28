@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using COMP3401OO.EnginePackage.Delegates;
 using COMP3401OO.EnginePackage.Delegates.Interfaces;
 using COMP3401OO.EnginePackage.EntityManagement.Interfaces;
@@ -10,7 +11,7 @@ namespace COMP3401OO.EnginePackage.EntityManagement
     /// Author: William Smith
     /// Date: 13/02/22
     /// </summary>
-    public abstract class Entity : IEntity, IInitialiseDeleteDel, ISetBoundary, ITerminate
+    public abstract class Entity : IEntity, IInitialiseDeleteDel, IContainBoundary, ITerminate
     {
         #region FIELD VARIABLES
 
@@ -29,18 +30,13 @@ namespace COMP3401OO.EnginePackage.EntityManagement
         // DECLARE a Vector2, name it '_position', stores current location, needed to draw texture when location(x,y) is changed
         protected Vector2 _position;
 
-        // DECLARE a Vector2, name it '_windowBorder', used for storing screen size:
-        protected Vector2 _windowBorder;
+        // DECLARE a Point, name it '_windowBorder', used for storing screen size:
+        protected Point _windowBorder;
 
         #endregion
 
 
         #region IMPLEMENTATION OF IENTITY
-
-        /// <summary>
-        /// Initialises entity variable values
-        /// </summary>
-        public abstract void Initialise();
 
         /// <summary>
         /// Property which can get and set value of an entity's position
@@ -104,23 +100,38 @@ namespace COMP3401OO.EnginePackage.EntityManagement
         /// <param name="pDeleteDelegate"> Method which meets the signature of DeleteDelegate </param>
         public void Initialise(DeleteDelegate pDeleteDelegate)
         {
-            // INITIALISE _terminate with reference to pDeleteDelegate:
-            _terminate = pDeleteDelegate;
+            // IF pDeleteDelegate DOES contain a valid method reference:
+            if (pDeleteDelegate != null)
+            {
+                // INITIALISE _terminate with reference to pDeleteDelegate:
+                _terminate = pDeleteDelegate;
+            }
+            // IF pCheckPosDel DOES NOT contain a valid method reference:
+            else
+            {
+                // THROW a new NullReferenceException(), with corresponding message:
+                throw new NullReferenceException("ERROR: pDeleteDelegate does not contain a valid method reference!");
+            }
         }
 
         #endregion
 
 
-        #region IMPLEMENTATION OF ISETBOUNDARY
+        #region IMPLEMENTATION OF ICONTAINBOUNDARY
 
         /// <summary>
-        /// Property which can set value of screen window borders
+        /// Property which allows read and write access to screen borders
         /// </summary>
-        public Vector2 WindowBorder
+        public Point WindowBorder
         {
+            get
+            {
+                // RETURN value of _windowborder:
+                return _windowBorder;
+            }
             set
             {
-                // ASSIGNMENT give _windowBorder value of external class modified value:
+                // SET value of _windowBorder to incoming value:
                 _windowBorder = value;
             }
         }
@@ -133,7 +144,19 @@ namespace COMP3401OO.EnginePackage.EntityManagement
         /// <summary>
         /// Disposes resources to the garbage collector
         /// </summary>
-        public abstract void Terminate();
+        public abstract void Termination();
+
+        /// <summary>
+        /// Property which allows only read access to a DeleteDelegate
+        /// </summary>
+        public DeleteDelegate Terminate
+        {
+            get
+            {
+                // RETURN value of _terminate:
+                return _terminate;
+            }
+        }
 
         #endregion
     }

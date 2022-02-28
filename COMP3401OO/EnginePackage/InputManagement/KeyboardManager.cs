@@ -45,21 +45,21 @@ namespace COMP3401OO.EnginePackage.InputManagement
         /// <summary>
         /// Subscribes a Keyboard listening object to be stored in a list/dictionary
         /// </summary>
-        /// <param name="KeyboardListener">Reference to an object implementing IKeyboardListener</param>
-        public void Subscribe(IKeyboardListener keyboardListener)
+        /// <param name="pKeyboardListener">Reference to an object implementing IKeyboardListener</param>
+        public void Subscribe(IKeyboardListener pKeyboardListener)
         {
-            // ADD KeyboardListener to Dictionary<string, IKeyboardListener>:
-            _kBListeners.Add((keyboardListener as IEntity).UName, keyboardListener);
+            // ADD pKeyboardListener to Dictionary<string, IKeyboardListener>:
+            _kBListeners.Add((pKeyboardListener as IEntity).UName, pKeyboardListener);
         }
 
         /// <summary>
         /// Unsubscribes a Keyboard listening object from list/dictionary using its unique name
         /// </summary>
-        /// <param name="uName">Used for passing unique name</param>
-        public void Unsubscribe(string uName)
+        /// <param name="pUName">Used for passing unique name</param>
+        public void Unsubscribe(string pUName)
         {
-            // CALL Remove(), on Dictionary to remove 'value' of key 'uName':
-            _kBListeners.Remove(uName);
+            // CALL Remove(), on Dictionary to remove 'value' of key 'pUName':
+            _kBListeners.Remove(pUName);
         }
 
         #endregion
@@ -70,16 +70,17 @@ namespace COMP3401OO.EnginePackage.InputManagement
         /// <summary>
         /// Updates object when a frame has been rendered on screen
         /// </summary>
-        /// <param name="gameTime">holds reference to GameTime object</param>
-        public void Update(GameTime gameTime)
+        /// <param name="pGameTime">holds reference to GameTime object</param>
+        public void Update(GameTime pGameTime)
         {
             // ASSIGNMENT, use GetState() to get what keys have been activated:
             _keyboardState = Keyboard.GetState();
 
-            foreach (IKeyboardListener keyboardListener in _kBListeners.Values) // FOREACH IKeyboardListener objects in _kBListeners
+            // FOREACH IKeyboardListener object in _kBListeners:
+            foreach (IKeyboardListener pKeyboardListener in _kBListeners.Values)
             {
-                // CALL 'OnKBInput()' passing an KeyboardState as a parameter, used to get Keyboard input:
-                keyboardListener.OnKBInput(_keyboardState);
+                // CALL 'OnKBInput()' passing _keyboardState as a parameter, used to get Keyboard input:
+                pKeyboardListener.OnKBInput(_keyboardState);
             }
         }
 

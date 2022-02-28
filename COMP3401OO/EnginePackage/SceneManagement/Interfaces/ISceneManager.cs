@@ -1,4 +1,6 @@
-﻿using COMP3401OO.EnginePackage.CollisionManagement.Interfaces;
+﻿using System.Collections.Generic;
+using COMP3401OO.EnginePackage.CollisionManagement.Interfaces;
+using COMP3401OO.EnginePackage.EntityManagement.Interfaces;
 
 namespace COMP3401OO.EnginePackage.SceneManagement.Interfaces
 {
@@ -14,20 +16,25 @@ namespace COMP3401OO.EnginePackage.SceneManagement.Interfaces
         /// <summary>
         /// Initialises an object with a reference to an ISceneGraph
         /// </summary>
-        /// <param name="sceneGraph">Holds References to an ISceneGraph</param>
-        void Initialise(ISceneGraph sceneGraph);
+        /// <param name="pSceneGraph">Holds References to an ISceneGraph</param>
+        void Initialise(ISceneGraph pSceneGraph);
 
         /// <summary>
         /// Initialises an object with a reference to an ICollisionManager
         /// </summary>
-        /// <param name="collisionManager">Holds References to an ICollisionManager</param>
-        void Initialise(ICollisionManager collisionManager);
+        /// <param name="pCollisionManager">Holds References to an ICollisionManager</param>
+        void Initialise(ICollisionManager pCollisionManager);
+
+        /// <summary>
+        /// Returns an IDictionary<string, IEntity> containing entities in the scene
+        /// </summary>
+        IDictionary<string, IEntity> GetDictionary();
 
         /// <summary>
         /// Removes instance of object from list/dictionary using an entity's unique name
         /// </summary>
-        /// <param name="uName">Used for passing unique name</param>
-        void RemoveInstance(string uName);
+        /// <param name="pUName">Used for passing unique name</param>
+        void RemoveInstance(string pUName);
 
         #endregion
     }

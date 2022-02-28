@@ -14,7 +14,7 @@ namespace COMP3401OO.EnginePackage.CoreInterfaces
         /// <summary>
         /// Property which can set value of a PlayerIndex
         /// </summary>
-        PlayerIndex PlayerNum { set; }
+        PlayerIndex PlayerNum { get; set; }
 
         #endregion
     }

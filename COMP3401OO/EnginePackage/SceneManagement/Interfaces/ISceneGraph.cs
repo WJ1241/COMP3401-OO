@@ -15,8 +15,8 @@ namespace COMP3401OO.EnginePackage.SceneManagement.Interfaces
         /// <summary>
         /// Initialises object with a reference to an IDictionary<string, IEntity>
         /// </summary>
-        /// <param name="sceneDictionary">Holds reference to 'IDictionary<string, IEntity>'</param>
-        void Initialise(IDictionary<string, IEntity> sceneDictionary);
+        /// <param name="pSceneDictionary">Holds reference to 'IDictionary<string, IEntity>'</param>
+        void Initialise(IDictionary<string, IEntity> pSceneDictionary);
 
         #endregion
     }

@@ -9,16 +9,6 @@ namespace COMP3401OO.EnginePackage.EntityManagement.Interfaces
     /// </summary>
     public interface IEntity
     {
-        #region METHODS
-
-        /// <summary>
-        /// Initialises entity variable values
-        /// </summary>
-        void Initialise();
-
-        #endregion
-
-
         #region PROPERTIES
 
         /// <summary>

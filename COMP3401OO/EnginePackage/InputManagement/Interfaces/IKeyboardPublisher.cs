@@ -14,14 +14,14 @@ namespace COMP3401OO.EnginePackage.InputManagement.Interfaces
         /// <summary>
         /// Subscribes a Keyboard listening object to be stored in a list/dictionary
         /// </summary>
-        /// <param name="keyboardListener">Reference to an object implementing IKeyboardListener</param>
-        void Subscribe(IKeyboardListener keyboardListener);
+        /// <param name="pKeyboardListener">Reference to an object implementing IKeyboardListener</param>
+        void Subscribe(IKeyboardListener pKeyboardListener);
 
         /// <summary>
         /// Unsubscribes a Keyboard listening object from list/dictionary using its unique name
         /// </summary>
-        /// <param name="uName">Used for passing unique name</param>
-        void Unsubscribe(string uName);
+        /// <param name="pUName">Used for passing unique name</param>
+        void Unsubscribe(string pUName);
 
         #endregion
     }

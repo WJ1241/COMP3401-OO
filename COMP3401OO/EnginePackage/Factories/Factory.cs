@@ -33,7 +33,7 @@ namespace COMP3401OO.EnginePackage.Factories
             // CATCH Exception from creation of object:
             catch (Exception)
             {
-                // THROW new ClassDoesNotExistException, with corresponding message:
+                // THROW new ClassDoesNotExistException(), with corresponding message:
                 throw new ClassDoesNotExistException("ERROR: Class passed through parameter of method does not exist or implement Type in place of 'A'!");
             }
 

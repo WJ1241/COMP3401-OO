@@ -14,8 +14,8 @@ namespace COMP3401OO.EnginePackage.InputManagement.Interfaces
         /// <summary>
         /// Called when Publisher has new Keyboard input information for listening objects
         /// </summary>
-        /// <param name="keyboardState">Holds reference to Keyboard State object</param>
-        void OnKBInput(KeyboardState keyboardState);
+        /// <param name="pKeyboardState">Holds reference to Keyboard State object</param>
+        void OnKBInput(KeyboardState pKeyboardState);
 
         #endregion
     }

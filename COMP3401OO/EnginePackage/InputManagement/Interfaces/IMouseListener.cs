@@ -14,7 +14,7 @@ namespace COMP3401OO.EnginePackage.InputManagement.Interfaces
         /// <summary>
         /// Called when Publisher has new mouse input information for listening objects
         /// </summary>
-        /// <param name="mouseState"> MouseState object </param>
+        /// <param name="pMouseState"> MouseState object </param>
         void OnMouseInput(MouseState pMouseState);
 
         #endregion

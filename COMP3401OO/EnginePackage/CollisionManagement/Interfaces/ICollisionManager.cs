@@ -15,8 +15,8 @@ namespace COMP3401OO.EnginePackage.CollisionManagement.Interfaces
         /// <summary>
         /// Initialises object with a IReadOnlyDictionary<string, IEntity>
         /// </summary>
-        /// <param name="entityDictionary">holds reference to 'IReadOnlyDictionary<string, IEntity>'</param>
-        void Initialise(IReadOnlyDictionary<string, IEntity> entityDictionary);
+        /// <param name="pEntityDictionary">holds reference to 'IReadOnlyDictionary<string, IEntity>'</param>
+        void Initialise(IReadOnlyDictionary<string, IEntity> pEntityDictionary);
 
         #endregion
     }

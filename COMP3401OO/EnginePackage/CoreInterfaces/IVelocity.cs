@@ -5,16 +5,16 @@ namespace COMP3401OO.EnginePackage.CoreInterfaces
     /// <summary>
     /// Interface that allows implementations to have velocity when displayed on screen
     /// Author: William Smith
-    /// Date: 13/02/22
+    /// Date: 24/02/22
     /// </summary>
     public interface IVelocity
     {
         #region PROPERTIES
 
         /// <summary>
-        /// Property which allows access to get value of an entity's velocity
+        /// Property which allows read and write access to a Vector2 velocity
         /// </summary>
-        Vector2 Velocity { get; }
+        Vector2 Velocity { get; set; }
 
         #endregion 
     }

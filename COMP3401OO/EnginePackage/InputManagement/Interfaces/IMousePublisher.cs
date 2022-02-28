@@ -14,14 +14,14 @@ namespace COMP3401OO.EnginePackage.InputManagement.Interfaces
         /// <summary>
         /// Subscribes a Mouse listening object to be stored in a list/dictionary
         /// </summary>
-        /// <param name="mouseListener">Reference to an object implementing IMouseListener</param>
-        void Subscribe(IMouseListener mouseListener);
+        /// <param name="pMouseListener">Reference to an object implementing IMouseListener</param>
+        void Subscribe(IMouseListener pMouseListener);
 
         /// <summary>
         /// Unsubscribes a Mouse listening object from list/dictionary using its unique name
         /// </summary>
-        /// <param name="uName">Used for passing unique name</param>
-        void Unsubscribe(string uName);
+        /// <param name="pUName">Used for passing unique name</param>
+        void Unsubscribe(string pUName);
 
         #endregion
     }

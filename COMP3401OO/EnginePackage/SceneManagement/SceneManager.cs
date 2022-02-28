@@ -7,6 +7,7 @@ using COMP3401OO.EnginePackage.CollisionManagement.Interfaces;
 using COMP3401OO.EnginePackage.EntityManagement.Interfaces;
 using COMP3401OO.EnginePackage.SceneManagement.Interfaces;
 using COMP3401OO.EnginePackage.Services.Interfaces;
+using COMP3401OO.EnginePackage.Exceptions;
 
 namespace COMP3401OO.EnginePackage.SceneManagement
 {
@@ -47,37 +48,66 @@ namespace COMP3401OO.EnginePackage.SceneManagement
         /// <summary>
         /// Initialises an object with a reference to an ISceneGraph
         /// </summary>
-        /// <param name="sceneGraph">Holds References to an ISceneGraph</param>
-        public void Initialise(ISceneGraph sceneGraph) 
+        /// <param name="pSceneGraph">Holds References to an ISceneGraph</param>
+        public void Initialise(ISceneGraph pSceneGraph) 
         {
-            // ASSIGNMENT, set instance of _sceneGraph as the same as sceneGraph:
-            _sceneGraph = sceneGraph;
+            // IF pSceneGraph DOES HAVE an active instance:
+            if (pSceneGraph != null)
+            {
+                // INITIALISE _sceneGraph with reference to pSceneGraph:
+                _sceneGraph = pSceneGraph;
 
-            // INITIALISE _sceneGraph, passing _sceneDictionary as a parameter:
-            _sceneGraph.Initialise(_sceneDictionary);
+                // TRY checking if Initialise() throws a NullInstanceException:
+                try
+                {
+                    // INITIALISE _sceneGraph with a reference to _sceneDictionary:
+                    _sceneGraph.Initialise(_sceneDictionary);
+                }
+                // CATCH NullInstanceException from Initialise() 
+                catch (NullInstanceException e)
+                {
+                    // PRINT exception message to console:
+                    Console.WriteLine(e.Message);
+                }
+            }
+            // IF pSceneGraph DOES NOT HAVE an active instance:
+            else
+            {
+                // THROW a new NullInstanceException(), with corresponding message
+                throw new NullInstanceException("ERROR: pSceneGraph does not have an active instance!");
+            }
         }
 
         /// <summary>
         /// Initialises an object with a reference to an ICollisionManager
         /// </summary>
-        /// <param name="collisionManager">Holds References to an ICollisionManager</param>
-        public void Initialise(ICollisionManager collisionManager) 
+        /// <param name="pCollisionManager">Holds References to an ICollisionManager</param>
+        public void Initialise(ICollisionManager pCollisionManager) 
         {
-            // INITIALISE _collisionManager, passing _sceneDictionary cast as an IReadOnlyDictionary<string, IEntity>, as a parameter:
-            collisionManager.Initialise((IReadOnlyDictionary<string, IEntity>) _sceneDictionary);
+            // INITIALISE pCollisionManager, passing _sceneDictionary cast as an IReadOnlyDictionary<string, IEntity>, as a parameter:
+            pCollisionManager.Initialise((IReadOnlyDictionary<string, IEntity>) _sceneDictionary);
+        }
+
+        /// <summary>
+        /// Returns an IDictionary<string, IEntity> containing entities in the scene
+        /// </summary>
+        public IDictionary<string, IEntity> GetDictionary()
+        {
+            // RETURN instance of _sceneDictionary():
+            return _sceneDictionary;
         }
 
         /// <summary>
         /// Removes instance of object from list/dictionary using an entity's unique name
         /// </summary>
-        /// <param name="uName">Used for passing unique name</param>
-        public void RemoveInstance(string uName)
+        /// <param name="pUName">Used for passing unique name</param>
+        public void RemoveInstance(string pUName)
         {
-            // CALL Remove(), on Dictionary to remove 'value' of key 'uName':
-            _sceneDictionary.Remove(uName);
+            // CALL Remove(), on Dictionary to remove 'value' of key 'pUName':
+            _sceneDictionary.Remove(pUName);
 
             // WRITE to console, alerting when object has been removed from scene:
-            Console.WriteLine(uName + " has been Removed from Scene!");
+            Console.WriteLine(pUName + " has been Removed from Scene!");
         }
 
         #endregion
@@ -88,18 +118,18 @@ namespace COMP3401OO.EnginePackage.SceneManagement
         /// <summary>
         /// Spawns Entity on screen and adds to a list/dictionary
         /// </summary>
-        /// <param name="entity">Reference to an instance of IEntity</param>
-        /// <param name="position">Positional values used to place entity</param>
-        public void Spawn(IEntity entity, Vector2 position)
+        /// <param name="pEntity">Reference to an instance of IEntity</param>
+        /// <param name="pPosition">Positional values used to place entity</param>
+        public void Spawn(IEntity pEntity, Vector2 pPosition)
         {
-            // ADD entity to Dictionary<string, IEntity>:
-            _sceneDictionary.Add(entity.UName, entity);
+            // ADD pEntity to Dictionary<string, IEntity>:
+            _sceneDictionary.Add(pEntity.UName, pEntity);
 
             // CALL Spawn() on _sceneGraph, passing entity and position as parameters:
-            (_sceneGraph as ISpawn).Spawn(entity, position);
+            (_sceneGraph as ISpawn).Spawn(pEntity, pPosition);
 
             // WRITE to console, alerting when object has been added to the scene:
-            Console.WriteLine(entity.UName + " ID:" + entity.UID + " has been Spawned on Scene!");
+            Console.WriteLine(pEntity.UName + " ID:" + pEntity.UID + " has been Spawned on Scene!");
         }
 
         #endregion
@@ -110,11 +140,11 @@ namespace COMP3401OO.EnginePackage.SceneManagement
         /// <summary>
         /// When called, draws entity's texture on screen
         /// </summary>
-        /// <param name="spritebatch">Needed to draw entity's texture on screen</param>
-        public void Draw(SpriteBatch spriteBatch)
+        /// <param name="pSpriteBatch">Needed to draw entity's texture on screen</param>
+        public void Draw(SpriteBatch pSpriteBatch)
         {
-            // CALL Draw() on _sceneGraph, passing spriteBatch as a parameter:
-            (_sceneGraph as IDraw).Draw(spriteBatch);
+            // CALL Draw() on _sceneGraph, passing pSpriteBatch as a parameter:
+            (_sceneGraph as IDraw).Draw(pSpriteBatch);
         }
 
         #endregion
@@ -125,11 +155,11 @@ namespace COMP3401OO.EnginePackage.SceneManagement
         /// <summary>
         /// Updates object when a frame has been rendered on screen
         /// </summary>
-        /// <param name="gameTime">holds reference to GameTime object</param>
-        public void Update(GameTime gameTime)
+        /// <param name="pGameTime">holds reference to GameTime object</param>
+        public void Update(GameTime pGameTime)
         {
-            // CALL Update() on _sceneGraph, passing gameTime as a parameter:
-            (_sceneGraph as IUpdatable).Update(gameTime);
+            // CALL Update() on _sceneGraph, passing pGameTime as a parameter:
+            (_sceneGraph as IUpdatable).Update(pGameTime);
         }
 
         #endregion

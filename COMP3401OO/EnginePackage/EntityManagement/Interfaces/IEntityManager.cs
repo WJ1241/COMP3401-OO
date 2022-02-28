@@ -16,20 +16,20 @@ namespace COMP3401OO.EnginePackage.EntityManagement.Interfaces
         /// <summary>
         /// Initialises an object with a reference to an ISceneManager
         /// </summary>
-        /// <param name="sceneManager">Reference to ISceneManager object</param>
-        void Initialise(ISceneManager sceneManager);
+        /// <param name="pSceneManager">Reference to ISceneManager object</param>
+        void Initialise(ISceneManager pSceneManager);
 
         /// <summary>
         /// Initialises an object with a reference to an IKeyboardPublisher
         /// </summary>
-        /// <param name="kBManager">Reference to IKeyboardPublisher object</param>
-        void Initialise(IKeyboardPublisher kBManager);
+        /// <param name="pKBManager">Reference to IKeyboardPublisher object</param>
+        void Initialise(IKeyboardPublisher pKBManager);
 
         /// <summary>
         /// Creates an object of IEntity, using <T> as a generic type
         /// </summary>
-        /// <param name="uName">Reference to object using unique name</param>
-        IEntity Create<T>(string uName) where T : IEntity, new();
+        /// <param name="pUName">Reference to object using unique name</param>
+        IEntity Create<T>(string pUName) where T : IEntity, new();
 
         /// <summary>
         /// Returns an IDictionary<string, IEntity> which is the master Dictionary in the program
@@ -39,8 +39,8 @@ namespace COMP3401OO.EnginePackage.EntityManagement.Interfaces
         /// <summary>
         /// Terminates an object from entity manager and other managers
         /// </summary>
-        /// <param name="uName">Reference to object using unique name</param>
-        void Terminate(string uName);
+        /// <param name="pUName">Reference to object using unique name</param>
+        void Terminate(string pUName);
 
         #endregion
     }

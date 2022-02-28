@@ -6,6 +6,7 @@ using COMP3401OO.EnginePackage.CoreInterfaces;
 using COMP3401OO.EnginePackage.EntityManagement.Interfaces;
 using COMP3401OO.EnginePackage.SceneManagement.Interfaces;
 using COMP3401OO.EnginePackage.Services.Interfaces;
+using COMP3401OO.EnginePackage.Exceptions;
 
 namespace COMP3401OO.EnginePackage.SceneManagement
 {
@@ -31,6 +32,7 @@ namespace COMP3401OO.EnginePackage.SceneManagement
         /// </summary>
         public SceneGraph()
         {
+            // EMPTY CONSTRUCTOR
         }
 
         #endregion
@@ -41,11 +43,21 @@ namespace COMP3401OO.EnginePackage.SceneManagement
         /// <summary>
         /// Initialises object with a reference to an IDictionary<string, IEntity>
         /// </summary>
-        /// <param name="sceneDictionary">Holds reference to 'IDictionary<string, IEntity>'</param>
-        public void Initialise(IDictionary<string, IEntity> sceneDictionary)
+        /// <param name="pSceneDictionary">Holds reference to 'IDictionary<string, IEntity>'</param>
+        public void Initialise(IDictionary<string, IEntity> pSceneDictionary)
         {
-            // ASSIGN _sceneDictionary as the same instance as sceneDictionary:
-            _sceneDictionary = sceneDictionary;
+            // IF pSceneManager DOES HAVE an active instance:
+            if (pSceneDictionary != null)
+            {
+                // INITIALISE _sceneDictionary with reference to pSceneDictionary:
+                _sceneDictionary = pSceneDictionary;
+            }
+            // IF pSceneManager DOES NOT HAVE an active instance:
+            else
+            {
+                // THROW a new NullInstanceException(), with corresponding message:
+                throw new NullInstanceException("ERROR: pSceneDictionary does not have an active instance!");
+            }
         }
 
         #endregion
@@ -56,12 +68,12 @@ namespace COMP3401OO.EnginePackage.SceneManagement
         /// <summary>
         /// Spawns Entity on screen and adds to a list/dictionary
         /// </summary>
-        /// <param name="entity">Reference to an instance of IEntity</param>
-        /// <param name="position">Positional values used to place entity</param>
-        public void Spawn(IEntity entity, Vector2 position)
+        /// <param name="pEntity">Reference to an instance of IEntity</param>
+        /// <param name="pPosition">Positional values used to place entity</param>
+        public void Spawn(IEntity pEntity, Vector2 pPosition)
         {
-            // ASSIGN entity.Position as the same value as position:
-            entity.Position = position;
+            // ASSIGN pEntity.Position as the same value as pPosition:
+            pEntity.Position = pPosition;
         }
 
         #endregion
@@ -72,14 +84,14 @@ namespace COMP3401OO.EnginePackage.SceneManagement
         /// <summary>
         /// When called, draws entity's texture on screen
         /// </summary>
-        /// <param name="spriteBatch">Needed to draw entity's texture on screen</param>
-        public void Draw(SpriteBatch spriteBatch)
+        /// <param name="pSpriteBatch">Needed to draw entity's texture on screen</param>
+        public void Draw(SpriteBatch pSpriteBatch)
         {
             // FOREACH any entity implementing IDraw:
-            foreach (IDraw entity in _sceneDictionary.Values)
+            foreach (IDraw pEntity in _sceneDictionary.Values)
             {
                 // CALL Draw method on all entities in _entityDictionary:
-                entity.Draw(spriteBatch);
+                pEntity.Draw(pSpriteBatch);
             }
         }
 
@@ -91,15 +103,19 @@ namespace COMP3401OO.EnginePackage.SceneManagement
         /// <summary>
         /// Updates object when a frame has been rendered on screen
         /// </summary>
-        /// <param name="gameTime">holds reference to GameTime object</param>
-        public void Update(GameTime gameTime)
+        /// <param name="pGameTime">holds reference to GameTime object</param>
+        public void Update(GameTime pGameTime)
         {
             // FOREACH any entity implementing IUpdatable:
             // NEED TO USE TOLIST() AS COLLECTION IS MODIFIED WHEN THIS METHOD IS STILL BEING CALLED
-            foreach (IUpdatable entity in _sceneDictionary.Values.ToList())
+            foreach (IEntity pEntity in _sceneDictionary.Values.ToList())
             {
-                // CALL Update method on all entities in _entityDictionary:
-                entity.Update(gameTime);
+                // IF pEntity implements IUpdatable:
+                if (pEntity is IUpdatable)
+                {
+                    // CALL Update method on all updatable entities in _entityDictionary:
+                    (pEntity as IUpdatable).Update(pGameTime);
+                }
             }
         }
 

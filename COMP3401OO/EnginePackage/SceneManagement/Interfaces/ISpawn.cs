@@ -15,9 +15,9 @@ namespace COMP3401OO.EnginePackage.SceneManagement.Interfaces
         /// <summary>
         /// Spawns Entity on screen and adds to a list/dictionary
         /// </summary>
-        /// <param name="entity">Reference to an instance of IEntity</param>
-        /// <param name="position">Positional values used to place entity</param>
-        void Spawn(IEntity entity, Vector2 position);
+        /// <param name="pEntity">Reference to an instance of IEntity</param>
+        /// <param name="pPosition">Positional values used to place entity</param>
+        void Spawn(IEntity pEntity, Vector2 pPosition);
 
         #endregion
     }

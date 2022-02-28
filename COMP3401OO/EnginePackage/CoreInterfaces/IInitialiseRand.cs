@@ -7,15 +7,15 @@ namespace COMP3401OO.EnginePackage.CoreInterfaces
     /// Author: William Smith
     /// Date: 13/02/22
     /// </summary>
-    interface IInitialiseRand
+    public interface IInitialiseRand
     {
         #region METHODS
 
         /// <summary>
         /// Initialises an object with a Random object
         /// </summary>
-        /// <param name="rand">holds reference to a Random object</param>
-        void Initialise(Random rand);
+        /// <param name="pRand">holds reference to a Random object</param>
+        void Initialise(Random pRand);
 
         #endregion
     }
