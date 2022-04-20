@@ -50,7 +50,6 @@
     <Compile Include="PongPackage\Behaviours\PongBehaviour.cs" />
     <Compile Include="PongPackage\Entities\Ball.cs" />
     <Compile Include="PongPackage\Delegates\Delegates.cs" />
-    <Compile Include="PongPackage\Delegates\Interfaces\IInitialiseCheckPosDel.cs" />
     <Compile Include="PongPackage\Entities\Paddle.cs" />
     <Compile Include="PongPackage\Entities\PongEntity.cs" />
     <Compile Include="Kernel.cs" />
@@ -62,7 +61,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="ProjectHWTest\Interfaces\IExportExcelData.cs" />
-    <Compile Include="ProjectHWTest\Interfaces\IInitialiseStopwatch.cs" />
     <Compile Include="ProjectHWTest\Interfaces\ITestPerformance.cs" />
     <Compile Include="ProjectHWTest\PerformanceMeasure.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

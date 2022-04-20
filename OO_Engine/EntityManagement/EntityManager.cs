@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
-using COMP3401OO_Engine.Delegates.Interfaces;
+using COMP3401OO_Engine.CoreInterfaces;
+using COMP3401OO_Engine.Delegates;
 using COMP3401OO_Engine.EntityManagement.Interfaces;
 using COMP3401OO_Engine.Exceptions;
 using COMP3401OO_Engine.Factories.Interfaces;
@@ -14,7 +15,7 @@ namespace COMP3401OO_Engine.EntityManagement
     /// Author: William Smith
     /// Date: 13/02/22
     /// </summary>
-    public class EntityManager : IEntityManager, IInitialiseIEntityFactory, IService
+    public class EntityManager : IEntityManager, IInitialiseParam<IFactory<IEntity>>, IService
     {
         #region FIELD VARIABLES
 
@@ -108,7 +109,7 @@ namespace COMP3401OO_Engine.EntityManagement
             IEntity _object = _entityFactory.Create<T>();
 
             // INITIALISE _object with reference to Terminate():
-            (_object as IInitialiseDeleteDel).Initialise(Terminate);
+            (_object as IInitialiseParam<DeleteDelegate>).Initialise(Terminate);
             
             // CALL generate() to initialise uID and pUName:
             Generate(_object, _uIDCount, pUName);
@@ -155,7 +156,7 @@ namespace COMP3401OO_Engine.EntityManagement
         #endregion
 
 
-        #region IMPLEMENTATION OF IINITIALISEIENTITYFACTORY
+        #region IMPLEMENTATION OF IINITIALISEPARAM<IFACTORY<IENTITY>>
 
         /// <summary>
         /// Initialises an object with an IFactory<IEntity> object

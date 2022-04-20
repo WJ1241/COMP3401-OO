@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
+using COMP3401OO_Engine.CoreInterfaces;
 using COMP3401OO_Engine.Delegates;
-using COMP3401OO_Engine.Delegates.Interfaces;
 
 namespace COMP3401OO.PongPackage.Forms
 {
@@ -10,7 +10,7 @@ namespace COMP3401OO.PongPackage.Forms
     /// Author: William Smith
     /// Date: 06/04/22
     /// </summary>
-    public partial class CreationScreen : Form, IInitialiseCreateMultiDel, IInitialiseDeleteMultiDel
+    public partial class CreationScreen : Form, IInitialiseParam<CreateMultipleDelegate>, IInitialiseParam<DeleteMultipleDelegate>
     {
         #region FIELD VARIABLES
 
@@ -40,7 +40,7 @@ namespace COMP3401OO.PongPackage.Forms
         #endregion
 
 
-        #region IMPLEMENTATION OF IINITIALISECREATEMULTIDEL
+        #region IMPLEMENTATION OF IINITIALISEPARAM<CREATEMULTIPLEDELEGATE>
 
         /// <summary>
         /// Initialises an object with a 'CreateMultipleDelegate' method
@@ -55,7 +55,7 @@ namespace COMP3401OO.PongPackage.Forms
         #endregion
 
 
-        #region IMPLEMENTATION OF IINITIALISEDELETEMULTIDEL
+        #region IMPLEMENTATION OF IINITIALISEPARAM<DELETEMULTIPLEDELEGATE>
 
         /// <summary>
         /// Initialises an object with a 'DeleteMultipleDelegate' method

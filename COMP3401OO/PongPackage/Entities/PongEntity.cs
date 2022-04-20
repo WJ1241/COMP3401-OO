@@ -13,7 +13,7 @@ namespace COMP3401OO.PongPackage.Entities
     /// Author: William Smith
     /// Date: 06/04/22
     /// </summary>
-    public abstract class PongEntity : DrawableEntity, IInitialiseEventArgs, IInitialiseIUpdateEventListener, IUpdatable, IVelocity
+    public abstract class PongEntity : DrawableEntity, IInitialiseParam<EventArgs>, IInitialiseParam<IUpdateEventListener>, IUpdatable, IVelocity
     {
         #region FIELD VARIABLES
 
@@ -32,7 +32,7 @@ namespace COMP3401OO.PongPackage.Entities
         #endregion
 
 
-        #region IMPLEMENTATION OF IINITIALISEEVENTARGS
+        #region IMPLEMENTATION OF IINITIALISEPARAM<EVENTARGS>
 
         /// <summary>
         /// Initialises an object with an EventArgs object
@@ -57,7 +57,7 @@ namespace COMP3401OO.PongPackage.Entities
         #endregion
 
 
-        #region IMPLEMENTATION OF IINITIALISEIUPDATEVENTLISTENER
+        #region IMPLEMENTATION OF IINITIALISEPARAM<IUPDATEVENTLISTENER>
 
         /// <summary>
         /// Initialises an object with an IUpdateEventListener object

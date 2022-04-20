@@ -11,7 +11,7 @@ namespace COMP3401OO_Engine.Behaviours
     /// Author: William Smith
     /// Date: 26/02/22
     /// </summary>
-    public abstract class Behaviour : IInitialiseIEntity, IUpdateEventListener
+    public abstract class Behaviour : IInitialiseParam<IEntity>, IUpdateEventListener
     {
         #region FIELD VARIABLES
 
@@ -21,7 +21,7 @@ namespace COMP3401OO_Engine.Behaviours
         #endregion
 
 
-        #region IMPLEMENTATION OF IINITIALISEIENTITY
+        #region IMPLEMENTATION OF IINITIALISEPARAM<IENTITY>
 
         /// <summary>
         /// Initialises an object with an IEntity object

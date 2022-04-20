@@ -11,7 +11,7 @@ using COMP3401OO_Engine.Behaviours.Interfaces;
 using COMP3401OO_Engine.CollisionManagement;
 using COMP3401OO_Engine.CollisionManagement.Interfaces;
 using COMP3401OO_Engine.CoreInterfaces;
-using COMP3401OO_Engine.Delegates.Interfaces;
+using COMP3401OO_Engine.CustomEventArgs;
 using COMP3401OO_Engine.EntityManagement;
 using COMP3401OO_Engine.EntityManagement.Interfaces;
 using COMP3401OO_Engine.Exceptions;
@@ -23,12 +23,12 @@ using COMP3401OO_Engine.SceneManagement;
 using COMP3401OO_Engine.SceneManagement.Interfaces;
 using COMP3401OO_Engine.Services.Interfaces;
 using COMP3401OO.PongPackage.Behaviours;
-using COMP3401OO.PongPackage.Delegates.Interfaces;
 using COMP3401OO.PongPackage.Entities;
 using COMP3401OO.PongPackage.Forms;
 using COMP3401OO_ProjectHWTest;
 using COMP3401OO.ProjectHWTest.Interfaces;
-using COMP3401OO_Engine.CustomEventArgs;
+using COMP3401OO.PongPackage.Delegates;
+using COMP3401OO_Engine.Delegates;
 
 namespace COMP3401OO
 {
@@ -134,10 +134,10 @@ namespace COMP3401OO
             _screenSize.Y = GraphicsDevice.Viewport.Height;
 
             // INITIALISE _entityCreator with reference to CreateMultipleEntities():
-            (_entityCreator as IInitialiseCreateMultiDel).Initialise(CreateMultipleEntities);
+            (_entityCreator as IInitialiseParam<CreateMultipleDelegate>).Initialise(CreateMultipleEntities);
 
             // INITIALISE _entityCreator with reference to DeleteMultipleEntities():
-            (_entityCreator as IInitialiseDeleteMultiDel).Initialise(DeleteMultipleEntities);
+            (_entityCreator as IInitialiseParam<DeleteMultipleDelegate>).Initialise(DeleteMultipleEntities);
 
             // SHOW _entityCreator:
             _entityCreator.Show();
@@ -198,7 +198,7 @@ namespace COMP3401OO
                 #region INITIALISATIONS
 
                 // INITIALISE _serviceDict["EntityManager"] with reference to _serviceDict["EntityFactory"]:
-                (_serviceDict["EntityManager"] as IInitialiseIEntityFactory).Initialise(_serviceDict["EntityFactory"] as IFactory<IEntity>);
+                (_serviceDict["EntityManager"] as IInitialiseParam<IFactory<IEntity>>).Initialise(_serviceDict["EntityFactory"] as IFactory<IEntity>);
 
                 // INITIALISE _serviceDict["EntityManager"] with reference to _serviceDict["SceneManager"]:
                 (_serviceDict["EntityManager"] as IEntityManager).Initialise(_serviceDict["SceneManager"] as ISceneManager);
@@ -223,7 +223,7 @@ namespace COMP3401OO
                 _serviceDict.Add("PerformanceMeasure", (_serviceDict["ServiceFactory"] as IFactory<IService>).Create<PerformanceMeasure>());
 
                 // INITIALISE _serviceDict["PerformanceMeasure"] with a new Stopwatch():
-                (_serviceDict["PerformanceMeasure"] as IInitialiseStopwatch).Initialise(new Stopwatch());
+                (_serviceDict["PerformanceMeasure"] as IInitialiseParam<Stopwatch>).Initialise(new Stopwatch());
 
                 // INITIALISE _serviceDict["PerformanceMeasure"] with a new XLWorkbook():
                 (_serviceDict["PerformanceMeasure"] as IExportExcelData).Initialise((_serviceDict["DisposableFactory"] as IFactory<IDisposable>).Create<XLWorkbook>() as XLWorkbook);
@@ -557,10 +557,10 @@ namespace COMP3401OO
             /// INITIALISATION
             
             // INITIALISE tempBehaviour with reference to CheckGoal():
-            (tempBehaviour as IInitialiseCheckPosDel).Initialise(CheckGoal);
+            (tempBehaviour as IInitialiseParam<CheckPositionDelegate>).Initialise(CheckGoal);
 
             // INITIALISE tempBehaviour with a new Ball():
-            (tempBehaviour as IInitialiseIEntity).Initialise((_serviceDict["EntityManager"] as IEntityManager).Create<Ball>("Ball" + _ballCount));
+            (tempBehaviour as IInitialiseParam<IEntity>).Initialise((_serviceDict["EntityManager"] as IEntityManager).Create<Ball>("Ball" + _ballCount));
 
             #endregion
 
@@ -575,16 +575,16 @@ namespace COMP3401OO
             /// INTIIALISATION
 
             // INITIALISE '"Ball" + _ballCount' with reference to _tempBehaviour:
-            (tempEntity as IInitialiseIUpdateEventListener).Initialise(tempBehaviour);
+            (tempEntity as IInitialiseParam<IUpdateEventListener>).Initialise(tempBehaviour);
 
             // INITIALISE '"Ball" + _ballCount' with a new UpdateEventArgs():
-            (tempEntity as IInitialiseEventArgs).Initialise((_serviceDict["EventArgsFactory"] as IFactory<EventArgs>).Create<UpdateEventArgs>());
+            (tempEntity as IInitialiseParam<EventArgs>).Initialise((_serviceDict["EventArgsFactory"] as IFactory<EventArgs>).Create<UpdateEventArgs>());
 
             // INITIALISE '"Ball" + _ballCount' with a new CollisionEventArgs():
-            (tempEntity as IInitialiseEventArgs).Initialise((_serviceDict["EventArgsFactory"] as IFactory<EventArgs>).Create<CollisionEventArgs>());
+            (tempEntity as IInitialiseParam<EventArgs>).Initialise((_serviceDict["EventArgsFactory"] as IFactory<EventArgs>).Create<CollisionEventArgs>());
 
             // INITIALISE '"Ball" + _ballCount' with reference to rand:
-            (tempEntity as IInitialiseRand).Initialise(_rand);
+            (tempEntity as IInitialiseParam<Random>).Initialise(_rand);
 
             // SET boundary size for '"Ball" + _ballCount':
             (tempEntity as IContainBoundary).WindowBorder = _screenSize;

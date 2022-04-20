@@ -1,8 +1,8 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using COMP3401OO_Engine.Delegates;
-using COMP3401OO_Engine.Delegates.Interfaces;
 using COMP3401OO_Engine.EntityManagement.Interfaces;
+using COMP3401OO_Engine.CoreInterfaces;
 
 namespace COMP3401OO_Engine.EntityManagement
 {
@@ -11,7 +11,7 @@ namespace COMP3401OO_Engine.EntityManagement
     /// Author: William Smith
     /// Date: 13/02/22
     /// </summary>
-    public abstract class Entity : IEntity, IInitialiseDeleteDel, IContainBoundary, ITerminate
+    public abstract class Entity : IEntity, IInitialiseParam<DeleteDelegate>, IContainBoundary, ITerminate
     {
         #region FIELD VARIABLES
 
@@ -92,7 +92,7 @@ namespace COMP3401OO_Engine.EntityManagement
         #endregion
 
 
-        #region IMPLEMENTATION OF IINITIALISEDELETEDEL
+        #region IMPLEMENTATION OF IINITIALISEPARAM<DELETEDELEGATE>
 
         /// <summary>
         /// Initialises an object with a DeleteDelegate

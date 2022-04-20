@@ -13,7 +13,7 @@ namespace COMP3401OO.PongPackage.Entities
     /// Author: William Smith
     /// Date: 06/04/22
     /// </summary>
-    public class Ball : PongEntity, IInitialiseRand, IReset, ICollidable, ICollisionListener
+    public class Ball : PongEntity, IInitialiseParam<Random>, IReset, ICollidable, ICollisionListener
     {
         #region FIELD VARIABLES
 
@@ -78,7 +78,7 @@ namespace COMP3401OO.PongPackage.Entities
         #endregion
 
 
-        #region IMPLEMENTATION OF IINITIALISEIUPDATEVENTLISTENER
+        #region IMPLEMENTATION OF IINITIALISEPARAM<IUPDATEVENTLISTENER>
 
         /// <summary>
         /// Initialises an object with an IUpdateEventListener object

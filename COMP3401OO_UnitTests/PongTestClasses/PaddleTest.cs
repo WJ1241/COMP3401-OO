@@ -101,7 +101,7 @@ namespace COMP3401OO_UnitTests.PongTestClasses
             #region BEHAVIOUR
 
             // INITIALISE _paddleBehaviour with reference to _paddle:
-            (_paddleBehaviour as IInitialiseIEntity).Initialise(_paddle);
+            (_paddleBehaviour as IInitialiseParam<IEntity>).Initialise(_paddle);
 
             // DECLARE & INSTANTIATE a KBEventArgs(), name it '_args':
             KBEventArgs _args = new KBEventArgs();
@@ -170,7 +170,7 @@ namespace COMP3401OO_UnitTests.PongTestClasses
             #region BEHAVIOUR
 
             // INITIALISE _paddleBehaviour with reference to _paddle:
-            (_paddleBehaviour as IInitialiseIEntity).Initialise(_paddle);
+            (_paddleBehaviour as IInitialiseParam<IEntity>).Initialise(_paddle);
 
             // DECLARE & INSTANTIATE a KBEventArgs(), name it '_args':
             KBEventArgs _args = new KBEventArgs();
@@ -245,7 +245,7 @@ namespace COMP3401OO_UnitTests.PongTestClasses
             #region BEHAVIOUR
 
             // INITIALISE _paddleBehaviour with reference to _paddle:
-            (_paddleBehaviour as IInitialiseIEntity).Initialise(_paddle);
+            (_paddleBehaviour as IInitialiseParam<IEntity>).Initialise(_paddle);
 
             // DECLARE & INSTANTIATE a KBEventArgs(), name it '_args':
             KBEventArgs _args = new KBEventArgs();
@@ -314,7 +314,7 @@ namespace COMP3401OO_UnitTests.PongTestClasses
             #region BEHAVIOUR
 
             // INITIALISE _paddleBehaviour with reference to _paddle:
-            (_paddleBehaviour as IInitialiseIEntity).Initialise(_paddle);
+            (_paddleBehaviour as IInitialiseParam<IEntity>).Initialise(_paddle);
 
             // DECLARE & INSTANTIATE a KBEventArgs(), name it '_args':
             KBEventArgs _args = new KBEventArgs();
@@ -388,7 +388,7 @@ namespace COMP3401OO_UnitTests.PongTestClasses
             #region BEHAVIOUR
 
             // INITIALISE _paddleBehaviour with reference to _paddle:
-            (_paddleBehaviour as IInitialiseIEntity).Initialise(_paddle);
+            (_paddleBehaviour as IInitialiseParam<IEntity>).Initialise(_paddle);
 
             #endregion
 
@@ -453,7 +453,7 @@ namespace COMP3401OO_UnitTests.PongTestClasses
             #region BEHAVIOUR
 
             // INITIALISE _paddleBehaviour with reference to _paddle:
-            (_paddleBehaviour as IInitialiseIEntity).Initialise(_paddle);
+            (_paddleBehaviour as IInitialiseParam<IEntity>).Initialise(_paddle);
 
             #endregion
 

@@ -5,7 +5,6 @@ using COMP3401OO_Engine.CoreInterfaces;
 using COMP3401OO_Engine.CustomEventArgs;
 using COMP3401OO_Engine.EntityManagement.Interfaces;
 using COMP3401OO.PongPackage.Delegates;
-using COMP3401OO.PongPackage.Delegates.Interfaces;
 
 namespace COMP3401OO.PongPackage.Behaviours
 {
@@ -14,7 +13,7 @@ namespace COMP3401OO.PongPackage.Behaviours
     /// Author: William Smith
     /// Date: 25/02/22
     /// </summary>
-    public class BallBehaviour : PongBehaviour, ICollisionEventListener, IInitialiseCheckPosDel
+    public class BallBehaviour : PongBehaviour, ICollisionEventListener, IInitialiseParam<CheckPositionDelegate>
     {
         #region FIELD VARIABLES
 
@@ -76,7 +75,7 @@ namespace COMP3401OO.PongPackage.Behaviours
         #endregion
 
 
-        #region IMPLEMENTATION OF IINITIALISECHECKPOSDEL
+        #region IMPLEMENTATION OF IINITIALISEPARAM<CHECKPOSITIONDELEGATE>
 
         /// <summary>
         /// Initialises an object with a CheckPositionDelegate

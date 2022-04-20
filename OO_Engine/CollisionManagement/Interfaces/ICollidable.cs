@@ -9,6 +9,7 @@ namespace COMP3401OO_Engine.CollisionManagement.Interfaces
     /// </summary>
     public interface ICollidable
     {
+
         #region PROPERTIES
 
         /// <summary>

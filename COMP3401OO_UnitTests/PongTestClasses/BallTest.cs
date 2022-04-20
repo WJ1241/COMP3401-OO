@@ -4,14 +4,14 @@ using COMP3401OO_Engine.Behaviours.Interfaces;
 using COMP3401OO_Engine.CollisionManagement.Interfaces;
 using COMP3401OO_Engine.CoreInterfaces;
 using COMP3401OO_Engine.CustomEventArgs;
-using COMP3401OO_Engine.Delegates.Interfaces;
 using COMP3401OO_Engine.EntityManagement;
 using COMP3401OO_Engine.EntityManagement.Interfaces;
 using COMP3401OO_Engine.SceneManagement;
 using COMP3401OO_Engine.SceneManagement.Interfaces;
 using COMP3401OO.PongPackage.Behaviours;
 using COMP3401OO.PongPackage.Entities;
-using COMP3401OO.PongPackage.Delegates.Interfaces;
+using COMP3401OO.PongPackage.Delegates;
+using COMP3401OO_Engine.Delegates;
 
 namespace COMP3401OO_UnitTests.PongTestClasses
 {
@@ -105,7 +105,7 @@ namespace COMP3401OO_UnitTests.PongTestClasses
             #region BEHAVIOUR
 
             // INITIALISE _ballBehaviour with reference to _ball:
-            (_ballBehaviour as IInitialiseIEntity).Initialise(_ball);
+            (_ballBehaviour as IInitialiseParam<IEntity>).Initialise(_ball);
 
             #endregion
 
@@ -113,7 +113,7 @@ namespace COMP3401OO_UnitTests.PongTestClasses
             #region ENTITY
             
             // INITIALISE _ball with reference to _ballBehaviour:
-            (_ball as IInitialiseIUpdateEventListener).Initialise(_ballBehaviour);
+            (_ball as IInitialiseParam<IUpdateEventListener>).Initialise(_ballBehaviour);
 
             // SPAWN _ball in top middle of screen, Y axis value of 1, so it is 1px from contact before running code:
             _ball.Position = new Vector2((_bounds.X / 2) - (_ball as ITexture).TexSize.X / 2, 1);
@@ -173,7 +173,7 @@ namespace COMP3401OO_UnitTests.PongTestClasses
             #region BEHAVIOUR
 
             // INITIALISE _ballBehaviour with reference to _ball:
-            (_ballBehaviour as IInitialiseIEntity).Initialise(_ball);
+            (_ballBehaviour as IInitialiseParam<IEntity>).Initialise(_ball);
 
             #endregion
 
@@ -181,7 +181,7 @@ namespace COMP3401OO_UnitTests.PongTestClasses
             #region ENTITY
 
             // INITIALISE _ball with reference to _ballBehaviour:
-            (_ball as IInitialiseIUpdateEventListener).Initialise(_ballBehaviour);
+            (_ball as IInitialiseParam<IUpdateEventListener>).Initialise(_ballBehaviour);
 
             // SPAWN _ball in bottom middle of screen, Y axis value of _bounds.Y - 1, so it is 1px from contact before running code:
             _ball.Position = new Vector2((_bounds.X / 2) - (_ball as ITexture).TexSize.X / 2, _bounds.Y - 1);
@@ -244,7 +244,7 @@ namespace COMP3401OO_UnitTests.PongTestClasses
             #region BEHAVIOUR
 
             // INITIALISE _ballBehaviour with reference to _ball:
-            (_ballBehaviour as IInitialiseIEntity).Initialise(_ball);
+            (_ballBehaviour as IInitialiseParam<IEntity>).Initialise(_ball);
 
             // DECLARE & INSTANTIATE a CollisionEventArgs(), name it '_args':
             CollisionEventArgs _args = new CollisionEventArgs();
@@ -258,7 +258,7 @@ namespace COMP3401OO_UnitTests.PongTestClasses
             #region BALL
 
             // INITIALISE _ball with reference to _ballBehaviour:
-            (_ball as IInitialiseIUpdateEventListener).Initialise(_ballBehaviour as IUpdateEventListener);
+            (_ball as IInitialiseParam<IUpdateEventListener>).Initialise(_ballBehaviour as IUpdateEventListener);
 
             // SPAWN _ball in bottom middle of screen, Y axis value of _bounds.Y - 1, so it is 1px from contact before running code:
             _ball.Position = new Vector2((_bounds.X / 2) - (_ball as ITexture).TexSize.X / 2, _bounds.Y - 1);
@@ -291,7 +291,12 @@ namespace COMP3401OO_UnitTests.PongTestClasses
 
         #endregion
 
-        
+
+        //// THE TERMINATION TESTS WILL FAIL DUE TO REMOVING
+        //// TERMINATION WHEN LEFT AND RIGHT SCREEN IS HIT BY BALL
+        //// SO THAT ENTITIES ARE NOT BEING CREATED AND TERMINATED
+        //// AT RUNTIME
+
         #region TERMINATION
 
         /// <summary>
@@ -341,10 +346,10 @@ namespace COMP3401OO_UnitTests.PongTestClasses
             #region BEHAVIOUR
 
             // INITIALISE _ballBehaviour with reference to _ball:
-            (_ballBehaviour as IInitialiseIEntity).Initialise(_ball);
+            (_ballBehaviour as IInitialiseParam<IEntity>).Initialise(_ball);
 
             // INITIALISE _ballBehaviour with a reference to DummyCreate():
-            (_ballBehaviour as IInitialiseCheckPosDel).Initialise(DummyCreate);
+            (_ballBehaviour as IInitialiseParam<CheckPositionDelegate>).Initialise(DummyCreate);
 
             #endregion
 
@@ -352,10 +357,10 @@ namespace COMP3401OO_UnitTests.PongTestClasses
             #region ENTITY
 
             // INITIALISE _ball with reference to _ballBehaviour:
-            (_ball as IInitialiseIUpdateEventListener).Initialise(_ballBehaviour);
+            (_ball as IInitialiseParam<IUpdateEventListener>).Initialise(_ballBehaviour);
 
             // INITIALISE _ball with a reference to _entityManager.Terminate():
-            (_ball as IInitialiseDeleteDel).Initialise(_entityManager.Terminate);
+            (_ball as IInitialiseParam<DeleteDelegate>).Initialise(_entityManager.Terminate);
 
             // SPAWN _ball in far left middle of screen, X axis value of 1, so it is 1px from contact before running code:
             _ball.Position = new Vector2(1, _bounds.Y / 2);
@@ -442,10 +447,10 @@ namespace COMP3401OO_UnitTests.PongTestClasses
             #region BEHAVIOUR
 
             // INITIALISE _ballBehaviour with reference to _ball:
-            (_ballBehaviour as IInitialiseIEntity).Initialise(_ball);
+            (_ballBehaviour as IInitialiseParam<IEntity>).Initialise(_ball);
 
             // INITIALISE _ballBehaviour with a reference to DummyCreate():
-            (_ballBehaviour as IInitialiseCheckPosDel).Initialise(DummyCreate);
+            (_ballBehaviour as IInitialiseParam<CheckPositionDelegate>).Initialise(DummyCreate);
 
             #endregion
 
@@ -453,10 +458,10 @@ namespace COMP3401OO_UnitTests.PongTestClasses
             #region ENTITY
 
             // INITIALISE _ball with reference to _ballBehaviour:
-            (_ball as IInitialiseIUpdateEventListener).Initialise(_ballBehaviour);
+            (_ball as IInitialiseParam<IUpdateEventListener>).Initialise(_ballBehaviour);
 
             // INITIALISE _ball with a reference to _entityManager.Terminate():
-            (_ball as IInitialiseDeleteDel).Initialise(_entityManager.Terminate);
+            (_ball as IInitialiseParam<DeleteDelegate>).Initialise(_entityManager.Terminate);
 
             // SPAWN _ball in far right middle of screen, X axis value of _bounds.X - 1, so it is 1px from contact before running code:
             _ball.Position = new Vector2(_bounds.X - 1, _bounds.Y / 2);
