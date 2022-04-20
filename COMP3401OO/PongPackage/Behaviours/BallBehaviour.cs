@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
-using COMP3401OO.EnginePackage.Behaviours.Interfaces;
-using COMP3401OO.EnginePackage.CoreInterfaces;
-using COMP3401OO.EnginePackage.CustomEventArgs;
-using COMP3401OO.EnginePackage.EntityManagement.Interfaces;
+using COMP3401OO_Engine.Behaviours.Interfaces;
+using COMP3401OO_Engine.CoreInterfaces;
+using COMP3401OO_Engine.CustomEventArgs;
+using COMP3401OO_Engine.EntityManagement.Interfaces;
 using COMP3401OO.PongPackage.Delegates;
 using COMP3401OO.PongPackage.Delegates.Interfaces;
 
@@ -108,36 +108,59 @@ namespace COMP3401OO.PongPackage.Behaviours
         /// </summary>
         protected override void Boundary()
         {
+            // DECLARE & INITIALISE a Vector2, name it 'tempVel', give value of _entity's Velocity Property:
+            Vector2 tempVel = (_entity as IVelocity).Velocity;
+
             // IF at top screen edge or bottom screen edge:
             if (_entity.Position.Y <= 0 || _entity.Position.Y >= (_entity as IContainBoundary).WindowBorder.Y - (_entity as ITexture).TexSize.Y)
             {
-                // DECLARE & INITIALISE a Vector2, name it '_tempVel', give value of _entity's Velocity Property:
-                Vector2 _tempVel = (_entity as IVelocity).Velocity;
+                // REVERSE tempVel.Y:
+                tempVel.Y *= -1;
 
-                // REVERSE _tempVel.Y:
-                _tempVel.Y *= -1;
-
-                // SET value of _entity's Velocity property to newly adjusted value of _tempVel:
-                (_entity as IVelocity).Velocity = _tempVel;
+                // SET value of _entity's Velocity property to newly adjusted value of tempVel:
+                (_entity as IVelocity).Velocity = tempVel;
             }
             // IF at left screen edge or right screen edge:
             else if (_entity.Position.X <= 0 || _entity.Position.X >= ((_entity as IContainBoundary).WindowBorder.X - (_entity as ITexture).TexSize.X))
             {
+                // REVERSE _tempVel.X:
+                tempVel.X *= -1;
+
+                // SET value of _entity's Velocity property to newly adjusted value of tempVel:
+                (_entity as IVelocity).Velocity = tempVel;
+
+                // IF entity exceeds the left screen bounds:
+                if (_entity.Position.X <= 0)
+                {
+                    // SET Position property value of _entity to the left edge of the screen so that it cannot leave screen if travelling too quick:
+                    _entity.Position = new Vector2(0, _entity.Position.Y);
+                }
+                // IF entity exceeds the right screen bounds:
+                if (_entity.Position.X >= ((_entity as IContainBoundary).WindowBorder.X - (_entity as ITexture).TexSize.X))
+                {
+                    // SET Position property value of tempTFComp to the right edge of the screen so that it cannot leave screen if travelling too quick:
+                    _entity.Position = new Vector2((_entity as IContainBoundary).WindowBorder.X - (_entity as ITexture).TexSize.X, _entity.Position.Y);
+                }
+
+                /*
+
                 // IF at left screen edge:
                 if (_entity.Position.X <= 0)
                 {
                     // CALL _checkPos, passing _entity.Position as a parameter:
-                    _checkPos(_entity.Position);
+                     _checkPos(_entity.Position);
                 }
                 // IF at right screen edge:
                 else if (_entity.Position.X >= (_entity as IContainBoundary).WindowBorder.X - (_entity as ITexture).TexSize.X)
                 {
                     // CALL _checkPos, passing a new Vector2 with a modified _entity.Position.X as a parameter:
-                    _checkPos(new Vector2(_entity.Position.X + (_entity as ITexture).TexSize.X, _entity.Position.Y));
+                     _checkPos(new Vector2(_entity.Position.X + (_entity as ITexture).TexSize.X, _entity.Position.Y));
                 }
 
                 // CALL Terminate on _entity, passing _uName as a parameter:
                 (_entity as ITerminate).Terminate(_entity.UName);
+
+                */
             }
         }
 

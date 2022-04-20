@@ -1,10 +1,10 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using COMP3401OO.EnginePackage.Behaviours.Interfaces;
-using COMP3401OO.EnginePackage.CoreInterfaces;
-using COMP3401OO.EnginePackage.CustomEventArgs;
-using COMP3401OO.EnginePackage.EntityManagement.Interfaces;
+using COMP3401OO_Engine.Behaviours.Interfaces;
+using COMP3401OO_Engine.CoreInterfaces;
+using COMP3401OO_Engine.CustomEventArgs;
+using COMP3401OO_Engine.EntityManagement.Interfaces;
 using COMP3401OO.PongPackage.Behaviours.Interfaces;
 
 namespace COMP3401OO.PongPackage.Behaviours

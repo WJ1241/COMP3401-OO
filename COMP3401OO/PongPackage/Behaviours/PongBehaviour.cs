@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
-using COMP3401OO.EnginePackage.Behaviours;
-using COMP3401OO.EnginePackage.CoreInterfaces;
-using COMP3401OO.EnginePackage.CustomEventArgs;
+using COMP3401OO_Engine.Behaviours;
+using COMP3401OO_Engine.CoreInterfaces;
+using COMP3401OO_Engine.CustomEventArgs;
 
 namespace COMP3401OO.PongPackage.Behaviours
 {

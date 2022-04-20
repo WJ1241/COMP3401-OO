@@ -1,30 +1,58 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
-using COMP3401OO.EnginePackage.Behaviours.Interfaces;
-using COMP3401OO.EnginePackage.CoreInterfaces;
-using COMP3401OO.EnginePackage.CustomEventArgs;
-using COMP3401OO.EnginePackage.EntityManagement;
-using COMP3401OO.EnginePackage.Exceptions;
+using COMP3401OO_Engine.Behaviours.Interfaces;
+using COMP3401OO_Engine.CoreInterfaces;
+using COMP3401OO_Engine.CustomEventArgs;
+using COMP3401OO_Engine.EntityManagement;
+using COMP3401OO_Engine.Exceptions;
 
 namespace COMP3401OO.PongPackage.Entities
 {
     /// <summary>
     /// Abstract class for Pong Entities to inherit from
     /// Author: William Smith
-    /// Date: 25/02/22
+    /// Date: 06/04/22
     /// </summary>
-    public abstract class PongEntity : DrawableEntity, IInitialiseIUpdateEventListener, IUpdatable, IVelocity
+    public abstract class PongEntity : DrawableEntity, IInitialiseEventArgs, IInitialiseIUpdateEventListener, IUpdatable, IVelocity
     {
         #region FIELD VARIABLES
 
         // DECLARE an EventHandler<UpdateEventArgs>, name it '_update':
         protected EventHandler<UpdateEventArgs> _update;
 
+        // DECLARE an UpdateEventArgs, name it '_updateArgs':
+        protected UpdateEventArgs _updateArgs;
+
         // DECLARE a Vector2, name it '_velocity':
         protected Vector2 _velocity;
 
         // DECLARE a float, name it 'speed':
         protected float _speed;
+
+        #endregion
+
+
+        #region IMPLEMENTATION OF IINITIALISEEVENTARGS
+
+        /// <summary>
+        /// Initialises an object with an EventArgs object
+        /// </summary>
+        /// <param name="pArgs"> EventArgs object </param>
+        public virtual void Initialise(EventArgs pArgs)
+        {
+            // IF pArgs DOES HAVE an active instance:
+            if (pArgs != null)
+            {
+                // INITIALISE _updateArgs with reference to pArgs
+                _updateArgs = pArgs as UpdateEventArgs;
+            }
+            // IF pArgs DOES NOT HAVE an active instance:
+            else
+            {
+                // THROW a new NullInstanceException(), with corrsponding message:
+                throw new NullInstanceException("ERROR: pArgs does not have an active instance!");
+            }
+        }
 
         #endregion
 
@@ -62,14 +90,11 @@ namespace COMP3401OO.PongPackage.Entities
         /// <param name="pGameTime">holds reference to GameTime object</param>
         public virtual void Update(GameTime pGameTime)
         {
-            // DECLARE & INSTANTIATE an UpdateEventArgs(), name it '_args':
-            UpdateEventArgs _args = new UpdateEventArgs();
-
             // SET RequiredArg Property value of _args to reference of pGameTime:
-            _args.RequiredArg = pGameTime;
+            _updateArgs.RequiredArg = pGameTime;
 
-            // INVOKE _update(), passing this class, and _args as parameters:
-            _update.Invoke(this, _args);
+            // INVOKE _update(), passing this class, and _updateArgs as parameters:
+            _update.Invoke(this, _updateArgs);
         }
 
         #endregion

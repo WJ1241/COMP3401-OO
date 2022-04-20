@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B4CF0667-B385-4D88-9978-11D59C8C038E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>OO_Engine</RootNamespace>
+    <AssemblyName>OO_Engine</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="MonoGame.Framework, Version=3.7.1.189, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="EnginePackage\Behaviours\Behaviour.cs" />
+    <Compile Include="EnginePackage\Behaviours\Interfaces\ICollisionEventListener.cs" />
+    <Compile Include="EnginePackage\Behaviours\Interfaces\IInitialiseIUpdateEventListener.cs" />
+    <Compile Include="EnginePackage\Behaviours\Interfaces\IKBEventListener.cs" />
+    <Compile Include="EnginePackage\Behaviours\Interfaces\IMouseEventListener.cs" />
+    <Compile Include="EnginePackage\Behaviours\Interfaces\IUpdateEventListener.cs" />
+    <Compile Include="EnginePackage\CollisionManagement\CollisionManager.cs" />
+    <Compile Include="EnginePackage\CollisionManagement\Interfaces\ICollidable.cs" />
+    <Compile Include="EnginePackage\CollisionManagement\Interfaces\ICollisionListener.cs" />
+    <Compile Include="EnginePackage\CollisionManagement\Interfaces\ICollisionManager.cs" />
+    <Compile Include="EnginePackage\CoreInterfaces\IDraw.cs" />
+    <Compile Include="EnginePackage\CoreInterfaces\IGetSpeed.cs" />
+    <Compile Include="EnginePackage\CoreInterfaces\IInitialiseRand.cs" />
+    <Compile Include="EnginePackage\CoreInterfaces\IPlayer.cs" />
+    <Compile Include="EnginePackage\CoreInterfaces\IReset.cs" />
+    <Compile Include="EnginePackage\CoreInterfaces\IRotation.cs" />
+    <Compile Include="EnginePackage\CoreInterfaces\IRtnTextureDict.cs" />
+    <Compile Include="EnginePackage\CoreInterfaces\ITexture.cs" />
+    <Compile Include="EnginePackage\CoreInterfaces\IUpdatable.cs" />
+    <Compile Include="EnginePackage\CoreInterfaces\IVelocity.cs" />
+    <Compile Include="EnginePackage\CustomEventArgs\CollisionEventArgs.cs" />
+    <Compile Include="EnginePackage\CustomEventArgs\Interfaces\IInitialiseEventArgs.cs" />
+    <Compile Include="EnginePackage\CustomEventArgs\KBEventArgs.cs" />
+    <Compile Include="EnginePackage\CustomEventArgs\MouseEventArgs.cs" />
+    <Compile Include="EnginePackage\CustomEventArgs\UpdateEventArgs.cs" />
+    <Compile Include="EnginePackage\Delegates\Delegates.cs" />
+    <Compile Include="EnginePackage\Delegates\Interfaces\IInitialiseCreateMultiDel.cs" />
+    <Compile Include="EnginePackage\Delegates\Interfaces\IInitialiseDeleteDel.cs" />
+    <Compile Include="EnginePackage\Delegates\Interfaces\IInitialiseDeleteMultiDel.cs" />
+    <Compile Include="EnginePackage\EntityManagement\DrawableEntity.cs" />
+    <Compile Include="EnginePackage\EntityManagement\Entity.cs" />
+    <Compile Include="EnginePackage\EntityManagement\EntityManager.cs" />
+    <Compile Include="EnginePackage\EntityManagement\Interfaces\IContainBoundary.cs" />
+    <Compile Include="EnginePackage\EntityManagement\Interfaces\IEntity.cs" />
+    <Compile Include="EnginePackage\EntityManagement\Interfaces\IEntityManager.cs" />
+    <Compile Include="EnginePackage\EntityManagement\Interfaces\IInitialiseIEntity.cs" />
+    <Compile Include="EnginePackage\EntityManagement\Interfaces\IInitialiseIEntityFactory.cs" />
+    <Compile Include="EnginePackage\EntityManagement\Interfaces\ITerminate.cs" />
+    <Compile Include="EnginePackage\Exceptions\ClassDoesNotExistException.cs" />
+    <Compile Include="EnginePackage\Exceptions\NullInstanceException.cs" />
+    <Compile Include="EnginePackage\Factories\Factory.cs" />
+    <Compile Include="EnginePackage\Factories\Interfaces\IFactory.cs" />
+    <Compile Include="EnginePackage\InputManagement\Interfaces\IKeyboardListener.cs" />
+    <Compile Include="EnginePackage\InputManagement\Interfaces\IKeyboardPublisher.cs" />
+    <Compile Include="EnginePackage\InputManagement\Interfaces\IMouseListener.cs" />
+    <Compile Include="EnginePackage\InputManagement\Interfaces\IMousePublisher.cs" />
+    <Compile Include="EnginePackage\InputManagement\KeyboardManager.cs" />
+    <Compile Include="EnginePackage\InputManagement\MouseManager.cs" />
+    <Compile Include="EnginePackage\SceneManagement\Interfaces\ISceneGraph.cs" />
+    <Compile Include="EnginePackage\SceneManagement\Interfaces\ISceneManager.cs" />
+    <Compile Include="EnginePackage\SceneManagement\Interfaces\ISpawn.cs" />
+    <Compile Include="EnginePackage\SceneManagement\SceneGraph.cs" />
+    <Compile Include="EnginePackage\SceneManagement\SceneManager.cs" />
+    <Compile Include="EnginePackage\Services\Interfaces\IService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

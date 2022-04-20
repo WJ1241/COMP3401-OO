@@ -1,32 +1,41 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using COMP3401OO.EnginePackage.Behaviours.Interfaces;
-using COMP3401OO.EnginePackage.CollisionManagement;
-using COMP3401OO.EnginePackage.CollisionManagement.Interfaces;
-using COMP3401OO.EnginePackage.CoreInterfaces;
-using COMP3401OO.EnginePackage.EntityManagement;
-using COMP3401OO.EnginePackage.EntityManagement.Interfaces;
-using COMP3401OO.EnginePackage.Exceptions;
-using COMP3401OO.EnginePackage.Factories;
-using COMP3401OO.EnginePackage.Factories.Interfaces;
-using COMP3401OO.EnginePackage.InputManagement;
-using COMP3401OO.EnginePackage.InputManagement.Interfaces;
-using COMP3401OO.EnginePackage.SceneManagement;
-using COMP3401OO.EnginePackage.SceneManagement.Interfaces;
-using COMP3401OO.EnginePackage.Services.Interfaces;
+using ClosedXML.Excel;
+using COMP3401OO_Engine.Behaviours.Interfaces;
+using COMP3401OO_Engine.CollisionManagement;
+using COMP3401OO_Engine.CollisionManagement.Interfaces;
+using COMP3401OO_Engine.CoreInterfaces;
+using COMP3401OO_Engine.Delegates.Interfaces;
+using COMP3401OO_Engine.EntityManagement;
+using COMP3401OO_Engine.EntityManagement.Interfaces;
+using COMP3401OO_Engine.Exceptions;
+using COMP3401OO_Engine.Factories;
+using COMP3401OO_Engine.Factories.Interfaces;
+using COMP3401OO_Engine.InputManagement;
+using COMP3401OO_Engine.InputManagement.Interfaces;
+using COMP3401OO_Engine.SceneManagement;
+using COMP3401OO_Engine.SceneManagement.Interfaces;
+using COMP3401OO_Engine.Services.Interfaces;
 using COMP3401OO.PongPackage.Behaviours;
 using COMP3401OO.PongPackage.Delegates.Interfaces;
 using COMP3401OO.PongPackage.Entities;
+using COMP3401OO.PongPackage.Forms;
+using COMP3401OO_ProjectHWTest;
+using COMP3401OO.ProjectHWTest.Interfaces;
+using COMP3401OO_Engine.CustomEventArgs;
 
 namespace COMP3401OO
 {
     /// <summary>
     /// Main Class of OO System
     /// Author: William Smith
-    /// Date: 24/02/22
+    /// Date: 06/04/22
     /// </summary>
     public class Kernel : Game
     {
@@ -34,6 +43,12 @@ namespace COMP3401OO
 
         // DECLARE an IDictionary<string, IService>, name it '_serviceDict':
         private IDictionary<string, IService> _serviceDict;
+
+        // DECLARE an IDictionary<string, IEntity>, name it '_entityDict':
+        private IDictionary<string, IEntity> _entityDict;
+
+        // DECLARE a Form, name it '_entityCreator':
+        private Form _entityCreator;
 
         // DECLARE a GraphicsDeviceManager, name it '_graphics':
         private GraphicsDeviceManager _graphics;
@@ -71,6 +86,9 @@ namespace COMP3401OO
 
             // INSTANTIATE _graphics as new GraphicsDeviceManager, passing Kernel as a parameter:
             _graphics = new GraphicsDeviceManager(this);
+
+            // INSTANTIATE _entityCreator as a new CreationScreen():
+            _entityCreator = new CreationScreen();
 
             // SET RootDirectory of Content to "Content":
             Content.RootDirectory = "Content";
@@ -115,6 +133,15 @@ namespace COMP3401OO
             // INITIALISE _screenSize.Y with value of Viewport.Height:
             _screenSize.Y = GraphicsDevice.Viewport.Height;
 
+            // INITIALISE _entityCreator with reference to CreateMultipleEntities():
+            (_entityCreator as IInitialiseCreateMultiDel).Initialise(CreateMultipleEntities);
+
+            // INITIALISE _entityCreator with reference to DeleteMultipleEntities():
+            (_entityCreator as IInitialiseDeleteMultiDel).Initialise(DeleteMultipleEntities);
+
+            // SHOW _entityCreator:
+            _entityCreator.Show();
+
             // INSTANTIATE _rand as new Random():
             _rand = new Random();
 
@@ -128,14 +155,20 @@ namespace COMP3401OO
                 // ADD a new Factory<IService>() to _serviceDict:
                 _serviceDict.Add("ServiceFactory", new Factory<IService>());
 
-                // ADD a new Factory<ISceneGraph>() to _serviceDict:
-                _serviceDict.Add("SceneGraphFactory", (_serviceDict["ServiceFactory"] as IFactory<IService>).Create<Factory<ISceneGraph>>());
+                // ADD a new Factory<IDisposable>() to _serviceDict:
+                _serviceDict.Add("DisposableFactory", (_serviceDict["ServiceFactory"] as IFactory<IService>).Create<Factory<IDisposable>>());
+
+                // ADD a new Factory<IEnumerable>() to _serviceDict:
+                _serviceDict.Add("EnumerableFactory", (_serviceDict["ServiceFactory"] as IFactory<IService>).Create<Factory<IEnumerable>>());
 
                 // ADD a new Factory<IEntity>() to _serviceDict:
                 _serviceDict.Add("EntityFactory", (_serviceDict["ServiceFactory"] as IFactory<IService>).Create<Factory<IEntity>>());
 
                 // ADD a new Factory<IUpdateEventListener>() to _serviceDict:
                 _serviceDict.Add("BehaviourFactory", (_serviceDict["ServiceFactory"] as IFactory<IService>).Create<Factory<IUpdateEventListener>>());
+
+                // ADD a new Factory<EventArgs>() to _serviceDict:
+                _serviceDict.Add("EventArgsFactory", (_serviceDict["ServiceFactory"] as IFactory<IService>).Create<Factory<EventArgs>>());
 
                 #endregion
 
@@ -146,6 +179,9 @@ namespace COMP3401OO
 
                 // ADD a new EntityManager() to _serviceDict:
                 _serviceDict.Add("EntityManager", (_serviceDict["ServiceFactory"] as IFactory<IService>).Create<EntityManager>());
+
+                // STORE reference to master entity list locally for easier reuse:
+                _entityDict = (_serviceDict["EntityManager"] as IEntityManager).GetDictionary();
 
                 // ADD a new SceneManager() to _serviceDict:
                 _serviceDict.Add("SceneManager", (_serviceDict["ServiceFactory"] as IFactory<IService>).Create<SceneManager>());
@@ -178,12 +214,42 @@ namespace COMP3401OO
 
                 #endregion
 
+                #endregion
+
+
+                #region PERFORMANCE MEASURE INSTANTIATION & INITIALISATIONS
+
+                // ADD a new PerformanceMeasure() to _serviceDict:
+                _serviceDict.Add("PerformanceMeasure", (_serviceDict["ServiceFactory"] as IFactory<IService>).Create<PerformanceMeasure>());
+
+                // INITIALISE _serviceDict["PerformanceMeasure"] with a new Stopwatch():
+                (_serviceDict["PerformanceMeasure"] as IInitialiseStopwatch).Initialise(new Stopwatch());
+
+                // INITIALISE _serviceDict["PerformanceMeasure"] with a new XLWorkbook():
+                (_serviceDict["PerformanceMeasure"] as IExportExcelData).Initialise((_serviceDict["DisposableFactory"] as IFactory<IDisposable>).Create<XLWorkbook>() as XLWorkbook);
+
+                // INITIALISE _serviceDict["PerformanceMeasure"] with a new List<long>():
+                (_serviceDict["PerformanceMeasure"] as ITestPerformance).Initialise((_serviceDict["EnumerableFactory"] as IFactory<IEnumerable>).Create<List<long>>() as IList<long>);
+
+                // INITIALISE _serviceDict["PerformanceMeasure"] with "CPU" and a new PerformanceCounter():
+                (_serviceDict["PerformanceMeasure"] as ITestPerformance).Initialise("CPU", new PerformanceCounter("Process", "% Processor Time", "COMP3401OO"));
+
+                // INITIALISE _serviceDict["PerformanceMeasure"] with "CPU" and a new List<float>():
+                (_serviceDict["PerformanceMeasure"] as ITestPerformance).Initialise("CPU", (_serviceDict["EnumerableFactory"] as IFactory<IEnumerable>).Create<List<float>>() as IList<float>);
+
+                // INITIALISE _serviceDict["PerformanceMeasure"] with "RAM" and a new PerformanceCounter():
+                (_serviceDict["PerformanceMeasure"] as ITestPerformance).Initialise("RAM", new PerformanceCounter("Process", "Working Set", "COMP3401OO"));
+
+                // INITIALISE _serviceDict["PerformanceMeasure"] with "RAM" and a new List<float>():
+                (_serviceDict["PerformanceMeasure"] as ITestPerformance).Initialise("RAM", (_serviceDict["EnumerableFactory"] as IFactory<IEnumerable>).Create<List<float>>() as IList<float>);
+
+                // INITIALISE _serviceDict["PerformanceMeasure"] with "FPS" and a new List<float>():
+                (_serviceDict["PerformanceMeasure"] as ITestPerformance).Initialise("FPS", (_serviceDict["EnumerableFactory"] as IFactory<IEnumerable>).Create<List<float>>() as IList<float>);
 
                 #endregion
 
 
                 #region DISPLAYABLE CREATION
-
 
                 #region BACKGROUND
 
@@ -192,7 +258,7 @@ namespace COMP3401OO
 
                 #endregion
 
-
+                /*
                 #region PADDLE 1
 
                 #region BEHAVIOURS
@@ -206,6 +272,7 @@ namespace COMP3401OO
 
                 // INITIALISE _tempBehaviour with a new Paddle():
                 (_tempBehaviour as IInitialiseIEntity).Initialise((_serviceDict["EntityManager"] as IEntityManager).Create<Paddle>("Paddle1"));
+
 
                 #endregion
 
@@ -221,6 +288,12 @@ namespace COMP3401OO
 
                 // INITIALISE "Paddle1" with reference to _tempBehaviour:
                 (_tempEntity as IInitialiseIUpdateEventListener).Initialise(_tempBehaviour);
+
+                // INITIALISE "Paddle1" with a new UpdateEventArgs():
+                (_tempEntity as IInitialiseEventArgs).Initialise((_serviceDict["EventArgsFactory"] as IFactory<EventArgs>).Create<UpdateEventArgs>());
+
+                // INITIALISE "Paddle1" with a new KBEventArgs():
+                (_tempEntity as IInitialiseEventArgs).Initialise((_serviceDict["EventArgsFactory"] as IFactory<EventArgs>).Create<KBEventArgs>());
 
                 // SUBSCRIBE "Paddle1" to KeyboardManager:
                 (_serviceDict["KeyboardManager"] as IKeyboardPublisher).Subscribe(_tempEntity as IKeyboardListener);
@@ -264,6 +337,12 @@ namespace COMP3401OO
                 // INITIALISE "Paddle2" with reference to _tempBehaviour:
                 (_tempEntity as IInitialiseIUpdateEventListener).Initialise(_tempBehaviour);
 
+                // INITIALISE "Paddle2" with a new UpdateEventArgs():
+                (_tempEntity as IInitialiseEventArgs).Initialise((_serviceDict["EventArgsFactory"] as IFactory<EventArgs>).Create<UpdateEventArgs>());
+
+                // INITIALISE "Paddle2" with a new KBEventArgs():
+                (_tempEntity as IInitialiseEventArgs).Initialise((_serviceDict["EventArgsFactory"] as IFactory<EventArgs>).Create<KBEventArgs>());
+
                 // SUBSCRIBE "Paddle2" to KeyboardManager:
                 (_serviceDict["KeyboardManager"] as IKeyboardPublisher).Subscribe(_tempEntity as IKeyboardListener);
 
@@ -276,6 +355,7 @@ namespace COMP3401OO
                 #endregion
 
                 #endregion
+                */
 
                 #endregion
             }
@@ -324,6 +404,7 @@ namespace COMP3401OO
 
             #endregion
 
+            /*
 
             #region PADDLES
 
@@ -381,6 +462,11 @@ namespace COMP3401OO
             SpawnBall();
 
             #endregion
+
+            */
+
+            // CALL CreateMultipleEntities(), passing 100 as a parameter:
+            //CreateMultipleEntities(100);
         }
 
         /// <summary>
@@ -399,9 +485,10 @@ namespace COMP3401OO
         /// <param name="pGameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime pGameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed
-                || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == Microsoft.Xna.Framework.Input.ButtonState.Pressed
+                || Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape))
             {
+                // CALL Exit():
                 Exit();
             }
 
@@ -413,6 +500,9 @@ namespace COMP3401OO
 
             // CALL Update() on "KeyboardManager":
             (_serviceDict["KeyboardManager"] as IUpdatable).Update(pGameTime);
+
+            // CALL LongTimedTest() on _serviceDict["PerformanceMeasure"], passing pGameTime as a parameter:
+            //(_serviceDict["PerformanceMeasure"] as ITestPerformance).LongTimedTest(pGameTime);
 
             // CALL method from base Game class, uses gameTime as parameter:
             base.Update(pGameTime);
@@ -432,6 +522,10 @@ namespace COMP3401OO
 
             // CALL Draw() method on "SceneManager":
             (_serviceDict["SceneManager"] as IDraw).Draw(_spriteBatch);
+
+            // CALL TestFPS() on _serviceDict["PerformanceMeasure"], passing pGameTime as a parameter:
+            // CALLED IN DRAW() AS UPDATE() DOES NOT CHANGE FPS
+            //(_serviceDict["PerformanceMeasure"] as ITestPerformance).TestFPS(pGameTime);
 
             // END creation of displayable objects:
             _spriteBatch.End();
@@ -457,16 +551,16 @@ namespace COMP3401OO
 
             /// INSTANTIATION
 
-            // DECLARE & INSTANTIATE an IUpdateEventListener as a new BallBehaviour(), name it '_tempBehaviour':
-            IUpdateEventListener _tempBehaviour = (_serviceDict["BehaviourFactory"] as IFactory<IUpdateEventListener>).Create<BallBehaviour>();
+            // DECLARE & INSTANTIATE an IUpdateEventListener as a new BallBehaviour(), name it 'tempBehaviour':
+            IUpdateEventListener tempBehaviour = (_serviceDict["BehaviourFactory"] as IFactory<IUpdateEventListener>).Create<BallBehaviour>();
 
             /// INITIALISATION
             
-            // INITIALISE _tempBehaviour with reference to CheckGoal():
-            (_tempBehaviour as IInitialiseCheckPosDel).Initialise(CheckGoal);
+            // INITIALISE tempBehaviour with reference to CheckGoal():
+            (tempBehaviour as IInitialiseCheckPosDel).Initialise(CheckGoal);
 
-            // INITIALISE _tempBehaviour with a new Ball():
-            (_tempBehaviour as IInitialiseIEntity).Initialise((_serviceDict["EntityManager"] as IEntityManager).Create<Ball>("Ball" + _ballCount));
+            // INITIALISE tempBehaviour with a new Ball():
+            (tempBehaviour as IInitialiseIEntity).Initialise((_serviceDict["EntityManager"] as IEntityManager).Create<Ball>("Ball" + _ballCount));
 
             #endregion
 
@@ -475,30 +569,135 @@ namespace COMP3401OO
 
             /// INSTANTIATION
 
-            // DECLARE & INITIALISE an IEntity with reference of '"Ball" + _ballCount' from EntityManager.GetDictionary(), name it _tempEntity:
-            IEntity _tempEntity = (_serviceDict["EntityManager"] as IEntityManager).GetDictionary()["Ball" + _ballCount];
+            // DECLARE & INITIALISE an IEntity with reference of '"Ball" + ballCount' from EntityManager.GetDictionary(), name it _tempEntity:
+            IEntity tempEntity = (_serviceDict["EntityManager"] as IEntityManager).GetDictionary()["Ball" + _ballCount];
 
             /// INTIIALISATION
 
             // INITIALISE '"Ball" + _ballCount' with reference to _tempBehaviour:
-            (_tempEntity as IInitialiseIUpdateEventListener).Initialise(_tempBehaviour);
+            (tempEntity as IInitialiseIUpdateEventListener).Initialise(tempBehaviour);
 
-            // INITIALISE '"Ball" + _ballCount' with reference to _rand:
-            (_tempEntity as IInitialiseRand).Initialise(_rand);
+            // INITIALISE '"Ball" + _ballCount' with a new UpdateEventArgs():
+            (tempEntity as IInitialiseEventArgs).Initialise((_serviceDict["EventArgsFactory"] as IFactory<EventArgs>).Create<UpdateEventArgs>());
+
+            // INITIALISE '"Ball" + _ballCount' with a new CollisionEventArgs():
+            (tempEntity as IInitialiseEventArgs).Initialise((_serviceDict["EventArgsFactory"] as IFactory<EventArgs>).Create<CollisionEventArgs>());
+
+            // INITIALISE '"Ball" + _ballCount' with reference to rand:
+            (tempEntity as IInitialiseRand).Initialise(_rand);
 
             // SET boundary size for '"Ball" + _ballCount':
-            (_tempEntity as IContainBoundary).WindowBorder = _screenSize;
+            (tempEntity as IContainBoundary).WindowBorder = _screenSize;
 
             // LOAD "square" texture to '"Ball" + _ballCount':
-            (_tempEntity as ITexture).Texture = Content.Load<Texture2D>("Football");
+            (tempEntity as ITexture).Texture = Content.Load<Texture2D>("Football");
 
             // CALL Reset() on '"Ball" + _ballCount':
-            (_tempEntity as IReset).Reset();
+            (tempEntity as IReset).Reset();
 
             // SPAWN '"Ball" + _ballCount' at centre of screen:
-            (_serviceDict["SceneManager"] as ISpawn).Spawn(_tempEntity, new Vector2((_screenSize.X / 2) - (_tempEntity as ITexture).TexSize.X / 2, (_screenSize.Y / 2) - (_tempEntity as ITexture).TexSize.Y / 2));
+            (_serviceDict["SceneManager"] as ISpawn).Spawn(tempEntity, new Vector2((_screenSize.X / 2) - (tempEntity as ITexture).TexSize.X / 2, (_screenSize.Y / 2) - (tempEntity as ITexture).TexSize.Y / 2));
 
             #endregion
+        }
+
+        /// <summary>
+        /// Method which creates as many Ball entities as specified via an integer parameter
+        /// </summary>
+        /// <param name="pInt"> Number of entities to be created </param>
+        private void CreateMultipleEntities(int pInt)
+        {
+            // DECLARE & INSTANTIATE a Stopwatch, name it 'tempStopwatch':
+            //Stopwatch tempStopwatch = new Stopwatch();
+
+            // FORLOOP, iterate for as many times specified by pInt:
+            for (int i = 0; i < pInt; i++)
+            {
+                /*
+                // RESET tempStopwatch():
+                tempStopwatch.Reset();
+
+                // START tempStopwatch():
+                tempStopwatch.Start();
+                */
+
+                // CALL SpawnBall():
+                SpawnBall();
+
+                /*
+                // STOP tempStopwatch:
+                tempStopwatch.Stop();
+
+                // CALL QuickTimedTest() on _serviceDict["PerformanceMeasure"], passing TWO strings, tempStopWatch's elapsed ms, and FALSE as parameters:
+                (_serviceDict["PerformanceMeasure"] as ITestPerformance).QuickTimedTest("CreationTest", "ShortTest", tempStopwatch.ElapsedMilliseconds, false);
+                */
+            }
+
+            //// CALL QuickTimedTest() on _serviceDict["PerformanceMeasure"], passing TWO strings, 0 as null cannot be used, and TRUE as parameters:
+            //(_serviceDict["PerformanceMeasure"] as ITestPerformance).QuickTimedTest("CreationTest", "ShortTest", 0, true);
+
+            //// CALL DeleteMultipleEntities(), passing 100 as a parameter:
+            //DeleteMultipleEntities(100);
+
+            //// CALL UpdateLongTimedTest() on _serviceDict["PerformanceMeasure"]:
+            //(_serviceDict["PerformanceMeasure"] as ITestPerformance).UpdateLongTimedTest();
+        }
+
+        /// <summary>
+        /// Method which deletes as many Ball entities as specified via an integer parameter
+        /// </summary>
+        /// <param name="pInt"> Number of entities to be deleted </param>
+        private void DeleteMultipleEntities(int pInt)
+        {
+            // DECLARE & INSTANTIATE a Stopwatch, name it 'tempStopwatch':
+            //Stopwatch tempStopwatch = new Stopwatch();
+
+            // IF pInt DOES NOT exceed the number balls in level:
+            if (pInt <= _ballCount)
+            {
+                // DECLARE & INITIALISE an int with the value of _ballCount to keep value from deleting too many entities, name it 'tempEntCount':
+                int tempBallCount = _ballCount;
+
+                // FORLOOP, iterate for as many times specified by pInt:
+                for (int i = tempBallCount; i > tempBallCount - pInt; i--)
+                {
+                    /*
+                    // RESET tempStopwatch():
+                    tempStopwatch.Reset();
+
+                    // START tempStopwatch():
+                    tempStopwatch.Start();
+                    */
+
+                    // REMOVE entity stored at address '"Ball" + i' from "EntityManager":
+                    (_serviceDict["EntityManager"] as IEntityManager).Terminate("Ball" + i);
+
+                    /*
+                    // STOP tempStopwatch:
+                    tempStopwatch.Stop();
+                    
+                    // CALL QuickTimedTest() on _serviceDict["PerformanceMeasure"], passing TWO strings, tempStopWatch's elapsed ms, and FALSE as parameters:
+                    (_serviceDict["PerformanceMeasure"] as ITestPerformance).QuickTimedTest("TerminationTest", "ShortTest", tempStopwatch.ElapsedMilliseconds, false);
+                    */
+
+                    // DECREMENT _ballCount by '1':
+                    _ballCount--;
+                }
+
+                /*
+                // CALL QuickTimedTest() on _serviceDict["PerformanceMeasure"], passing TWO strings, 0 as null cannot be used, and TRUE as parameters:
+                (_serviceDict["PerformanceMeasure"] as ITestPerformance).QuickTimedTest("TerminationTest", "ShortTest", 0, true);
+                */
+
+                // CALL Collect on Garbage Collector to ensure memory collection after termination:
+                GC.Collect();
+            }
+            // IF pInt DOES exceed the number of entities in _entityDict:
+            else
+            {
+                // WRITE to console explaining that user cannot delete more than the current entity count:
+                Console.WriteLine("ERROR: You cannot delete more entities than the number currently stored in the Entity Dictionary!");
+            }
         }
 
         /// <summary>

@@ -1,12 +1,12 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Xna.Framework;
-using COMP3401OO.EnginePackage.CoreInterfaces;
-using COMP3401OO.EnginePackage.EntityManagement.Interfaces;
+using COMP3401OO_Engine.CoreInterfaces;
+using COMP3401OO_Engine.EntityManagement.Interfaces;
 using COMP3401OO.PongPackage.Entities;
 using COMP3401OO.PongPackage.Behaviours;
-using COMP3401OO.EnginePackage.Behaviours.Interfaces;
+using COMP3401OO_Engine.Behaviours.Interfaces;
 using COMP3401OO.PongPackage.Behaviours.Interfaces;
-using COMP3401OO.EnginePackage.CustomEventArgs;
+using COMP3401OO_Engine.CustomEventArgs;
 using Microsoft.Xna.Framework.Input;
 
 namespace COMP3401OO_UnitTests.PongTestClasses
