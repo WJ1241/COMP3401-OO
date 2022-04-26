@@ -44,10 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Behaviours\Behaviour.cs" />
-    <Compile Include="Behaviours\Interfaces\ICollisionEventListener.cs" />
-    <Compile Include="Behaviours\Interfaces\IKBEventListener.cs" />
-    <Compile Include="Behaviours\Interfaces\IMouseEventListener.cs" />
-    <Compile Include="Behaviours\Interfaces\IUpdateEventListener.cs" />
+    <Compile Include="Behaviours\Interfaces\IEventListener.cs" />
     <Compile Include="CollisionManagement\CollisionManager.cs" />
     <Compile Include="CollisionManagement\Interfaces\ICollidable.cs" />
     <Compile Include="CollisionManagement\Interfaces\ICollisionListener.cs" />
@@ -92,8 +89,6 @@
     <Compile Include="Services\Interfaces\IService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Delegates\Interfaces\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

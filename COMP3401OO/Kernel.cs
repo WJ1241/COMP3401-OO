@@ -27,7 +27,6 @@ using COMP3401OO.PongPackage.Entities;
 using COMP3401OO.PongPackage.Forms;
 using COMP3401OO_ProjectHWTest;
 using COMP3401OO.ProjectHWTest.Interfaces;
-using COMP3401OO.PongPackage.Delegates;
 using COMP3401OO_Engine.Delegates;
 
 namespace COMP3401OO
@@ -164,8 +163,8 @@ namespace COMP3401OO
                 // ADD a new Factory<IEntity>() to _serviceDict:
                 _serviceDict.Add("EntityFactory", (_serviceDict["ServiceFactory"] as IFactory<IService>).Create<Factory<IEntity>>());
 
-                // ADD a new Factory<IUpdateEventListener>() to _serviceDict:
-                _serviceDict.Add("BehaviourFactory", (_serviceDict["ServiceFactory"] as IFactory<IService>).Create<Factory<IUpdateEventListener>>());
+                // ADD a new Factory<IEventListener<UpdateEventArgs>>() to _serviceDict:
+                _serviceDict.Add("BehaviourFactory", (_serviceDict["ServiceFactory"] as IFactory<IService>).Create<Factory<IEventListener<UpdateEventArgs>>>());
 
                 // ADD a new Factory<EventArgs>() to _serviceDict:
                 _serviceDict.Add("EventArgsFactory", (_serviceDict["ServiceFactory"] as IFactory<IService>).Create<Factory<EventArgs>>());
@@ -551,8 +550,8 @@ namespace COMP3401OO
 
             /// INSTANTIATION
 
-            // DECLARE & INSTANTIATE an IUpdateEventListener as a new BallBehaviour(), name it 'tempBehaviour':
-            IUpdateEventListener tempBehaviour = (_serviceDict["BehaviourFactory"] as IFactory<IUpdateEventListener>).Create<BallBehaviour>();
+            // DECLARE & INSTANTIATE an IEventListener<UpdateEventArgs> as a new BallBehaviour(), name it 'tempBehaviour':
+            IEventListener<UpdateEventArgs> tempBehaviour = (_serviceDict["BehaviourFactory"] as IFactory<IEventListener<UpdateEventArgs>>).Create<BallBehaviour>();
 
             /// INITIALISATION
             
@@ -575,7 +574,7 @@ namespace COMP3401OO
             /// INTIIALISATION
 
             // INITIALISE '"Ball" + _ballCount' with reference to _tempBehaviour:
-            (tempEntity as IInitialiseParam<IUpdateEventListener>).Initialise(tempBehaviour);
+            (tempEntity as IInitialiseParam<IEventListener<UpdateEventArgs>>).Initialise(tempBehaviour);
 
             // INITIALISE '"Ball" + _ballCount' with a new UpdateEventArgs():
             (tempEntity as IInitialiseParam<EventArgs>).Initialise((_serviceDict["EventArgsFactory"] as IFactory<EventArgs>).Create<UpdateEventArgs>());
@@ -650,7 +649,7 @@ namespace COMP3401OO
         private void DeleteMultipleEntities(int pInt)
         {
             // DECLARE & INSTANTIATE a Stopwatch, name it 'tempStopwatch':
-            //Stopwatch tempStopwatch = new Stopwatch();
+            Stopwatch tempStopwatch = new Stopwatch();
 
             // IF pInt DOES NOT exceed the number balls in level:
             if (pInt <= _ballCount)
@@ -661,33 +660,28 @@ namespace COMP3401OO
                 // FORLOOP, iterate for as many times specified by pInt:
                 for (int i = tempBallCount; i > tempBallCount - pInt; i--)
                 {
-                    /*
                     // RESET tempStopwatch():
                     tempStopwatch.Reset();
 
                     // START tempStopwatch():
                     tempStopwatch.Start();
-                    */
 
                     // REMOVE entity stored at address '"Ball" + i' from "EntityManager":
                     (_serviceDict["EntityManager"] as IEntityManager).Terminate("Ball" + i);
 
-                    /*
                     // STOP tempStopwatch:
                     tempStopwatch.Stop();
                     
                     // CALL QuickTimedTest() on _serviceDict["PerformanceMeasure"], passing TWO strings, tempStopWatch's elapsed ms, and FALSE as parameters:
                     (_serviceDict["PerformanceMeasure"] as ITestPerformance).QuickTimedTest("TerminationTest", "ShortTest", tempStopwatch.ElapsedMilliseconds, false);
-                    */
-
+                    
                     // DECREMENT _ballCount by '1':
                     _ballCount--;
                 }
 
-                /*
+                
                 // CALL QuickTimedTest() on _serviceDict["PerformanceMeasure"], passing TWO strings, 0 as null cannot be used, and TRUE as parameters:
                 (_serviceDict["PerformanceMeasure"] as ITestPerformance).QuickTimedTest("TerminationTest", "ShortTest", 0, true);
-                */
 
                 // CALL Collect on Garbage Collector to ensure memory collection after termination:
                 GC.Collect();

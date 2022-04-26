@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace COMP3401OO_Engine.Services.Interfaces
+﻿namespace COMP3401OO_Engine.Services.Interfaces
 {
     /// <summary>
     /// Interface which allows implementations (Services such as Managers/Factories) to be stored together and referred to neatly

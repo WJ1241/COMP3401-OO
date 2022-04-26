@@ -49,7 +49,6 @@
     <Compile Include="PongPackage\Behaviours\PaddleBehaviour.cs" />
     <Compile Include="PongPackage\Behaviours\PongBehaviour.cs" />
     <Compile Include="PongPackage\Entities\Ball.cs" />
-    <Compile Include="PongPackage\Delegates\Delegates.cs" />
     <Compile Include="PongPackage\Entities\Paddle.cs" />
     <Compile Include="PongPackage\Entities\PongEntity.cs" />
     <Compile Include="Kernel.cs" />

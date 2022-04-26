@@ -1,5 +1,4 @@
 ﻿using System;
-using Microsoft.Xna.Framework;
 using COMP3401OO_Engine.CollisionManagement.Interfaces;
 
 namespace COMP3401OO_Engine.CustomEventArgs

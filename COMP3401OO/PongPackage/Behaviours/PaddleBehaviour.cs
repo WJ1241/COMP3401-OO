@@ -14,7 +14,7 @@ namespace COMP3401OO.PongPackage.Behaviours
     /// Author: William Smith
     /// Date: 24/02/22
     /// </summary>
-    public class PaddleBehaviour : PongBehaviour, IKBEventListener, ITestKBInput
+    public class PaddleBehaviour : PongBehaviour, IEventListener<KBEventArgs>, ITestKBInput
     {
         #region FIELD VARIABLES
 
@@ -40,14 +40,14 @@ namespace COMP3401OO.PongPackage.Behaviours
         #endregion
 
 
-        #region IMPLEMENTATION OF IKBEVENTLISTENER
+        #region IMPLEMENTATION OF IEVENTLISTENER<KBEVENTARGS>
 
         /// <summary>
         /// Event which performs any necessary input logic each time a user inputs from their keyboard
         /// </summary>
         /// <param name="pSource"> Invoking object </param>
         /// <param name="pArgs"> Required arguments </param>
-        public void OnKBInput(object pSource, KBEventArgs pArgs)
+        public void OnEvent(object pSource, KBEventArgs pArgs)
         {
             // INSTANTIATE new Vector2, set as 0 to stop movement:
             _direction = new Vector2(0);
@@ -183,14 +183,14 @@ namespace COMP3401OO.PongPackage.Behaviours
         #endregion
 
 
-        #region IMPLEMENTATION OF IUPDATEEVENTLISTENER
+        #region IMPLEMENTATION OF IEVENTLISTENER<UPDATEEVENTARGS>
 
         /// <summary>
         /// Event which performs any necessary update logic each time a game loop runs
         /// </summary>
         /// <param name="pSource"> Invoking object </param>
         /// <param name="pArgs"> Required arguments </param>
-        public override void OnUpdate(object pSource, UpdateEventArgs pArgs)
+        public override void OnEvent(object pSource, UpdateEventArgs pArgs)
         {
             // ASSIGNMENT, set value of _velocity to _speed mutlipled by _direction:
             (_entity as IVelocity).Velocity = (_entity as IGetSpeed).Speed * _direction;

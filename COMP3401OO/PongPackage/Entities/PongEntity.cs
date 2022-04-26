@@ -13,7 +13,7 @@ namespace COMP3401OO.PongPackage.Entities
     /// Author: William Smith
     /// Date: 06/04/22
     /// </summary>
-    public abstract class PongEntity : DrawableEntity, IInitialiseParam<EventArgs>, IInitialiseParam<IUpdateEventListener>, IUpdatable, IVelocity
+    public abstract class PongEntity : DrawableEntity, IInitialiseParam<EventArgs>, IInitialiseParam<IEventListener<UpdateEventArgs>>, IUpdatable, IVelocity
     {
         #region FIELD VARIABLES
 
@@ -57,19 +57,19 @@ namespace COMP3401OO.PongPackage.Entities
         #endregion
 
 
-        #region IMPLEMENTATION OF IINITIALISEPARAM<IUPDATEVENTLISTENER>
+        #region IMPLEMENTATION OF IINITIALISEPARAM<IEVENTLISTENER<UPDATEEVENTARGS>>
 
         /// <summary>
         /// Initialises an object with an IUpdateEventListener object
         /// </summary>
         /// <param name="pUpdateEventListener"> IUpdateEventListener object </param>
-        public virtual void Initialise(IUpdateEventListener pUpdateEventListener)
+        public virtual void Initialise(IEventListener<UpdateEventArgs> pUpdateEventListener)
         {
             // IF pUpdateEventListener DOES HAVE an active instance:
             if (pUpdateEventListener != null)
             {
-                // SUBSCRIBE _update to pUpdateEventListener.OnUpdate:
-                _update += pUpdateEventListener.OnUpdate;
+                // SUBSCRIBE _update to pUpdateEventListener.OnEvent:
+                _update += pUpdateEventListener.OnEvent;
             }
             // IF pUpdateEventListener DOES NOT HAVE an active instance:
             else

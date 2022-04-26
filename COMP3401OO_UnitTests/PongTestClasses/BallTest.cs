@@ -10,7 +10,6 @@ using COMP3401OO_Engine.SceneManagement;
 using COMP3401OO_Engine.SceneManagement.Interfaces;
 using COMP3401OO.PongPackage.Behaviours;
 using COMP3401OO.PongPackage.Entities;
-using COMP3401OO.PongPackage.Delegates;
 using COMP3401OO_Engine.Delegates;
 
 namespace COMP3401OO_UnitTests.PongTestClasses
@@ -91,8 +90,8 @@ namespace COMP3401OO_UnitTests.PongTestClasses
 
             #region INSTANTIATIONS
 
-            // DECLARE & INSTANTIATE an IUpdateEventListener as a new BallBehaviour(), name it '_ballBehaviour':
-            IUpdateEventListener _ballBehaviour = new BallBehaviour();
+            // DECLARE & INSTANTIATE an IEventListener<UpdateEventArgs> as a new BallBehaviour(), name it '_ballBehaviour':
+            IEventListener<UpdateEventArgs> _ballBehaviour = new BallBehaviour();
 
             // DECLARE & INSTANTIATE an IEntity using CreateBall(), name it '_ball':
             IEntity _ball = CreateBall();
@@ -113,7 +112,7 @@ namespace COMP3401OO_UnitTests.PongTestClasses
             #region ENTITY
             
             // INITIALISE _ball with reference to _ballBehaviour:
-            (_ball as IInitialiseParam<IUpdateEventListener>).Initialise(_ballBehaviour);
+            (_ball as IInitialiseParam<IEventListener<UpdateEventArgs>>).Initialise(_ballBehaviour);
 
             // SPAWN _ball in top middle of screen, Y axis value of 1, so it is 1px from contact before running code:
             _ball.Position = new Vector2((_bounds.X / 2) - (_ball as ITexture).TexSize.X / 2, 1);
@@ -130,8 +129,8 @@ namespace COMP3401OO_UnitTests.PongTestClasses
 
             #region ACT
 
-            // CALL _OnUpdate() on _ballBehaviour, passing _ball and a new UpdateEventArgs() as parameters:
-            _ballBehaviour.OnUpdate(_ball, new UpdateEventArgs());
+            // CALL _OnEvent() on _ballBehaviour, passing _ball and a new UpdateEventArgs() as parameters:
+            _ballBehaviour.OnEvent(_ball, new UpdateEventArgs());
 
             #endregion
 
@@ -159,8 +158,8 @@ namespace COMP3401OO_UnitTests.PongTestClasses
 
             #region INSTANTIATIONS
 
-            // DECLARE & INSTANTIATE an IUpdateEventListener as a new BallBehaviour(), name it '_ballBehaviour':
-            IUpdateEventListener _ballBehaviour = new BallBehaviour();
+            // DECLARE & INSTANTIATE an IEventListener<UpdateEventArgs> as a new BallBehaviour(), name it '_ballBehaviour':
+            IEventListener<UpdateEventArgs> _ballBehaviour = new BallBehaviour();
 
             // DECLARE & INSTANTIATE an IEntity using CreateBall(), name it '_ball':
             IEntity _ball = CreateBall();
@@ -181,7 +180,7 @@ namespace COMP3401OO_UnitTests.PongTestClasses
             #region ENTITY
 
             // INITIALISE _ball with reference to _ballBehaviour:
-            (_ball as IInitialiseParam<IUpdateEventListener>).Initialise(_ballBehaviour);
+            (_ball as IInitialiseParam<IEventListener<UpdateEventArgs>>).Initialise(_ballBehaviour);
 
             // SPAWN _ball in bottom middle of screen, Y axis value of _bounds.Y - 1, so it is 1px from contact before running code:
             _ball.Position = new Vector2((_bounds.X / 2) - (_ball as ITexture).TexSize.X / 2, _bounds.Y - 1);
@@ -198,8 +197,8 @@ namespace COMP3401OO_UnitTests.PongTestClasses
 
             #region ACT
 
-            // CALL _OnUpdate() on _ballBehaviour, passing _ball and a new UpdateEventArgs() as parameters:
-            _ballBehaviour.OnUpdate(_ball, new UpdateEventArgs());
+            // CALL _OnEvent() on _ballBehaviour, passing _ball and a new UpdateEventArgs() as parameters:
+            _ballBehaviour.OnEvent(_ball, new UpdateEventArgs());
 
             #endregion
 
@@ -227,8 +226,8 @@ namespace COMP3401OO_UnitTests.PongTestClasses
 
             #region INSTANTIATIONS
 
-            // DECLARE & INSTANTIATE an ICollisionEventListener as a new BallBehaviour(), name it '_ballBehaviour':
-            ICollisionEventListener _ballBehaviour = new BallBehaviour();
+            // DECLARE & INSTANTIATE an IEventListener<CollisionEventArgs> as a new BallBehaviour(), name it '_ballBehaviour':
+            IEventListener<CollisionEventArgs> _ballBehaviour = new BallBehaviour();
 
             // DECLARE & INSTANTIATE an IEntity using CreateBall(), name it '_ball':
             IEntity _ball = CreateBall();
@@ -258,7 +257,7 @@ namespace COMP3401OO_UnitTests.PongTestClasses
             #region BALL
 
             // INITIALISE _ball with reference to _ballBehaviour:
-            (_ball as IInitialiseParam<IUpdateEventListener>).Initialise(_ballBehaviour as IUpdateEventListener);
+            (_ball as IInitialiseParam<IEventListener<UpdateEventArgs>>).Initialise(_ballBehaviour as IEventListener<UpdateEventArgs>);
 
             // SPAWN _ball in bottom middle of screen, Y axis value of _bounds.Y - 1, so it is 1px from contact before running code:
             _ball.Position = new Vector2((_bounds.X / 2) - (_ball as ITexture).TexSize.X / 2, _bounds.Y - 1);
@@ -276,7 +275,7 @@ namespace COMP3401OO_UnitTests.PongTestClasses
             #region ACT
 
             // CALL OnCollision() on _ballBehaviour, passing _ball and _args as parameters:
-            _ballBehaviour.OnCollision(_ball, _args);
+            _ballBehaviour.OnEvent(_ball, _args);
 
             #endregion
 
@@ -326,8 +325,8 @@ namespace COMP3401OO_UnitTests.PongTestClasses
 
             #region INSTANTIATIONS
 
-            // DECLARE & INSTANTIATE an IUpdateEventListener as a new BallBehaviour(), name it '_ballBehaviour':
-            IUpdateEventListener _ballBehaviour = new BallBehaviour();
+            // DECLARE & INSTANTIATE anIEventListener<UpdateEventArgs> as a new BallBehaviour(), name it '_ballBehaviour':
+           IEventListener<UpdateEventArgs> _ballBehaviour = new BallBehaviour();
 
             // DECLARE & INSTANTIATE an IEntity using CreateBall(), name it '_ball':
             IEntity _ball = CreateBall();
@@ -357,7 +356,7 @@ namespace COMP3401OO_UnitTests.PongTestClasses
             #region ENTITY
 
             // INITIALISE _ball with reference to _ballBehaviour:
-            (_ball as IInitialiseParam<IUpdateEventListener>).Initialise(_ballBehaviour);
+            (_ball as IInitialiseParam<IEventListener<UpdateEventArgs>>).Initialise(_ballBehaviour);
 
             // INITIALISE _ball with a reference to _entityManager.Terminate():
             (_ball as IInitialiseParam<DeleteDelegate>).Initialise(_entityManager.Terminate);
@@ -377,8 +376,8 @@ namespace COMP3401OO_UnitTests.PongTestClasses
 
             #region ACT
 
-            // CALL _OnUpdate() on _ballBehaviour, passing _ball and a new UpdateEventArgs() as parameters:
-            _ballBehaviour.OnUpdate(_ball, new UpdateEventArgs());
+            // CALL _OnEvent() on _ballBehaviour, passing _ball and a new UpdateEventArgs() as parameters:
+            _ballBehaviour.OnEvent(_ball, new UpdateEventArgs());
 
             #endregion
 
@@ -388,13 +387,13 @@ namespace COMP3401OO_UnitTests.PongTestClasses
             // IF _entityManager DOES NOT contain an Entity Named "Ball":
             if (!_entityManager.GetDictionary().ContainsKey(_ball.UName))
             {
-                // DO NOTHING, PASSES
+                // ASSERT that the test has failed, with corresponding message:
+                Assert.Fail("ERROR: _ball has an active instance!");
             }
             // IF _entityManager DOES contain an Entity Named "Ball":
             else
             {
-                // ASSERT that the test has failed, with corresponding message:
-                Assert.Fail("ERROR: _ball has an active instance!");
+                // DO NOTHING, PASSES
             }
 
             #endregion
@@ -427,8 +426,8 @@ namespace COMP3401OO_UnitTests.PongTestClasses
 
             #region INSTANTIATIONS
 
-            // DECLARE & INSTANTIATE an IUpdateEventListener as a new BallBehaviour(), name it '_ballBehaviour':
-            IUpdateEventListener _ballBehaviour = new BallBehaviour();
+            // DECLARE & INSTANTIATE anIEventListener<UpdateEventArgs> as a new BallBehaviour(), name it '_ballBehaviour':
+           IEventListener<UpdateEventArgs> _ballBehaviour = new BallBehaviour();
 
             // DECLARE & INSTANTIATE an IEntity using CreateBall(), name it '_ball':
             IEntity _ball = CreateBall();
@@ -458,7 +457,7 @@ namespace COMP3401OO_UnitTests.PongTestClasses
             #region ENTITY
 
             // INITIALISE _ball with reference to _ballBehaviour:
-            (_ball as IInitialiseParam<IUpdateEventListener>).Initialise(_ballBehaviour);
+            (_ball as IInitialiseParam<IEventListener<UpdateEventArgs>>).Initialise(_ballBehaviour);
 
             // INITIALISE _ball with a reference to _entityManager.Terminate():
             (_ball as IInitialiseParam<DeleteDelegate>).Initialise(_entityManager.Terminate);
@@ -478,8 +477,8 @@ namespace COMP3401OO_UnitTests.PongTestClasses
 
             #region ACT
 
-            // CALL _OnUpdate() on _ballBehaviour, passing _ball and a new UpdateEventArgs() as parameters:
-            _ballBehaviour.OnUpdate(_ball, new UpdateEventArgs());
+            // CALL _OnEvent() on _ballBehaviour, passing _ball and a new UpdateEventArgs() as parameters:
+            _ballBehaviour.OnEvent(_ball, new UpdateEventArgs());
 
             #endregion
 
@@ -489,13 +488,13 @@ namespace COMP3401OO_UnitTests.PongTestClasses
             // IF _entityManager DOES NOT contain an Entity Named "Ball":
             if (!_entityManager.GetDictionary().ContainsKey(_ball.UName))
             {
-                // DO NOTHING, PASSES
+                // ASSERT that the test has failed, with corresponding message:
+                Assert.Fail("ERROR: _ball has an active instance!");
             }
             // IF _entityManager DOES contain an Entity Named "Ball":
             else
             {
-                // ASSERT that the test has failed, with corresponding message:
-                Assert.Fail("ERROR: _ball has an active instance!");
+                // DO NOTHING, PASSES
             }
 
             #endregion

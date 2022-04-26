@@ -78,22 +78,22 @@ namespace COMP3401OO.PongPackage.Entities
         #endregion
 
 
-        #region IMPLEMENTATION OF IINITIALISEPARAM<IUPDATEVENTLISTENER>
+        #region IMPLEMENTATION OF IINITIALISEPARAM<IEVENTLISTENER<UPDATEEVENTARGS>>
 
         /// <summary>
         /// Initialises an object with an IUpdateEventListener object
         /// </summary>
         /// <param name="pUpdateEventListener"> IUpdateEventListener object </param>
-        public override void Initialise(IUpdateEventListener pUpdateEventListener)
+        public override void Initialise(IEventListener<UpdateEventArgs> pUpdateEventListener)
         {
             // IF pUpdateEventListener DOES HAVE an active instance:
             if (pUpdateEventListener != null)
             {
-                // SUBSCRIBE _update to pUpdateEventListener.OnUpdate:
-                _update += pUpdateEventListener.OnUpdate;
+                // SUBSCRIBE _update to pUpdateEventListener.OnEvent:
+                _update += pUpdateEventListener.OnEvent;
 
-                // SUBSCRIBE _collision to pUpdateEventListener.OnCollision:
-                _collision += (pUpdateEventListener as ICollisionEventListener).OnCollision;
+                // SUBSCRIBE _collision to pUpdateEventListener.OnEvent:
+                _collision += (pUpdateEventListener as IEventListener<CollisionEventArgs>).OnEvent;
             }
             // IF pUpdateEventListener DOES NOT HAVE an active instance:
             else

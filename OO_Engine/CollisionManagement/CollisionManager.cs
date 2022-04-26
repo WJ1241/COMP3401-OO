@@ -13,7 +13,7 @@ namespace COMP3401OO_Engine.CollisionManagement
     /// Author: William Smith
     /// Date: 23/02/22
     /// </summary>
-    /// <REFERENCE> Price, M. (2021) ‘Session 16 - Collision Management’, Games Design & Engineering: Sessions. Available at: https://worcesterbb.blackboard.com. (Accessed: 17 February 2021).</REFERENCE>
+    /// <REFERENCE> Price, M. (2021) ‘Session 16 - Collision Management’, Games Design & Engineering: Sessions. Available at: https://worcesterbb.blackboard.com. (Accessed: 12 February 2022). </REFERENCE>
     public class CollisionManager : ICollisionManager, IUpdatable, IService
     {
         #region FIELD VARIABLES

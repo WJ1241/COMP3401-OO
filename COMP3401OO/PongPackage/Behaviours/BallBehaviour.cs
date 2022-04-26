@@ -4,7 +4,7 @@ using COMP3401OO_Engine.Behaviours.Interfaces;
 using COMP3401OO_Engine.CoreInterfaces;
 using COMP3401OO_Engine.CustomEventArgs;
 using COMP3401OO_Engine.EntityManagement.Interfaces;
-using COMP3401OO.PongPackage.Delegates;
+using COMP3401OO_Engine.Delegates;
 
 namespace COMP3401OO.PongPackage.Behaviours
 {
@@ -13,7 +13,7 @@ namespace COMP3401OO.PongPackage.Behaviours
     /// Author: William Smith
     /// Date: 25/02/22
     /// </summary>
-    public class BallBehaviour : PongBehaviour, ICollisionEventListener, IInitialiseParam<CheckPositionDelegate>
+    public class BallBehaviour : PongBehaviour, IEventListener<CollisionEventArgs>, IInitialiseParam<CheckPositionDelegate>
     {
         #region FIELD VARIABLES
 
@@ -39,14 +39,14 @@ namespace COMP3401OO.PongPackage.Behaviours
         #endregion
 
 
-        #region IMPLEMENTATION OF ICOLLISIONEVENTLISTENER
+        #region IMPLEMENTATION OF IEVENTLISTENER<COLLISIONEVENTARGS>
         
         /// <summary>
         /// Event which performs any necessary update logic each time a collision occurs
         /// </summary>
         /// <param name="pSource"> Invoking object </param>
         /// <param name="pArgs"> Required arguments </param>
-        public void OnCollision(object pSource, CollisionEventArgs pArgs)
+        public void OnEvent(object pSource, CollisionEventArgs pArgs)
         {
             // SET value of _velocity to value of _entity.Velocity:
             _velocity = (_entity as IVelocity).Velocity;

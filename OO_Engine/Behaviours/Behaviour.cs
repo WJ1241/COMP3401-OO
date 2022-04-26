@@ -11,7 +11,7 @@ namespace COMP3401OO_Engine.Behaviours
     /// Author: William Smith
     /// Date: 26/02/22
     /// </summary>
-    public abstract class Behaviour : IInitialiseParam<IEntity>, IUpdateEventListener
+    public abstract class Behaviour : IInitialiseParam<IEntity>, IEventListener<UpdateEventArgs>
     {
         #region FIELD VARIABLES
 
@@ -46,14 +46,14 @@ namespace COMP3401OO_Engine.Behaviours
         #endregion
 
 
-        #region IMPLEMENTATION OF IUPDATEEVENTLISTENER
+        #region IMPLEMENTATION OF IEVENTLISTENER<UPDATEEVENTARGS>
 
         /// <summary>
         /// Event which performs any necessary update logic each time a game loop runs
         /// </summary>
         /// <param name="pSource"> Invoking object </param>
         /// <param name="pArgs"> Required arguments </param>
-        public virtual void OnUpdate(object pSource, UpdateEventArgs pArgs)
+        public virtual void OnEvent(object pSource, UpdateEventArgs pArgs)
         {
             // UPDATE _entity's position using it's current velocity:
             _entity.Position += (_entity as IVelocity).Velocity;

@@ -1,5 +1,7 @@
 ﻿
 
+using Microsoft.Xna.Framework;
+
 namespace COMP3401OO_Engine.Delegates
 {
     //----------------------------------------//
@@ -22,6 +24,12 @@ namespace COMP3401OO_Engine.Delegates
     /// </summary>
     /// <param name="pInt"> Any integer to be used to create 'pInt' objects" </param>
     public delegate void CreateMultipleDelegate(int pInt);
+
+    /// <summary>
+    /// Delegate used for Creation
+    /// </summary>
+    /// <param name="pVector"> Any Position stored as a Vector2 </param>
+    public delegate void CheckPositionDelegate(Vector2 pVector);
 
     /// <summary>
     /// Delegate used for Deletion with a string parameter

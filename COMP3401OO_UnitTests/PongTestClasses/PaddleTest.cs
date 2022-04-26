@@ -87,8 +87,8 @@ namespace COMP3401OO_UnitTests.PongTestClasses
 
             #region INSTANTIATIONS
 
-            // DECLARE & INSTANTIATE an IKBEventListener as a new PaddleBehaviour(), name it '_paddleBehaviour':
-            IKBEventListener _paddleBehaviour = new PaddleBehaviour();
+            // DECLARE & INSTANTIATE an IEventListener<KBEventArgs> as a new PaddleBehaviour(), name it '_paddleBehaviour':
+            IEventListener<KBEventArgs> _paddleBehaviour = new PaddleBehaviour();
 
             // DECLARE & INSTANTIATE an IEntity using CreatePaddle(), name it '_paddle':
             IEntity _paddle = CreatePaddle();
@@ -129,11 +129,11 @@ namespace COMP3401OO_UnitTests.PongTestClasses
             // SET input to 'W' Key:
             (_paddleBehaviour as ITestKBInput).SetKeyPressed = "W";
 
-            // CALL OnKBInput() on _paddleBehaviour, passing _paddle and _args as parameters:
-            _paddleBehaviour.OnKBInput(_paddle, _args);
+            // CALL OnEvent() on _paddleBehaviour, passing _paddle and _args as parameters:
+            _paddleBehaviour.OnEvent(_paddle, _args);
 
-            // CALL OnUpdate() on _paddleBehaviour, passing _paddle and a new UpdateEventArgs() as parameters:
-            (_paddleBehaviour as IUpdateEventListener).OnUpdate(_paddle, new UpdateEventArgs());
+            // CALL OnEvent() on _paddleBehaviour, passing _paddle and a new UpdateEventArgs() as parameters:
+            (_paddleBehaviour as IEventListener<UpdateEventArgs>).OnEvent(_paddle, new UpdateEventArgs());
 
             #endregion
 
@@ -156,8 +156,8 @@ namespace COMP3401OO_UnitTests.PongTestClasses
 
             #region INSTANTIATIONS
 
-            // DECLARE & INSTANTIATE an IKBEventListener as a new PaddleBehaviour(), name it '_paddleBehaviour':
-            IKBEventListener _paddleBehaviour = new PaddleBehaviour();
+            // DECLARE & INSTANTIATE an IEventListener<KBEventArgs> as a new PaddleBehaviour(), name it '_paddleBehaviour':
+            IEventListener<KBEventArgs> _paddleBehaviour = new PaddleBehaviour();
 
             // DECLARE & INSTANTIATE an IEntity using CreatePaddle(), name it '_paddle':
             IEntity _paddle = CreatePaddle();
@@ -198,11 +198,11 @@ namespace COMP3401OO_UnitTests.PongTestClasses
             // SET input to Up Arrow Key:
             (_paddleBehaviour as ITestKBInput).SetKeyPressed = "Up";
 
-            // CALL OnKBInput() on _paddleBehaviour, passing _paddle and _args as parameters:
-            _paddleBehaviour.OnKBInput(_paddle, _args);
+            // CALL OnEvent() on _paddleBehaviour, passing _paddle and _args as parameters:
+            _paddleBehaviour.OnEvent(_paddle, _args);
 
-            // CALL OnUpdate() on _paddleBehaviour, passing _paddle and a new UpdateEventArgs() as parameters:
-            (_paddleBehaviour as IUpdateEventListener).OnUpdate(_paddle, new UpdateEventArgs());
+            // CALL OnEvent() on _paddleBehaviour, passing _paddle and a new UpdateEventArgs() as parameters:
+            (_paddleBehaviour as IEventListener<UpdateEventArgs>).OnEvent(_paddle, new UpdateEventArgs());
 
             #endregion
 
@@ -231,8 +231,8 @@ namespace COMP3401OO_UnitTests.PongTestClasses
 
             #region INSTANTIATIONS
 
-            // DECLARE & INSTANTIATE an IKBEventListener as a new PaddleBehaviour(), name it '_paddleBehaviour':
-            IKBEventListener _paddleBehaviour = new PaddleBehaviour();
+            // DECLARE & INSTANTIATE an IEventListener<KBEventArgs> as a new PaddleBehaviour(), name it '_paddleBehaviour':
+            IEventListener<KBEventArgs> _paddleBehaviour = new PaddleBehaviour();
 
             // DECLARE & INSTANTIATE an IEntity using CreatePaddle(), name it '_paddle':
             IEntity _paddle = CreatePaddle();
@@ -274,10 +274,10 @@ namespace COMP3401OO_UnitTests.PongTestClasses
             (_paddleBehaviour as ITestKBInput).SetKeyPressed = "S";
 
             // CALL OnKBInput() on _paddleBehaviour, passing _paddle and _args as parameters:
-            _paddleBehaviour.OnKBInput(_paddle, _args);
+            _paddleBehaviour.OnEvent(_paddle, _args);
 
-            // CALL OnUpdate() on _paddleBehaviour, passing _paddle and a new UpdateEventArgs() as parameters:
-            (_paddleBehaviour as IUpdateEventListener).OnUpdate(_paddle, new UpdateEventArgs());
+            // CALL OnEvent() on _paddleBehaviour, passing _paddle and a new UpdateEventArgs() as parameters:
+            (_paddleBehaviour as IEventListener<UpdateEventArgs>).OnEvent(_paddle, new UpdateEventArgs());
 
             #endregion
 
@@ -300,8 +300,8 @@ namespace COMP3401OO_UnitTests.PongTestClasses
 
             #region INSTANTIATIONS
 
-            // DECLARE & INSTANTIATE an IKBEventListener as a new PaddleBehaviour(), name it '_paddleBehaviour':
-            IKBEventListener _paddleBehaviour = new PaddleBehaviour();
+            // DECLARE & INSTANTIATE an IEventListener<KBEventArgs> as a new PaddleBehaviour(), name it '_paddleBehaviour':
+            IEventListener<KBEventArgs> _paddleBehaviour = new PaddleBehaviour();
 
             // DECLARE & INSTANTIATE an IEntity using CreatePaddle(), name it '_paddle':
             IEntity _paddle = CreatePaddle();
@@ -343,10 +343,10 @@ namespace COMP3401OO_UnitTests.PongTestClasses
             (_paddleBehaviour as ITestKBInput).SetKeyPressed = "Down";
 
             // CALL OnKBInput() on _paddleBehaviour, passing _paddle and _args as parameters:
-            _paddleBehaviour.OnKBInput(_paddle, _args);
+            _paddleBehaviour.OnEvent(_paddle, _args);
 
             // CALL OnUpdate() on _paddleBehaviour, passing _paddle and a new UpdateEventArgs() as parameters:
-            (_paddleBehaviour as IUpdateEventListener).OnUpdate(_paddle, new UpdateEventArgs());
+            (_paddleBehaviour as IEventListener<UpdateEventArgs>).OnEvent(_paddle, new UpdateEventArgs());
 
             #endregion
 
@@ -374,8 +374,8 @@ namespace COMP3401OO_UnitTests.PongTestClasses
 
             #region INSTANTIATIONS
 
-            // DECLARE & INSTANTIATE an IUpdateEventListener as a new PaddleBehaviour(), name it '_paddleBehaviour':
-            IUpdateEventListener _paddleBehaviour = new PaddleBehaviour();
+            // DECLARE & INSTANTIATE anIEventListener<UpdateEventArgs> as a new PaddleBehaviour(), name it '_paddleBehaviour':
+           IEventListener<UpdateEventArgs> _paddleBehaviour = new PaddleBehaviour();
 
             // DECLARE & INSTANTIATE an IEntity using CreatePaddle(), name it '_paddle':
             IEntity _paddle = CreatePaddle();
@@ -410,8 +410,8 @@ namespace COMP3401OO_UnitTests.PongTestClasses
 
             #region ACT
 
-            // CALL OnUpdate() on _paddleBehaviour, passing _paddle and a new UpdateEventArgs() as parameters:
-            _paddleBehaviour.OnUpdate(_paddle, new UpdateEventArgs());
+            // CALL OnEvent() on _paddleBehaviour, passing _paddle and a new UpdateEventArgs() as parameters:
+            _paddleBehaviour.OnEvent(_paddle, new UpdateEventArgs());
 
             #endregion
 
@@ -439,8 +439,8 @@ namespace COMP3401OO_UnitTests.PongTestClasses
 
             #region INSTANTIATIONS
 
-            // DECLARE & INSTANTIATE an IUpdateEventListener as a new PaddleBehaviour(), name it '_paddleBehaviour':
-            IUpdateEventListener _paddleBehaviour = new PaddleBehaviour();
+            // DECLARE & INSTANTIATE anIEventListener<UpdateEventArgs> as a new PaddleBehaviour(), name it '_paddleBehaviour':
+           IEventListener<UpdateEventArgs> _paddleBehaviour = new PaddleBehaviour();
 
             // DECLARE & INSTANTIATE an IEntity using CreatePaddle(), name it '_paddle':
             IEntity _paddle = CreatePaddle();
@@ -475,8 +475,8 @@ namespace COMP3401OO_UnitTests.PongTestClasses
 
             #region ACT
 
-            // CALL OnUpdate() on _paddleBehaviour, passing _paddle and a new UpdateEventArgs() as parameters:
-            _paddleBehaviour.OnUpdate(_paddle, new UpdateEventArgs());
+            // CALL OnEvent() on _paddleBehaviour, passing _paddle and a new UpdateEventArgs() as parameters:
+            _paddleBehaviour.OnEvent(_paddle, new UpdateEventArgs());
 
             #endregion
 
